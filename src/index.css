@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Roboto M";
+  src: url("./assets/Roboto-Medium.ttf");
+}
+@font-face {
+  font-family: "Roboto R";
+  src: url("./assets/Roboto-Regular.ttf");
+}
+@font-face {
+  font-family: "Roboto B";
+  src: url("./assets/Roboto-Bold.ttf");
+}
+@font-face {
+  font-family: "Roboto Bla";
+  src: url("./assets/Roboto-Black.ttf");
+}
+
+.ant-menu-item.ant-menu-item-active .ant-menu-title-content {
+  color: white !important;
+  /* background-color: #009d2fc8 !important; */
+}
+.ant-pop-over-open {
+  width: 5rem !important;
+}
+/* Set the text color to black for non-active menu items */
+.ant-menu-item .ant-menu-title-content {
+  color: white !important;
+  /* background-color: #009d2fc8 !important; */
+}
+.ant-menu-item.ant-menu-item-active {
+  background-color: #168a53 !important;
+}
+/* Set the icon color to white for active menu items */
+.ant-menu-item.ant-menu-item-active .ant-menu-item-icon svg {
+  fill: white !important;
+}
+
+/* Set the icon color to black for non-active menu items */
+.ant-menu-item .ant-menu-item-icon svg {
+  fill: white !important;
+}
+/* .inputst {
+  border: 1px solid green !important;
+} */
+.center-error-message:where(.ant-form-item) .ant-form-item-explain-error {
+  text-align: center;
+}
+.ant-float-btn-body {
+  background-color: #009d2fc8 !important;
+  color: white !important;
+}
+.ant-float-btn-icon {
+  color: white !important;
+}
+/* .ant-table-thead .ant-table-cell {
+  background-color: #ffffff !important;
+  color: #718ebf !important;
+} */
+.otpinput {
+  border: 1px solid #d9d9d9 !important;
+  width: 55px !important;
+  height: 69px !important;
+  border-radius: 5px !important;
+  margin-right: 10px !important;
+  margin-left: 10px !important;
+  outline: 1.5px solid transparent; /* Set a transparent outline initially */
+  transition: outline 0.3s ease; /* Add a transition effect to the outline property */
+  font-weight: bold;
+  font-size: 21px;
+  text-align: center !important;
+  width: 2.3em !important; /* Increase the width to provide more space for the number */
+  /* text-align: center; */
+}
+.otpinput:focus {
+  /* Add your styles for the focused state here */
+  outline: 1.5px solid #3e95ff8d; /* Example: add a blue outline when focused */
+  border: 1px solid #3e95ff !important;
+  /* Add more styles as needed */
+}
+.otpinputerror {
+  border: 1px solid #e93f33 !important;
+  width: 55px !important;
+  height: 69px !important;
+  border-radius: 5px !important;
+  margin-right: 10px !important;
+  margin-left: 10px !important;
+  /* outline: 0.5px solid #e93f33; Set a transparent outline initially */
+  transition: outline 0.3s ease; /* Add a transition effect to the outline property */
+  font-weight: bold;
+  font-size: 21px;
+  text-align: center !important;
+  width: 2.3em !important; /* Increase the width to provide more space for the number */
+  /* text-align: center; */
+}
+/* Media query for screens less than 420px */
+@media (max-width: 420px) {
+  .otpinput,
+  .otpinputerror {
+    width: 40px !important;
+    height: 50px !important;
+    font-size: 16px; /* Adjust font size for smaller screens */
+  }
+}
+/* .otpfocus {
+  border: 1px solid #ff0000 !important;
+  background-color: red;
+  /* width: 47px !important;
+  height: 66px !important;
+  border-radius: 5px !important;
+  margin-right: 10px !important;
+  margin-left: 10px !important; */
+/* }  */
+
+/* .ant-pagination .ant-pagination-item-active {
+  background-color: #009d2fc8 !important;
+  color: white !important;
+  border: 1px solid white !important;
+}
+.ant-pagination .ant-pagination-item {
+  background-color: #c40090 !important;
+  color: white !important;
+} */
+.react-international-phone-input {
+  /* border: 1px solid red !important; */
+}
+.react-international-phone-country-selector-button {
+  /*  */
+}
+.jojo {
+  border: 1px solid green !important;
+}
+.lolo {
+  border: 1px solid purple !important;
+}
+
+.copy-button {
+  margin-left: 8px;
+}
