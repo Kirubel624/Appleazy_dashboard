@@ -10,6 +10,7 @@ import PrivateRoutes from "./utils/ProtectedRoutes";
 import Profile from "./views/profile/Profile";
 import TrainingList from "./views/training/TrainingList";
 import ExerciseList from "./views/exercise/ExerciseList";
+import AssistantsList from "./views/assistants/AssistantsList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -42,7 +43,17 @@ function App() {
             }
             path="/training"
           />
-
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <AssistantsList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/assistants"
+          />
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
