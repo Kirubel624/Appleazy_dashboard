@@ -84,8 +84,8 @@ const ExerciseEdit = ({
       const formData = new FormData();
       formData.append("type", datas?.exercis.type);
       formData.append("question", datas?.exercis.question);
-      formData.append("excerciceType", datas?.exercis.excerciceType);
-      formData.append("trainingType", datas?.exercis.trainingType);
+      formData.append("excerciceType", "one");
+      formData.append("trainingType", "all");
       formData.append("choice", choice);
 
       const data = await exerciseService.createExercis(formData);
@@ -104,8 +104,8 @@ const ExerciseEdit = ({
       const formData = new FormData();
       formData.append("type", datas?.exercis.type);
       formData.append("question", datas?.exercis.question);
-      formData.append("excerciceType", datas?.exercis.excerciceType);
-      formData.append("trainingType", datas?.exercis.trainingType);
+      formData.append("excerciceType", "one");
+      formData.append("trainingType", "all");
       formData.append("choice", choice);
       const data = await exerciseService.updateExercis(formData, mode);
       searchData();
@@ -158,7 +158,7 @@ const ExerciseEdit = ({
         <div className="flex gap-7">
           <Form.Item
             name={["exercis", "type"]}
-            label="Type"
+            label="Question type"
             className=" flex-1 p-2"
             rules={[
               {
@@ -168,7 +168,7 @@ const ExerciseEdit = ({
             ]}
           >
             <Select className="border-gray-400 " placeholder="select your type">
-              <Option value="choice">Choice</Option>
+              <Option value="choice">Multiple choice</Option>
               <Option value="short_answer">Short Answer</Option>
             </Select>
           </Form.Item>
@@ -187,7 +187,7 @@ const ExerciseEdit = ({
           </Form.Item>
         </div>
         <div className="flex gap-8 ">
-          <Form.Item
+          {/* <Form.Item
             className=" flex-1"
             name={["exercis", "excerciceType"]}
             label="Excercise Type"
@@ -209,8 +209,8 @@ const ExerciseEdit = ({
               <Option value="five">Excercise five</Option>
               <Option value="six">Excercise six</Option>
             </Select>
-          </Form.Item>
-          <Form.Item
+          </Form.Item> */}
+          {/* <Form.Item
             className=" flex-1"
             name={["exercis", "trainingType"]}
             label="Training type"
@@ -247,7 +247,7 @@ const ExerciseEdit = ({
                 },
               ]}
             />
-          </Form.Item>
+          </Form.Item> */}
         </div>
 
         <p className="text-lg">Choice</p>
@@ -292,7 +292,7 @@ const ExerciseEdit = ({
         </Form.Item> */}
 
         <ButtonStyle>
-          <button onClick={() => setIsModalOpen(false)}>cancel</button>
+          <button onClick={() => setIsModalOpen(false)}>Cancel</button>
           <button type="submit">Submit</button>
         </ButtonStyle>
       </FormStyle>

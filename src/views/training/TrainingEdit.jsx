@@ -59,9 +59,10 @@ const TrainingEdit = ({
   const dispatch = useDispatch();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-
+  const [type, setType] = useState("Video");
   const handleChange = (value) => {
     console.log(`selected ${value}`);
+    setType(value);
   };
 
   const beforeUpload = (file) => {
@@ -354,24 +355,20 @@ const TrainingEdit = ({
           >
             <Select
               className="w-full"
-              // defaultValue="lucy"
+              defaultValue="Vedio"
               onChange={handleChange}
               options={[
                 {
-                  label: "Training one",
-                  value: "training_one",
+                  label: "Video",
+                  value: "Video",
                 },
                 {
-                  label: "Training two",
-                  value: "training_two",
+                  label: "Document",
+                  value: "Document",
                 },
                 {
-                  label: "Training three",
-                  value: "training_three",
-                },
-                {
-                  label: "Training four",
-                  value: "training_four",
+                  label: "Image",
+                  value: "Image",
                 },
               ]}
             />
@@ -379,7 +376,7 @@ const TrainingEdit = ({
         </div>
 
         <Form.Item
-          label="Description for vedio"
+          label="Description "
           name="description"
           rules={[
             {
@@ -390,7 +387,7 @@ const TrainingEdit = ({
         >
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Description for image"
           name="otehr_content"
           rules={[
@@ -401,66 +398,73 @@ const TrainingEdit = ({
           ]}
         >
           <TextArea rows={4} />
-        </Form.Item>
+        </Form.Item> */}
 
         <div className="flex gap-20">
-          <div className="my-5">
-            <p className=" mb-4"> Images</p>
-            <Upload
-              //   action="http://localhost:5173"
-              listType="picture-card"
-              fileList={fileList}
-              onChange={onChangeImages}
-              onPreview={handlePreview}
-              action={null}
-              beforeUpload={beforeUpload}
-            >
-              {fileList.length < 1 && "+ Upload"}
-            </Upload>
+          {type == "Image" && (
+            <div className="my-5">
+              <p className=" mb-4"> Images</p>
+              <Upload
+                //   action="http://localhost:5173"
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChangeImages}
+                onPreview={handlePreview}
+                action={null}
+                beforeUpload={beforeUpload}
+              >
+                {fileList.length < 1 && "+ Upload"}
+              </Upload>
 
-            {previewImage && (
-              <Image
-                wrapperStyle={{
-                  display: "none",
-                }}
-                preview={{
-                  visible: previewOpen,
-                  onVisibleChange: (visible) => setPreviewOpen(visible),
-                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
-                }}
-                src={previewImage}
-              />
-            )}
-          </div>
-          <div className="my-5">
-            <p className=" mb-4"> Videos</p>
-            <Upload
-              //   action="http://localhost:5173"
-              listType="picture-card"
-              fileList={videoList}
-              onChange={onChangeVedios}
-              onPreview={handlePreview}
-              action={null}
-              beforeUpload={beforeUploadVideo}
-            >
-              {videoList.length < 1 && "+ Upload"}
-            </Upload>
-          </div>
+              {previewImage && (
+                <Image
+                  wrapperStyle={{
+                    display: "none",
+                  }}
+                  preview={{
+                    visible: previewOpen,
+                    onVisibleChange: (visible) => setPreviewOpen(visible),
+                    afterOpenChange: (visible) =>
+                      !visible && setPreviewImage(""),
+                  }}
+                  src={previewImage}
+                />
+              )}
+            </div>
+          )}
+          {type == "Video" && (
+            <div className="my-5">
+              <p className=" mb-4"> Videos</p>
+              <Upload
+                //   action="http://localhost:5173"
+                listType="picture-card"
+                fileList={videoList}
+                onChange={onChangeVedios}
+                onPreview={handlePreview}
+                action={null}
+                beforeUpload={beforeUploadVideo}
+              >
+                {videoList.length < 1 && "+ Upload"}
+              </Upload>
+            </div>
+          )}
 
-          <div className="my-5">
-            <p className=" mb-4"> Ducuments</p>
-            <Upload
-              //   action="http://localhost:5173"
-              listType="picture-card"
-              fileList={documentList}
-              onChange={onChangeDocuments}
-              onPreview={handlePreview}
-              action={null}
-              beforeUpload={beforeUploadDocument}
-            >
-              {documentList.length < 1 && "+ Upload"}
-            </Upload>
-          </div>
+          {type == "Document" && (
+            <div className="my-5">
+              <p className=" mb-4"> Ducuments</p>
+              <Upload
+                //   action="http://localhost:5173"
+                listType="picture-card"
+                fileList={documentList}
+                onChange={onChangeDocuments}
+                onPreview={handlePreview}
+                action={null}
+                beforeUpload={beforeUploadDocument}
+              >
+                {documentList.length < 1 && "+ Upload"}
+              </Upload>
+            </div>
+          )}
         </div>
         <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)}>cancel</button>

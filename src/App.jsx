@@ -11,6 +11,7 @@ import Profile from "./views/profile/Profile";
 import TrainingList from "./views/training/TrainingList";
 import ExerciseList from "./views/exercise/ExerciseList";
 import AssistantsList from "./views/assistants/AssistantsList";
+import AssistantsDetail from "./views/assistants/AssistantsDetails";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -53,6 +54,17 @@ function App() {
               </Dashboard>
             }
             path="/assistants"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <AssistantsDetail
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/assistants/:id"
           />
           <Route
             element={

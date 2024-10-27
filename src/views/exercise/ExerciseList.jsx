@@ -12,6 +12,7 @@ import { NavLink, useSearchParams } from "react-router-dom";
 //   HeaderStyle,
 //   SearchInputStyle,
 // } from "../../components/commons/CommonStyles";
+
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,6 +21,10 @@ import {
   exerciseSearchText,
 } from "./ExerciseRedux";
 
+const question_type = {
+  choice: "Multiple choice",
+  short_answer: "Short answer",
+};
 const ExerciseList = ({ collapsed, setCollapsed }) => {
   const [exerciseData, setExerciseData] = useState([]);
   const [total, setTotal] = useState();
@@ -171,15 +176,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
       title: "Type",
       dataIndex: "type",
       render: (text, recored) => {
-        return (
-          <NavLink
-            style={{ color: "#2f1dca" }}
-            state={recored}
-            to={`${recored._id}`}
-          >
-            {text}
-          </NavLink>
-        );
+        return <p>{question_type[text]}</p>;
       },
       sorter: true,
     },
@@ -209,17 +206,17 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
     //   sorter: true,
     // },
 
-    {
-      title: "Training type",
-      dataIndex: "trainingType",
-      sorter: true,
-    },
+    // {
+    //   title: "Training type",
+    //   dataIndex: "trainingType",
+    //   sorter: true,
+    // },
 
-    {
-      title: "Excercise type",
-      dataIndex: "excerciceType",
-      sorter: true,
-    },
+    // {
+    //   title: "Excercise type",
+    //   dataIndex: "excerciceType",
+    //   sorter: true,
+    // },
   ];
 
   return (

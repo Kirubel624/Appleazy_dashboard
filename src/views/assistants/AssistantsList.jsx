@@ -183,48 +183,42 @@ const AssistantsList = ({ collapsed }) => {
     // },
 
     {
-      title: "profileimage",
+      title: "Profile",
       dataIndex: "profileImage",
       render: (text, recored) => {
         return (
-          <NavLink
-            style={{ color: "#2f1dca" }}
-            state={recored}
-            to={`${recored._id}`}
-          >
-            {text}
-          </NavLink>
+          <img width={50} className="border rounded-full " src={text} alt="" />
         );
       },
       sorter: true,
     },
 
     {
-      title: "experience",
+      title: "Experience",
       dataIndex: "experience",
       sorter: true,
     },
 
     {
-      title: "skills",
+      title: "Skills",
       dataIndex: "skills",
       sorter: true,
     },
 
     {
-      title: "firstname",
+      title: "First Name",
       dataIndex: "firstName",
       sorter: true,
     },
 
     {
-      title: "lastname",
+      title: "Last Name",
       dataIndex: "lastName",
       sorter: true,
     },
 
     {
-      title: "resume",
+      title: "Resume",
       dataIndex: "resume",
       render: (text, rec) => {
         return (
@@ -237,26 +231,27 @@ const AssistantsList = ({ collapsed }) => {
     },
 
     {
-      title: "availability",
+      title: "Availability",
       dataIndex: "availability",
       sorter: true,
     },
 
     {
-      title: "trainingstatus",
+      title: "Training Status",
       dataIndex: "trainingStatus",
       sorter: true,
     },
 
     {
-      title: "completedjobs",
+      title: "Completed Jobs",
       dataIndex: "completedJobs",
       sorter: true,
     },
 
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status",
+      fixed: "right",
       render: (text, recored) => {
         return (
           <div>
@@ -272,6 +267,26 @@ const AssistantsList = ({ collapsed }) => {
 
               <Option value="passed">Passed</Option>
             </Select>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Completed Jobs",
+      fixed: "right",
+
+      dataIndex: "completedJobs",
+      // sorter: true,
+      render: (text, recored) => {
+        return (
+          <div>
+            <NavLink
+              style={{ color: "#2f1dca" }}
+              state={recored}
+              to={`${recored.id}`}
+            >
+              View Detail
+            </NavLink>
           </div>
         );
       },
@@ -332,7 +347,7 @@ const AssistantsList = ({ collapsed }) => {
 
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">Assistantss</h1>
+          <h1 className="text-2xl font-bold pb-4">Assistants</h1>
           <div className="flex">
             <Input
               onChange={searchHandler}
