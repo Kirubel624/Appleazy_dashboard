@@ -60,10 +60,7 @@ const AssistantsDetail = ({ collapsed }) => {
                       {exc?.choice.split("*+*").map(
                         (c, i2) =>
                           c && (
-                            <Radio
-                              disabled={exc?.assistantAnswer}
-                              value={choice[i2]}
-                            >
+                            <Radio disabled={true} value={choice[i2]}>
                               {choice[i2]}. {c}
                             </Radio>
                           )
@@ -88,7 +85,7 @@ const AssistantsDetail = ({ collapsed }) => {
                     <div className="flex gap-5">
                       <Input.TextArea
                         defaultValue={exc?.assistantDescAnswer}
-                        disabled={exc?.assistantDescAnswer}
+                        disabled={true}
                         rows={5}
                         onChange={(e) => {
                           const x = ans2.filter((a) => a.exerciceId == exc.id);
