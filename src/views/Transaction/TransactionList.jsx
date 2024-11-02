@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Select } from "antd";
-import styled from "styled-components";
+import { Button, Dropdown, Input, Select, Tag } from "antd";
 import CommonModal from "../../components/commons/CommonModel";
 
-import assistantsService from "./AssistantsService";
-import AssistantsEdit from "./AssistantsEdit";
 import { NavLink, useSearchParams } from "react-router-dom";
 // import {
 //   HeaderStyle,
@@ -14,22 +11,16 @@ import { NavLink, useSearchParams } from "react-router-dom";
 // } from "../../components/commons/CommonStyles";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  searchAssistants,
-  updateAssistantsState,
-  assistantsSearchText,
-} from "./AssistantsRedux";
+import api from "../../utils/api";
 
-const AssistantsList = ({ collapsed }) => {
-  const [assistantsData, setAssistantsData] = useState([]);
+const TransactionsList = ({ collapsed }) => {
+  const [transactionsData, setTransactionsData] = useState([]);
   const [total, setTotal] = useState();
-
-  const searchText = useSelector(assistantsSearchText);
   const [loading, setLoading] = useState();
-  const [assistantsSelection, setAssistantsSelection] = useState([]);
+  const [transactionsSelection, setTransactionsSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+  const [searchText, setSearchText] = useState("");
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -40,58 +31,56 @@ const AssistantsList = ({ collapsed }) => {
     return [searchParams.get("page") || 1, searchParams.get("limit") || 5];
   };
 
-  useEffect(() => {
-    const [page, limit] = getPaginationInfo();
-    dispatch(updateAssistantsState({ page: page, limit: limit }));
-    // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
-    searchData();
-  }, []);
-
   async function searchData() {
     try {
-      setLoading(true);
-      const { payload } = await dispatch(searchAssistants());
-      console.log("setAssistantsData one:", payload);
-
-      setAssistantsData(payload.data);
-      setTotal(payload.total);
-      setLoading(false);
+      // setTransactionsData(payload.data);
+      // setTotal(payload.total);
+      // setLoading(false);
     } catch (err) {
       setLoading(false);
     }
   }
 
-  console.log("setAssistantsData", assistantsData);
+  useEffect(() => {
+    searchData2();
+  }, []);
+  async function searchData2(value = "") {
+    try {
+      const res2 = await api.get("/transaction?search=" + value);
+      console.log("res2,:", res2);
+      setTransactionsData(res2.data);
+    } catch (err) {
+      setLoading(false);
+    }
+  }
+
+  console.log("setTransactionsData", transactionsData);
   const searchHandler = (e) => {
     const { value } = e.target;
     const [page, limit] = getPaginationInfo();
-
+    setSearchText(value);
     // setSearchParams({ page: page, limit: limit })
-    dispatch(
-      updateAssistantsState({ page: page, limit: limit, searchText: value })
-    );
+
     clearTimeout(delayTimerRef.current);
     delayTimerRef.current = setTimeout(() => {
-      searchData();
+      searchData2(value);
     }, 500);
   };
 
   const handlePagination = async (page, pageSize) => {
     // permmission exmple
 
-    // if (!(await authService.checkPermmision('assistants', 'read'))) {
+    // if (!(await authService.checkPermmision('transactions', 'read'))) {
     //     return message.error('You have not a permmission');
     // }
 
     setSearchParams({ page: page, limit: pageSize });
-    dispatch(updateAssistantsState({ page: page, limit: pageSize }));
 
     searchData();
   };
 
   const tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
-    dispatch(updateAssistantsState({ sort: field, order: order }));
 
     searchData();
   };
@@ -100,30 +89,11 @@ const AssistantsList = ({ collapsed }) => {
     const [page, limit] = getPaginationInfo();
 
     setSearchParams({ page: 1, limit: 5 });
-    dispatch(
-      updateAssistantsState({
-        page: 1,
-        limit: 5,
-        sort: "",
-        order: "",
-        searchText: "",
-      })
-    );
+
     searchData();
   };
 
-  const handleDelete = async () => {
-    try {
-      setLoading(true);
-      const data = await assistantsService.deleteAssistant(modeID);
-      setIsDeleteModalOpen(false);
-
-      searchData();
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-    }
-  };
+  const handleDelete = async () => {};
 
   const onClick = ({ key }, record) => {
     if (key == "edit") {
@@ -187,70 +157,84 @@ const AssistantsList = ({ collapsed }) => {
       dataIndex: "profileImage",
       render: (text, recored) => {
         return (
-          <img width={50} className="border rounded-full " src={text} alt="" />
-        );
-      },
-      sorter: true,
-    },
-    {
-      title: "First Name",
-      dataIndex: "firstName",
-      sorter: true,
-    },
-
-    {
-      title: "Last Name",
-      dataIndex: "lastName",
-      sorter: true,
-    },
-
-    {
-      title: "Experience",
-      dataIndex: "experience",
-      sorter: true,
-    },
-
-    {
-      title: "Skills",
-      dataIndex: "skills",
-      sorter: true,
-    },
-
-    {
-      title: "Resume",
-      dataIndex: "resume",
-      render: (text, rec) => {
-        return (
-          <a href={text} download className="text-blue-500">
-            Clink resume
-          </a>
+          <p>
+            {recored?.User?.Assistant?.firstName +
+              " " +
+              recored?.User?.Assistant?.lastName}
+          </p>
         );
       },
       sorter: true,
     },
 
     {
-      title: "Availability",
-      dataIndex: "availability",
+      title: "amount",
+      dataIndex: "amount",
       sorter: true,
     },
 
     {
-      title: "Training Status",
-      dataIndex: "trainingStatus",
+      title: "paymentGateway",
+      dataIndex: "paymentGateway",
       sorter: true,
     },
 
     {
-      title: "Completed Jobs",
-      dataIndex: "completedJobs",
+      title: "verificationStatus",
+      dataIndex: "verificationStatus",
       sorter: true,
+      render: (text, record) => {
+        return text == "verified" ? (
+          <Tag color="green">{text}</Tag>
+        ) : text == "pending" ? (
+          <Tag color="orange">{text}</Tag>
+        ) : (
+          <Tag color="red">{text}</Tag>
+        );
+      },
     },
 
+    // {
+    //   title: "Last Name",
+    //   dataIndex: "lastName",
+    //   sorter: true,
+    // },
+
+    // {
+    //   title: "Resume",
+    //   dataIndex: "resume",
+    //   render: (text, rec) => {
+    //     return (
+    //       <a href={text} download className="text-blue-500">
+    //         Clink resume
+    //       </a>
+    //     );
+    //   },
+    //   sorter: true,
+    // },
+
+    // {
+    //   title: "Availability",
+    //   dataIndex: "availability",
+    //   sorter: true,
+    // },
+
+    // {
+    //   title: "Training Status",
+    //   dataIndex: "trainingStatus",
+    //   sorter: true,
+    // },
+
+    // {
+    //   title: "Completed Jobs",
+    //   dataIndex: "completedJobs",
+    //   sorter: true,
+    // },
+
     {
-      title: "Status",
-      dataIndex: "status",
-      fixed: collapsed ? null : "right",
+      title: "Change Status",
+      dataIndex: "verificationStatus",
+      fixed: "right",
       render: (text, recored) => {
         return (
           <div>
@@ -260,36 +244,34 @@ const AssistantsList = ({ collapsed }) => {
               className="border-gray-400 min-w-[120px]"
               placeholder="select your availability"
             >
-              <Option value="not_sumbited">Not Submit</Option>
-              <Option value="sumbited">Submited</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="verified">Verified</Option>
               <Option value="failed">Failed</Option>
-
-              <Option value="passed">Passed</Option>
             </Select>
           </div>
         );
       },
     },
-    {
-      title: "Completed Jobs",
-      fixed: collapsed ? null : "right",
+    // {
+    //   title: "Completed Jobs",
+    //   fixed: "right",
 
-      dataIndex: "completedJobs",
-      // sorter: true,
-      render: (text, recored) => {
-        return (
-          <div>
-            <NavLink
-              style={{ color: "#2f1dca" }}
-              state={recored}
-              to={`${recored.id}`}
-            >
-              View Detail
-            </NavLink>
-          </div>
-        );
-      },
-    },
+    //   dataIndex: "completedJobs",
+    //   // sorter: true,
+    //   render: (text, recored) => {
+    //     return (
+    //       <div>
+    //         <NavLink
+    //           style={{ color: "#2f1dca" }}
+    //           state={recored}
+    //           to={`${recored.id}`}
+    //         >
+    //           View Detail
+    //         </NavLink>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   const handleStatus = async (value, id) => {
@@ -299,8 +281,10 @@ const AssistantsList = ({ collapsed }) => {
       const formData = new FormData();
       formData.append("status", value);
 
-      const data = await assistantsService.updateAssistant(formData, id);
-      searchData();
+      const data = await api.patch("/transaction/" + id, {
+        verificationStatus: value,
+      });
+      searchData2();
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -312,41 +296,9 @@ const AssistantsList = ({ collapsed }) => {
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
-      {isModalOpen ? (
-        <CommonModal
-          width={1000}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        >
-          <AssistantsEdit
-            assistantsData={assistantsData}
-            searchData={searchData}
-            setMode={setModeID}
-            mode={modeID}
-            isModelOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-          />
-        </CommonModal>
-      ) : (
-        ""
-      )}
-
-      {isDeleteModalOpen ? (
-        <CommonDeleteModal
-          setIsModalOpen={setIsDeleteModalOpen}
-          handleDelete={handleDelete}
-          loading={loading}
-          isModalOpen={isDeleteModalOpen}
-        >
-          <h1 className=" text-2xl">Are you sure?</h1>
-        </CommonDeleteModal>
-      ) : (
-        ""
-      )}
-
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">Assistants</h1>
+          <h1 className="text-2xl font-bold pb-4">Transactions</h1>
           <div className="flex">
             <Input
               onChange={searchHandler}
@@ -401,11 +353,12 @@ const AssistantsList = ({ collapsed }) => {
 
       <CommonTable
         rowSelectionType={"checkbox"}
-        data={assistantsData}
+        data={transactionsData}
         columns={columns}
-        setSelection={setAssistantsSelection}
+        setSelection={setTransactionsSelection}
         handlePagination={handlePagination}
         total={total}
+        type={true}
         loadding={loading}
         tableChange={tableChange}
         scroll={{
@@ -416,4 +369,4 @@ const AssistantsList = ({ collapsed }) => {
   );
 };
 
-export default AssistantsList;
+export default TransactionsList;

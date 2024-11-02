@@ -237,7 +237,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   return (
     <div
       className={`${
-        collapsed ? "ml-[80px]" : "ml-[200px]"
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
       {isModalOpen ? (
@@ -284,7 +284,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
               style={{ borderRadius: "0px 0px 0px 0px" }}
               className=" drop-shadow-sm rounded-r py-[0.15rem]"
             />
-            <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
+            {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
               <Select
                 onChange={(val) => {
                   searchData();
@@ -300,7 +300,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
                 <Option value={"training_three"}>Training three</Option>
                 <Option value={"training_four"}>Training four</Option>
               </Select>
-            </div>
+            </div> */}
           </div>
         </div>
 

@@ -36,7 +36,7 @@ const AssistantsDetail = ({ collapsed }) => {
   return (
     <div
       className={`${
-        collapsed ? "ml-[80px]" : "ml-[200px]"
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
       <DetailStyle>

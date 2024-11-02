@@ -38,7 +38,10 @@ class ExerciseService {
     }
 
     return api.get(url).then((response) => {
-      return { data: response.data.data, total: response.data.total };
+      return {
+        data: response.data.excercises,
+        total: response.data.excercises,
+      };
     });
   }
 

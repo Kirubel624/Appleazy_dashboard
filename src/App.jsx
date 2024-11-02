@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -12,11 +12,24 @@ import TrainingList from "./views/training/TrainingList";
 import ExerciseList from "./views/exercise/ExerciseList";
 import AssistantsList from "./views/assistants/AssistantsList";
 import AssistantsDetail from "./views/assistants/AssistantsDetails";
+import TransactionsList from "./views/Transaction/TransactionList";
 
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 500) {
+        setCollapsed(true);
+      } else {
+        setCollapsed(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    console.log();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     <>
       <Routes>
@@ -24,7 +37,7 @@ function App() {
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
-                <TrainingList
+                <AssistantsList
                   collapsed={collapsed}
                   setCollapsed={setCollapsed}
                 />{" "}
@@ -54,6 +67,17 @@ function App() {
               </Dashboard>
             }
             path="/assistants"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <TransactionsList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/transactions"
           />
           <Route
             element={

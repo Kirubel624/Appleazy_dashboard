@@ -30,6 +30,7 @@ function getItem(label, key, icon, children) {
 }
 const menuItems = [
   getItem("Assistants", "/assistants", <BookOutlined />),
+  getItem("Transactions", "/transactions", <CheckSquareOutlined />),
 
   getItem("Training", "/training", <BookOutlined />),
   getItem("Exercise", "/exercise", <CheckSquareOutlined />),

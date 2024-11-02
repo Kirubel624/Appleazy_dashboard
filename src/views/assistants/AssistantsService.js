@@ -32,7 +32,10 @@ class AssistantsService {
     }
 
     return api.get(url).then((response) => {
-      return { data: response.data, total: response.data?.length };
+      return {
+        data: response.data?.assistants,
+        total: response.data?.totalItems,
+      };
     });
   }
 

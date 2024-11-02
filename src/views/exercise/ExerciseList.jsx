@@ -222,7 +222,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
   return (
     <div
       className={`${
-        collapsed ? "ml-[80px]" : "ml-[200px]"
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
       {isModalOpen ? (
@@ -269,7 +269,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
               style={{ borderRadius: "0px 0px 0px 0px" }}
               className=" drop-shadow-sm rounded-r py-[0.15rem]"
             />
-            <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
+            {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
               <Select
                 onChange={(val) => {
                   searchData();
@@ -283,7 +283,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
                 <Option value="spare_part">Spare part</Option>
                 <Option value="lubricant">Lubricants</Option>
               </Select>
-            </div>
+            </div> */}
           </div>
         </div>
         <span className="flex ml-6 mb-6 md:mr-6">
