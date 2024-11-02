@@ -9,8 +9,8 @@ const handleErrorResponse = (errorMessage) => {
 };
 
 const instance = axios.create({
-  // baseURL: "https://server.appleazy.com/api/v1",
-  baseURL: "http://localhost:8000/api/v1",
+  baseURL: "https://server.appleazy.com/api/v1",
+  // baseURL: "http://localhost:8000/api/v1",
 
   headers: {
     "Content-Type": "application/json",
