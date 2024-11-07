@@ -50,10 +50,15 @@ const BlogsCard = ({
     >
       {blogsItem?.image ? (
         <div className="image-container">
-          <Image height={200} className="object-cover" src={blogsItem?.image} />
+          <Image
+            height={200}
+            width={"100%"}
+            className="object-cover"
+            src={blogsItem?.image}
+          />
         </div>
       ) : (
-        <p className="bg-gray-300 w-full h-[150px] flex items-center justify-center text-center">
+        <p className="bg-gray-300 w-full h-[200px] flex items-center justify-center text-center">
           No images available
         </p>
       )}
