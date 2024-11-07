@@ -193,6 +193,11 @@ const TransactionsList = ({ collapsed }) => {
         );
       },
     },
+    {
+      title: "Note",
+      dataIndex: "description",
+      sorter: true,
+    },
 
     // {
     //   title: "Last Name",
@@ -305,8 +310,8 @@ const TransactionsList = ({ collapsed }) => {
               placeholder="Search"
               value={searchText}
               allowClear
-              style={{ borderRadius: "0px 0px 0px 0px" }}
-              className=" drop-shadow-sm rounded-r py-[0.15rem]"
+              style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
+              className=" drop-shadow-sm rounded-r mr-4 h-9"
             />
             {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
               <Select

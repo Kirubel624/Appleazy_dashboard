@@ -34,6 +34,7 @@ const menuItems = [
 
   getItem("Training", "/training", <BookOutlined />),
   getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+  getItem("Blog", "/blog", <CheckSquareOutlined />),
 
   // getItem("Job board", "/job_board", <InfoCircleOutlined />),
 

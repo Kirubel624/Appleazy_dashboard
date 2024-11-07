@@ -281,8 +281,8 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
               placeholder="Search"
               value={searchText}
               allowClear
-              style={{ borderRadius: "0px 0px 0px 0px" }}
-              className=" drop-shadow-sm rounded-r py-[0.15rem]"
+              style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
+              className=" drop-shadow-sm rounded-r mr-4 h-9"
             />
             {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
               <Select
@@ -308,15 +308,14 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
           <button
             onClick={handleReload}
             className="
-             border border-[#1D9BF0] py-2 px-3
-             text-[#1D9BF0] rounded mr-4 flex items-center justify-center"
+            border border-[#168A53] py-2 px-3
+            text-[#168A53] rounded mr-4 flex items-center justify-center"
           >
             <ReloadOutlined className=" boder boder-red-900" />
           </button>
 
           <button
-            className="px-4  py-2 border border-[#1D9BF0] 
-            text-white bg-[#1D9BF0] rounded"
+            className="h-9 whitespace-nowrap flex items-center bg-[#248A53] px-3 rounded-lg text-white mr-3"
             onClick={() => {
               setIsModalOpen(true);
               setModeID("");
