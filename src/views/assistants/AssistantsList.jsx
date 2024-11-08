@@ -282,7 +282,7 @@ const AssistantsList = ({ collapsed }) => {
             <NavLink
               style={{ color: "#2f1dca" }}
               state={recored}
-              to={`${recored.id}`}
+              to={`/assistants/${recored.id}`}
             >
               View Detail
             </NavLink>

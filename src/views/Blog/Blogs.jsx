@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import AddBlogs from "./AddBlogs";
 import BlogsCard from "../../components/commons/BlogsCard";
-import { Input, message, Modal, Pagination } from "antd";
+import { Empty, Input, message, Modal, Pagination, Spin } from "antd";
 import { IoIosAdd } from "react-icons/io";
 import EditBlogs from "./EditBlogs";
 import useDebounce from "../../hooks/useDecounce";
@@ -23,14 +23,18 @@ const Blogs = ({ collapsed, setCollapsed }) => {
 
   const debouncedSearchText = useDebounce(searchText, 500);
   const fetchBlogs = async (page = 1, limit = 10, search = "") => {
-    setLoading(true);
-    const res = await api.get(
-      `/api/v1/blog?page=${page}&limit=${limit}&search=${search}`
-    );
-    console.log(":::", res.data);
-    setBlogs(res?.data.blogs);
-    setTotalBlogs(res?.data.totalItems);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const res = await api.get(
+        `/api/v1/blog?page=${page}&limit=${limit}&search=${search}`
+      );
+      console.log(":::", res.data);
+      setBlogs(res?.data?.blogs);
+      setTotalBlogs(res?.data?.totalItems);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     fetchBlogs(currentPage, pageSize, debouncedSearchText);
@@ -60,7 +64,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
   const handlePageChange = (page) => {
     setCurrentPage(page); // Update current page
   };
-  return (
+  return blogs && blogs.length > 0 ? (
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
@@ -148,6 +152,14 @@ const Blogs = ({ collapsed, setCollapsed }) => {
           data-testid="loader"
         />
       </div>
+    </div>
+  ) : (
+    <div
+      className={`${
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+      } flex justify-center items-center transition-all ease-in mt-10 pl-10 mr-10`}
+    >
+      <Empty />
     </div>
   );
 };
