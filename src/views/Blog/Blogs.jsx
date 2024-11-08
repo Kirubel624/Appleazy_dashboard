@@ -41,7 +41,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
   }, [currentPage, pageSize, debouncedSearchText]);
 
   const onDelete = async (id) => {
-    const res = await api.delete(`/blogs/${id}`, {
+    const res = await api.delete(`/api/v1/blog/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -64,7 +64,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
   const handlePageChange = (page) => {
     setCurrentPage(page); // Update current page
   };
-  return blogs && blogs.length > 0 ? (
+  return (
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
@@ -113,17 +113,27 @@ const Blogs = ({ collapsed, setCollapsed }) => {
       </div>
       <div className=" grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 sm:mt-10 mt-6 borde borde-red-900">
         {!loading &&
-          blogs?.map((data) => (
-            <div key={data._id}>
-              <BlogsCard
-                blogsItem={data}
-                onDelete={onDelete}
-                onEdit={onEdit}
-                setSelectedBlogs={setSelectedBlogs}
-                selectedBlogs={selectedBlogs}
-                setIsEditModalVisible={setIsEditModalVisible}
-              />
+          (blogs && blogs.length == 0 ? (
+            <div
+              className={`${
+                collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+              } flex justify-center items-center transition-all ease-in mt-10 pl-10 mr-10`}
+            >
+              <Empty />
             </div>
+          ) : (
+            blogs?.map((data) => (
+              <div key={data._id}>
+                <BlogsCard
+                  blogsItem={data}
+                  onDelete={onDelete}
+                  onEdit={onEdit}
+                  setSelectedBlogs={setSelectedBlogs}
+                  selectedBlogs={selectedBlogs}
+                  setIsEditModalVisible={setIsEditModalVisible}
+                />
+              </div>
+            ))
           ))}
       </div>
       <div className="flex justify-end">
@@ -152,14 +162,6 @@ const Blogs = ({ collapsed, setCollapsed }) => {
           data-testid="loader"
         />
       </div>
-    </div>
-  ) : (
-    <div
-      className={`${
-        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } flex justify-center items-center transition-all ease-in mt-10 pl-10 mr-10`}
-    >
-      <Empty />
     </div>
   );
 };

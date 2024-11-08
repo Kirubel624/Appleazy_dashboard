@@ -16,7 +16,7 @@ const BlogsCard = ({
     confirm({
       title: "Are you sure you want to delete this blogs?",
       onOk() {
-        onDelete(blogsItem._id);
+        onDelete(blogsItem.id);
       },
       onCancel() {},
     });
