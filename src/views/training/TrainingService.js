@@ -38,7 +38,7 @@ class TrainingService {
     }
 
     return api.get(url).then((response) => {
-      return { data: response.data.trainings, total: response.data.trainings };
+      return { data: response.data.trainings, total: response.data.totalItems };
     });
   }
 
