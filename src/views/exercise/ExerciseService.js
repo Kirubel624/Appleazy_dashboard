@@ -40,7 +40,7 @@ class ExerciseService {
     return api.get(url).then((response) => {
       return {
         data: response.data.excercises,
-        total: response.data.excercises,
+        total: response.data.totalItems,
       };
     });
   }

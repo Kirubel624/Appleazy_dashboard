@@ -355,7 +355,6 @@ const TrainingEdit = ({
           >
             <Select
               className="w-full"
-              defaultValue="Vedio"
               onChange={handleChange}
               options={[
                 {
