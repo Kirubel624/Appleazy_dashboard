@@ -9,15 +9,13 @@ import {
   logOutAsync,
   logout,
   updateAccessToken,
-} from "../views/Authentication/redux/authRedux";
+} from "../views/auth/authReducer";
 const useAPIPrivate = () => {
   // const { state } = useAuth();
   //change htis ot redux persisit token
   const refresh = useRefreshToken();
 
-  const { isLoggedIn, user, accessToken } = useSelector(
-    (state) => state.auth.auth
-  );
+  const { isLoggedIn, user, accessToken } = useSelector((state) => state.auth);
 
   // const accessToken = user?.data?.token?.active;
   const dispatch = useDispatch();

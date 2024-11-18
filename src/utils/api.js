@@ -10,7 +10,7 @@ export const apiAuth = axios.create({
   baseURL: "http://196.189.126.183:3000/",
 });
 export const apiPrivate = axios.create({
-  // baseURL: "http://192.168.0.116:3000",
+  // baseURL: "http://localhost:8001",
   baseURL: "https://server.appleazy.com",
 
   headers: {

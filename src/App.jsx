@@ -15,6 +15,8 @@ import AssistantsDetail from "./views/assistants/AssistantsDetails";
 import TransactionsList from "./views/Transaction/TransactionList";
 import Blogs from "./views/Blog/Blogs";
 import BlogsDetail from "./views/Blog/BlogsDetail";
+import JobsHome from "./views/assistants/JobsHome";
+import Jobs from "./views/assistants/Jobs";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -101,6 +103,22 @@ function App() {
               </Dashboard>
             }
             path="/transactions"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <JobsHome collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/assistants/jobs/:id"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <Jobs collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/jobs/:id/:clientId"
           />
           <Route
             element={

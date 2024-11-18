@@ -246,6 +246,25 @@ const AssistantsList = ({ collapsed }) => {
       dataIndex: "completedJobs",
       sorter: true,
     },
+    {
+      title: "Jobs",
+      dataIndex: "status",
+      fixed: collapsed ? null : "right",
+      render: (text, recored) => {
+        console.log(recored, "recored");
+        return (
+          <div>
+            <NavLink
+              style={{ color: "#2f1dca" }}
+              state={recored}
+              to={`/assistants/jobs/${recored.UserId}`}
+            >
+              View Detail
+            </NavLink>
+          </div>
+        );
+      },
+    },
 
     {
       title: "Status",
@@ -271,7 +290,7 @@ const AssistantsList = ({ collapsed }) => {
       },
     },
     {
-      title: "Completed Jobs",
+      title: "Exercises",
       fixed: collapsed ? null : "right",
 
       dataIndex: "completedJobs",
