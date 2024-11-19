@@ -1,227 +1,118 @@
 import React, { useState } from "react";
-import { Avatar, Checkbox, Input, Modal } from "antd";
-import ProfileField from "../../components/common/ProfileField";
+import { Form, Input, Button, Upload, message, Typography, Space } from "antd";
+import {
+  UploadOutlined,
+  UserOutlined,
+  MailOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { FaFileAlt } from "react-icons/fa";
-import EditProfile from "./EditProfile";
-import { getProfileAsync } from "../auth/authReducer";
+import { update_User, updateProfileAsync } from "../auth/authReducer";
+import styled from "styled-components";
+
+const { Title } = Typography;
+
+const StyledContainer = styled.div`
+  max-width: 600px;
+  padding: 24px;
+  border-radius: 8px;
+`;
+
+const StyledForm = styled(Form)`
+  .ant-form-item-label {
+    font-weight: bold;
+  }
+`;
+
 const Profile = ({ collapsed, setCollapsed }) => {
-  const { user, profile } = useSelector((state) => state.auth);
-  const [edit, setEdit] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const optionsVeteran = [
-    {
-      label: "Yes",
-      value: true,
-    },
-    {
-      label: "No",
-      value: false,
-    },
-    {
-      label: "Prefer not to disclose",
-      value: "",
-    },
-  ];
-  const getVeteranStatusLabel = (value) => {
-    console.log(value, "value...");
-    const option = optionsVeteran.find((opt) => opt.value === value);
-    return option ? option.label : "Prefer not to disclose"; // Default fallback
+
+  const onFinish = (values) => {
+    try {
+      console.log(values, "values in profile");
+      dispatch(updateProfileAsync({ id: user?.id, data: values }))
+        .then(() => {
+          dispatch(update_User(values));
+          message.success("Profile updated successfully");
+        })
+        .catch((error) => {
+          // message.error("Failed to update profile,error:", error);
+        });
+    } catch (error) {
+      console.log(error, "error in profile");
+    }
   };
-  const optionsDisability = [
-    {
-      label: "Yes",
-      value: true,
-    },
-    {
-      label: "No",
-      value: false,
-    },
-    {
-      label: "Prefer not to disclose",
-      value: "",
-    },
-  ];
-  const options = [
-    { label: "Part-time", value: "Part-time" },
-    { label: "Full-time", value: "Full-time" },
-    { label: "Contract", value: "Contract" },
-  ];
-  const fetchProfile = async () => {
-    const res = await dispatch(getProfileAsync(user?.id));
-    console.log(res, "response of fetch profiel");
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
   };
+
   return (
-    <div
+    <StyledContainer
       className={`${
-        collapsed ? "ml-[80px]" : "ml-[200px] bg-white h-screen px-12 pt-8"
-      } border- border-red-900 transition-all ease-in`}>
-      <Modal
-        title="Edit profile"
-        width={800}
-        open={edit}
-        onCancel={() => setEdit(false)}
-        footer={null}>
-        <EditProfile
-          profile={profile}
-          setEdit={setEdit}
-          fetchProfile={fetchProfile}
-        />
-      </Modal>
-      <div className=" flex items-center justify-between">
-        <div className="flex items-center">
-          <Avatar
-            size={96}
-            className="border-[1px] border-gray-300"
-            src={
-              profile?.profileImage ||
-              `https://robohash.org/${profile?.username}`
-            }
-          />
-          <div className="ml-5">
-            <h1 className="font-medium text-lg font-sans">
-              {profile?.username}
-            </h1>
-            <p className="text-sm text-gray-500">{profile?.user?.email}</p>
-          </div>
-        </div>
-        <div>
-          <button
-            onClick={() => setEdit(true)}
-            className="bg-[#168A53] text-white px-6 py-2 rounded">
-            Edit
-          </button>
-        </div>
-      </div>
-      <div className="my-8 font-roboto flex flex-col gap-y-5  ">
-        <div className="flex items-center justify-between">
-          <label className="flex flex-col w-1/3">
-            Username
-            <input
-              value={profile?.username}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Username"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3 mx-8">
-            Location
-            <input
-              value={profile?.location}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Location"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3">
-            Position
-            <input
-              value={profile?.position}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Position"
-            />
-          </label>
-        </div>
-        <div className="flex items-center justify-between">
-          <label className="flex flex-col w-1/3">
-            Desired pay
-            <input
-              value={profile?.desiredpay}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Desired pay"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3 mx-8">
-            Ethnicity
-            <input
-              value={profile?.ethnicity}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Ethnicity"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3">
-            Preferred industry
-            <input
-              value={profile?.preferredIndustry}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Preferrred industry"
-            />
-          </label>
-        </div>
-        <div className="flex items-center justify-between">
-          <label className="flex flex-col w-1/3">
-            Veteran
-            <input
-              value={getVeteranStatusLabel(JSON.parse(profile?.veteranStatus))}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Username"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3 mx-8">
-            Disability
-            <input
-              value={getVeteranStatusLabel(
-                JSON.parse(profile?.disabilityStatus)
-              )}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Username"
-            />
-          </label>
-          <label className="flex flex-col  w-1/3">
-            Work authorization
-            <input
-              value={getVeteranStatusLabel(
-                JSON.parse(profile?.workAuthorization)
-              )}
-              className=" bg-[#F9F9F9] mt-2 h-10 px-3"
-              placeholder="Username"
-            />
-          </label>
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className=" w-1/3">
-          <h1 className=" font-roboto">Resume</h1>
-          <div className="flex items-center mt-2">
-            <div className="bg-[#c9ffe7] p-3 rounded-full">
-              <FaFileAlt className="w-4 h-4 text-[#168A53]" />
-            </div>
-            <div>
-              <a
-                href={profile?.resume}
-                target="_blank"
-                className="underline text-blue-500 ml-2">
-                Resume
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className=" w-1/3  mx-8">
-          <h1 className=" font-roboto">CV</h1>
-          <div className="flex items-center mt-2">
-            <div className="bg-[#c9ffe7] p-3 rounded-full">
-              <FaFileAlt className="w-4 h-4 text-[#168A53]" />
-            </div>
-            <div>
-              <a
-                href={profile?.cv}
-                target="_blank"
-                className="underline text-blue-500 ml-2">
-                CV
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className=" w-1/3">
-          <label className="flex flex-col ">
-            Job type
-            <Checkbox.Group
-              options={options}
-              value={profile?.jobType.split(",")}
-              // onChange={handleJobTypeChange}
-            />
-          </label>
-        </div>
-      </div>
-    </div>
+        collapsed ? "ml-[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10`}
+    >
+      <Title level={2} style={{ marginBottom: "24px" }}>
+        Update Profile
+      </Title>
+      <StyledForm
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{
+          email: user?.email,
+          name: user?.name,
+          username: user?.username,
+        }}
+      >
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            {
+              required: true,
+              type: "email",
+              message: "Please input your email!",
+            },
+          ]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Form.Item>
+
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: "Please input your name!" }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Name" />
+        </Form.Item>
+
+        <Form.Item
+          name="username"
+          label="Username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input prefix={<EditOutlined />} placeholder="Username" />
+        </Form.Item>
+
+        <Form.Item>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <button
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+              type="submit"
+            >
+              Update Profile
+            </button>
+          </Space>
+        </Form.Item>
+      </StyledForm>
+    </StyledContainer>
   );
 };
 

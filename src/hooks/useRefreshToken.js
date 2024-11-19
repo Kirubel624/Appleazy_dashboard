@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import { updateAccessToken } from "../views/Authentication/redux/authRedux";
+import { updateAccessToken } from "../views/auth/authReducer";
 import axios from "axios";
 
 const useRefreshToken = () => {

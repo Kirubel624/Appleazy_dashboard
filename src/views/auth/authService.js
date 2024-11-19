@@ -1,10 +1,10 @@
-import api from "../../utils/api";
-
 // import TokenService from "./token.service";
+
+import { api2 } from "../../api/api";
 
 class AuthService {
   async login(email, password) {
-    const response = await api.post(
+    const response = await api2.post(
       "/user/login",
       {
         email,
@@ -18,7 +18,7 @@ class AuthService {
   }
 
   async register(username, email, password) {
-    const response = await api.post("/user/register", {
+    const response = await api2.post("/user/register", {
       username,
       email,
       password,
@@ -26,20 +26,17 @@ class AuthService {
     return response.data;
   }
   async logout() {
-    const response = await api.get("logout/");
+    const response = await api2.get("logout/");
     return response.data;
   }
   async getProfile(id) {
     console.log(id, ":id insied ethe service");
-    const response = await api.get(`/user/profile/${id}`);
+    const response = await api2.get(`/user/profile/${id}`);
     return response.data;
   }
   async updateProfile(id, data) {
-    const response = await api.patch(`/user/profile/${id}`, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    console.log(data, "data in service");
+    const response = await api2.patch(`/user/update/${id}`, data);
     return response.data;
   }
 
@@ -50,7 +47,7 @@ class AuthService {
   //   const newAccessToken = useRefreshToken();
   // }
   //   async checkPermmision(permmission, value) {
-  //     const res = await api.get(`/auth/checkPermmission/${permmission}/${value}`);
+  //     const res = await api2.get(`/auth/checkPermmission/${permmission}/${value}`);
 
   //     return res.data?.data;
   //   }
