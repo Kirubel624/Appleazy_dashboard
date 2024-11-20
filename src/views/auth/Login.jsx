@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { ClipLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { loginAsync } from "./authReducer";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -33,8 +33,8 @@ const Login = () => {
   // };
 
   return (
-    <div className="flex items-center justify-between borde border-red-900 min-h-screen bg-gray-10">
-      <div className="bg-white p-8 borde ml-[10%] border-green-900 shadow-g rounded-lg w- max--md w-1/3">
+    <div className="flex items-center  justify-center lg:justify-between  borde border-red-900 min-h-screen bg-gray-10">
+      <div className="bg-white p-8 borde lg:ml-[10%] m-0   border-green-900 shadow-g rounded-lg w- max--md max-w-[800px]  lg:w-1/3 ">
         <div className="mb-8 text-start">
           <img
             className="w-[10rem] "
@@ -51,11 +51,13 @@ const Login = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           // onFinishFailed={onFinishFailed}
-          className="space-y-4">
+          className="space-y-4"
+        >
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}>
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
             <Input
               type="email"
               placeholder="Email"
@@ -66,25 +68,29 @@ const Login = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[
-              { required: true, message: "Please input your password!" },
-            ]}>
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
             <Input.Password
               placeholder="Password"
               className="rounded bg-blue-100"
             />
           </Form.Item>
 
-          <div className="flex justify-between items-center">
-            <Button type="link" className="text-gray-400">
-              Forgot Password ?
-            </Button>
+          <div className="flex border- border-red-900 justify-between items-center">
+            <Link
+              to="/forgot-password"
+              type="link"
+              className="text-[#168a53] underline"
+            >
+              Forgot Password?
+            </Link>
           </div>
 
           <Form.Item>
             <button
               type="submit"
-              className="w-full bg-[#168a53] py-2 px-2 hover:bg-[#267c54] text-white rounded">
+              className="w-full bg-[#168a53] py-2 px-2 hover:bg-[#267c54] text-white rounded"
+            >
               {loading ? (
                 <ClipLoader
                   color="#FFFFF"
@@ -117,10 +123,10 @@ const Login = () => {
           </button>
         </div>
       </div>
-      <div className="borde bg-[#9affd1] h-screen rounded-l-3xl flex items-center justify-center border-red-900 w-1/">
+      <div className="borde hidden lg:flex  bg-[#9affd1] w-[30rem] h-screen rounded-l-3xl  items-center justify-center border-red-900 w-1/">
         <img
-          className="scale-x-[-1] ml-[-80%]  w-[33rem] borde border-red-900"
-          src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723637331/business-employee-relaxing-at-work-5513542-4602547_xcx2gh.webp"
+          className="scale-x-[-1] ml-[-80%]  w-[25rem] borde border-red-900"
+          src="/logo2.png"
         />
       </div>
     </div>
