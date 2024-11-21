@@ -17,6 +17,7 @@ import Blogs from "./views/Blog/Blogs";
 import BlogsDetail from "./views/Blog/BlogsDetail";
 import JobsHome from "./views/assistants/JobsHome";
 import Jobs from "./views/assistants/Jobs";
+import ProfileSettings from "./views/profile/ProfileSettings";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -161,10 +162,13 @@ function App() {
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
-                <Profile collapsed={collapsed} setCollapsed={setCollapsed} />
+                <ProfileSettings
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
               </Dashboard>
             }
-            path="/profile"
+            path="/profilesettings"
           />
         </Route>
 

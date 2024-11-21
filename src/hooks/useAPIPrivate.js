@@ -24,7 +24,6 @@ const useAPIPrivate = () => {
       (config) => {
         if (!config.headers["Authorization"]) {
           console.log(accessToken, "old access token");
-
           config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
         return config;
