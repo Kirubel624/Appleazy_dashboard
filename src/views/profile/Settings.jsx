@@ -85,7 +85,6 @@ const Settings = () => {
           } else {
             setLoadingToggle({ ...loadingToggle, assistantDashboard: false });
           }
-          //   setLoadingToggle(false);
         },
       });
     } else {
