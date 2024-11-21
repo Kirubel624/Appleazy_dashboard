@@ -7,7 +7,7 @@ import "react-quill/dist/quill.snow.css";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store.js";
-
+import { setup } from "./api/api.js";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -19,3 +19,5 @@ createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </StrictMode>
 );
+
+setup(store);

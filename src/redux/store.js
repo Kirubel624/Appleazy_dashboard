@@ -15,6 +15,7 @@ import authReducer from "../views/auth/authReducer";
 import trainingReducer from "../views/training/TrainingRedux"; // import the training
 import exerciseReducer from "../views/exercise/ExerciseRedux"; // import the exercise
 import assistantsReducer from "../views/assistants/AssistantsRedux"; // import the assistants
+import jobReducer from "../views/assistants/jobReducer";
 
 // Persist configuration for the auth reducer
 const authPersistConfig = {
@@ -31,6 +32,7 @@ export const store = configureStore({
     training: trainingReducer,
     exercise: exerciseReducer, // add the exercise here
     assistants: assistantsReducer, // add the assistants here
+    job: jobReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 
-const Card = ({ statusname, statusamount, logo }) => {
+const Card = ({
+  statusname,
+  statusamount,
+  logo,
+  logobg,
+  className,
+  cardStyle = `py-1 sm:py-6 px-6  `,
+}) => {
+  const [logoBg, setLogoBg] = useState("bg-white");
+  useEffect(() => {
+    if (logoBg === "blue") {
+      setLogoBg("bg-[#E7EDFF]");
+    }
+  }, [logobg]);
   return (
-    <div className={` border-2  w-[370px] mx-5 my-8 rounded shadow-2xl`}>
-      <p className="border-b p-2 text-xl">Job1</p>
-      <div className={`flex justify-start items-center`}>
-        <div className="p-2 text-lg flex flex-col items-start justify-start borer borer-red-900">
-          <p className="py-2 text-[#435677]"> Client name: {" Marshal"}</p>
-          <p className=" py-2 text-[#435677] font-medium text-xl">
-            No of Application: {statusamount}
-          </p>
-          <p className=" py-2 text-[#435677] font-medium text-xl">
-            Time: in 3 days
-          </p>
-          <div className="mt-4 flex  justify-between w-[350px]">
-            <button className="bg-sky-600 text-white py-1 px-5 rounded">
-              More
-            </button>
-            <button className="bg-slate-800 text-white py-1 px-5 rounded">
-              Dashboard
-            </button>
-            <button className="bg-[#168A53] text-white py-1 px-5 rounded">
-              Chat
-            </button>
-          </div>
+    <div
+      className={` bg-white  w-[200px] sm:w-[240px] rounded-2xl flex lg:inline-block `}
+    >
+      <div className={`flex justify-start items-center  p-2 px-4 sm`}>
+        {logo}
+
+        <div className="flex flex-col items-start justify-start borer borer-red-900">
+          <p className="text-[#718EBF]">{statusname}</p>
+          <p className="font-medium text-xl">{statusamount}</p>
         </div>
       </div>
     </div>

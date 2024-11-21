@@ -48,6 +48,7 @@ export const updateProfileAsync = createAsyncThunk(
   "auth/updateprofile",
   async ({ id, data }, { rejectWithValue }) => {
     try {
+      console.log(data, "data in reducer");
       const response = await AuthService.updateProfile(id, data);
       console.log(response, "response***********");
 
@@ -92,6 +93,23 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    update_User: (state, action) => {
+      try {
+        console.log(action.payload, "action.payload in reducer");
+        state.user = { ...state.user, ...action.payload };
+        const data = JSON.parse(localStorage.getItem("persist:auth"));
+        console.log(data, "222data in reducer");
+        const d = {
+          ...data,
+          user: JSON.stringify({ ...state.user, ...action.payload }),
+        };
+        console.log(d, "data in reducer");
+
+        localStorage.setItem("persist:auth", JSON.stringify(d));
+      } catch (error) {
+        console.log(error, "error in update_User");
+      }
+    },
     loginRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -177,5 +195,6 @@ export const {
   logout,
   registerSuccess,
   updateAccessToken,
+  update_User,
 } = authSlice.actions;
 export default authSlice.reducer;
