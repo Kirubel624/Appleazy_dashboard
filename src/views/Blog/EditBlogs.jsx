@@ -19,7 +19,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import api from "../../utils/api";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const EditBlogs = ({
   isEditModalVisible,
@@ -28,6 +28,7 @@ const EditBlogs = ({
   setSelectedblogs,
   selectedBlogs,
 }) => {
+  const api = useAPIPrivate();
   const [loading, setLoading] = useState(false);
   const [form] = useForm();
 

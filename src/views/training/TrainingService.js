@@ -1,9 +1,9 @@
-import api from "../../api/api";
+// import api from "../../api/api";
 
 class TrainingService {
-  createTrainin(data) {
+  createTrainin(data, api) {
     return api
-      .post("/assistant/training", data, {
+      .post("/api/v1/assistant/training", data, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },
@@ -13,9 +13,9 @@ class TrainingService {
       });
   }
 
-  updateTrainin(data, id) {
+  updateTrainin(data, id, api) {
     return api
-      .patch("/assistant/training/" + id, data, {
+      .patch("/api/v1/assistant/training/" + id, data, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },
@@ -25,8 +25,8 @@ class TrainingService {
       });
   }
 
-  searchTrainin({ page, limit, searchText = null, sort = null, order }) {
-    let url = `/assistant/training?page=${page}&limit=${limit}`;
+  searchTrainin({ page, limit, searchText = null, sort = null, order, api }) {
+    let url = `/api/v1/assistant/training?page=${page}&limit=${limit}`;
     if (sort) {
       const sortValue =
         order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
@@ -42,29 +42,29 @@ class TrainingService {
     });
   }
 
-  getTrainin(id) {
-    return api.get("/assistant/training/" + id).then((response) => {
+  getTrainin(id, api) {
+    return api.get("/api/v1/assistant/training/" + id).then((response) => {
       return response.data.data;
     });
   }
 
-  deleteTrainin(id) {
-    return api.delete("/assistant/training/" + id).then((response) => {
+  deleteTrainin(id, api) {
+    return api.delete("/api/v1/assistant/training/" + id).then((response) => {
       return response.data.data;
     });
   }
 
-  trainingDo({ method, payload }) {
+  trainingDo({ method, payload, api }) {
     return api
-      .post("/assistant/training/do", { method, payload })
+      .post("/api/v1/assistant/training/do", { method, payload })
       .then((response) => {
         return response.data.data;
       });
   }
 
-  traininDo({ method, payload, id }) {
+  traininDo({ method, payload, id, api }) {
     return api
-      .post("/assistant/training/do/" + id, { method, payload })
+      .post("/api/v1/assistant/training/do/" + id, { method, payload })
       .then((response) => {
         return response.data.data;
       });

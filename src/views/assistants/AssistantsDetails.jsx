@@ -2,7 +2,8 @@ import { Divider, Input, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import api from "../../utils/api";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
+// import api from "../../utils/api";
 
 const choice = {
   1: "A",
@@ -13,6 +14,7 @@ const choice = {
   6: "F",
 };
 const AssistantsDetail = ({ collapsed }) => {
+  const api = useAPIPrivate();
   const { state } = useLocation();
   const [excersice, setExcersice] = useState([]);
 

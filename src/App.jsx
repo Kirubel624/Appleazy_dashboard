@@ -17,6 +17,8 @@ import Blogs from "./views/Blog/Blogs";
 import BlogsDetail from "./views/Blog/BlogsDetail";
 import JobsHome from "./views/assistants/JobsHome";
 import Jobs from "./views/assistants/Jobs";
+import PasswordReset from "./views/auth/PasswordReset";
+import ForgotPassword from "./views/auth/ForgotPassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -169,6 +171,9 @@ function App() {
         </Route>
 
         <Route element={<Login />} path="/login" />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<PasswordReset />} />
+
         {/* <Route element={<Login />} path="/" /> */}
       </Routes>
     </>

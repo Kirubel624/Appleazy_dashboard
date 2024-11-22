@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import api from "../../utils/api";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 import AddBlogs from "./AddBlogs";
 import BlogsCard from "../../components/commons/BlogsCard";
 import { Empty, Input, message, Modal, Pagination, Spin } from "antd";
@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { ClipLoader, ScaleLoader } from "react-spinners";
 
 const Blogs = ({ collapsed, setCollapsed }) => {
+  const api = useAPIPrivate();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
