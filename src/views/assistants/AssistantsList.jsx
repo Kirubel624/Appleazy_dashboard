@@ -19,8 +19,11 @@ import {
   updateAssistantsState,
   assistantsSearchText,
 } from "./AssistantsRedux";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const AssistantsList = ({ collapsed }) => {
+  const api = useAPIPrivate();
+
   const [assistantsData, setAssistantsData] = useState([]);
   const [total, setTotal] = useState();
 
@@ -50,7 +53,7 @@ const AssistantsList = ({ collapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchAssistants());
+      const { payload } = await dispatch(searchAssistants(api));
       console.log("setAssistantsData one:", payload);
 
       setAssistantsData(payload.data);

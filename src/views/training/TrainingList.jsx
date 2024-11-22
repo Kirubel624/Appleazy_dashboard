@@ -16,8 +16,10 @@ import {
   updateTrainingState,
   trainingSearchText,
 } from "./TrainingRedux";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const TrainingList = ({ collapsed, setCollapsed }) => {
+  const api = useAPIPrivate();
   const [trainingData, setTrainingData] = useState([]);
   const [total, setTotal] = useState();
 
@@ -47,7 +49,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchTraining());
+      const { payload } = await dispatch(searchTraining(api));
       setTrainingData(payload.data);
       setTotal(payload.total);
       setLoading(false);
@@ -109,7 +111,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await trainingService.deleteTrainin(modeID);
+      const data = await trainingService.deleteTrainin(modeID, api);
       setIsDeleteModalOpen(false);
 
       searchData();

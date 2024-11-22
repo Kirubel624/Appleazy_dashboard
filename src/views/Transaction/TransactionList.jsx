@@ -11,9 +11,10 @@ import { NavLink, useSearchParams } from "react-router-dom";
 // } from "../../components/commons/CommonStyles";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../utils/api";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const TransactionsList = ({ collapsed }) => {
+  const api = useAPIPrivate();
   const [transactionsData, setTransactionsData] = useState([]);
   const [total, setTotal] = useState();
   const [loading, setLoading] = useState();

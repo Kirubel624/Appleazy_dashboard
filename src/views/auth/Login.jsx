@@ -116,12 +116,12 @@ const Login = () => {
           <Button shape="circle" icon={<FacebookOutlined />} />
         </div> */}
 
-        <div className="text-center text-gray-500 mt-4">
+        {/* <div className="text-center text-gray-500 mt-4">
           Don’t have an account yet?
           <button className="text-[#168a53] ml-1 underline">
             Sign up for free
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="borde hidden lg:flex  bg-[#9affd1] w-[30rem] h-screen rounded-l-3xl  items-center justify-center border-red-900 w-1/">
         <img

@@ -21,6 +21,7 @@ import exerciseService from "./ExerciseService";
 import CommonModal from "../../components/commons/CommonModel";
 import ExercisePick from "./ExercisePick";
 import dayjs from "dayjs";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Option } = Select;
 
@@ -43,6 +44,7 @@ const ExerciseEdit = ({
   exerciseData,
   searchData,
 }) => {
+  const api = useAPIPrivate();
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
   const [loading, setLoading] = useState("");
@@ -52,7 +54,7 @@ const ExerciseEdit = ({
   useEffect(() => {
     const featchData = async () => {
       try {
-        const data = await exerciseService.getExercis(mode);
+        const data = await exerciseService.getExercis(mode, api);
         form.setFieldsValue({
           exercis: { ...data, updatedAt: dayjs(data.updatedAt) },
         });
@@ -88,7 +90,7 @@ const ExerciseEdit = ({
       formData.append("trainingType", "all");
       formData.append("choice", choice);
 
-      const data = await exerciseService.createExercis(formData);
+      const data = await exerciseService.createExercis(formData, api);
       setIsModalOpen(false);
       searchData();
 
@@ -107,7 +109,7 @@ const ExerciseEdit = ({
       formData.append("excerciceType", "one");
       formData.append("trainingType", "all");
       formData.append("choice", choice);
-      const data = await exerciseService.updateExercis(formData, mode);
+      const data = await exerciseService.updateExercis(formData, mode, api);
       searchData();
       setIsModalOpen(false);
       setLoading(false);

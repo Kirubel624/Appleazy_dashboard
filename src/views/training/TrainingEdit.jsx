@@ -23,6 +23,7 @@ import CommonModal from "../../components/commons/CommonModel";
 import TrainingPick from "./TrainingPick";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -52,6 +53,7 @@ const TrainingEdit = ({
   trainingData,
   searchData,
 }) => {
+  const api = useAPIPrivate();
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
   const [loading, setLoading] = useState("");
@@ -138,7 +140,7 @@ const TrainingEdit = ({
   useEffect(() => {
     const featchData = async () => {
       try {
-        const data = await trainingService.getTrainin(mode);
+        const data = await trainingService.getTrainin(mode, api);
         form.setFieldsValue({
           ...data,
           updatedAt: dayjs(data.updatedAt),
@@ -232,7 +234,7 @@ const TrainingEdit = ({
       //   setLoading(false);
       // });
 
-      const data = await trainingService.createTrainin(formData);
+      const data = await trainingService.createTrainin(formData, api);
       setIsModalOpen(false);
       searchData();
 
@@ -278,7 +280,7 @@ const TrainingEdit = ({
         }
       });
 
-      const data = await trainingService.updateTrainin(formData, mode);
+      const data = await trainingService.updateTrainin(formData, mode, api);
       searchData();
       setIsModalOpen(false);
       setLoading(false);

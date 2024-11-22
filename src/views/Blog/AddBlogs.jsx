@@ -17,9 +17,10 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import api from "../../utils/api";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
+  const api = useAPIPrivate();
   const [loading, setLoading] = useState(false);
   const [form] = useForm();
   const [uploadPercentage, setUploadPercentage] = useState(0);

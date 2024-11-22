@@ -20,12 +20,15 @@ import {
   updateExerciseState,
   exerciseSearchText,
 } from "./ExerciseRedux";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const question_type = {
   choice: "Multiple choice",
   short_answer: "Short answer",
 };
 const ExerciseList = ({ collapsed, setCollapsed }) => {
+  const api = useAPIPrivate();
+
   const [exerciseData, setExerciseData] = useState([]);
   const [total, setTotal] = useState();
 
@@ -55,7 +58,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchExercise());
+      const { payload } = await dispatch(searchExercise(api));
       setExerciseData(payload.data);
       setTotal(payload.total);
       setLoading(false);
@@ -117,7 +120,7 @@ const ExerciseList = ({ collapsed, setCollapsed }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await exerciseService.deleteExercis(modeID);
+      const data = await exerciseService.deleteExercis(modeID, api);
       setIsDeleteModalOpen(false);
 
       searchData();
