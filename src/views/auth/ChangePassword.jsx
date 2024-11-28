@@ -29,7 +29,7 @@ const ChangePassword = ({ collapsed }) => {
 
       if (response.status === 200) {
         message.success("Password changed successfully!");
-        navigate("/profile");
+        navigate("/assistants");
       }
     } catch (error) {
       message.error(
