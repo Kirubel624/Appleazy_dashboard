@@ -19,6 +19,7 @@ import JobsHome from "./views/assistants/JobsHome";
 import Jobs from "./views/assistants/Jobs";
 import PasswordReset from "./views/auth/PasswordReset";
 import ForgotPassword from "./views/auth/ForgotPassword";
+import ChangePassword from "./views/auth/ChangePassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -167,6 +168,17 @@ function App() {
               </Dashboard>
             }
             path="/profile"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <ChangePassword
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/change-password"
           />
         </Route>
 

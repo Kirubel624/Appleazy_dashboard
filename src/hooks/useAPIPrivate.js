@@ -17,6 +17,7 @@ const useAPIPrivate = () => {
 
   const { isLoggedIn, user, accessToken } = useSelector((state) => state.auth);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
   // const accessToken = user?.data?.token?.active;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -37,8 +38,11 @@ const useAPIPrivate = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        console.log(error?.response?.status, "error status", firstTime);
+        // alert(error?.response?.status);
+        if (error?.response?.status === 403 && firstTime) {
           prevRequest.sent = true;
+          setFirstTime(false);
           try {
             const newAccessToken = await refresh();
             // if (newAccessToken) {
@@ -49,15 +53,16 @@ const useAPIPrivate = () => {
             // throw new Error("Failed to refresh token");
             // }
           } catch (refreshError) {
-            if (!isLoggingOut) {
-              setIsLoggingOut(true);
-              // message.info("Session expired. Please log in again.-----");
-              dispatch(logout());
-              setTimeout(() => setIsLoggingOut(false), 1000);
-            }
+            console.log(refreshError, "refresh error");
           }
+        } else if (error?.response?.status === 403 && !firstTime) {
+          // alert("Session expired. Please log in again.");
+          setIsLoggingOut(true);
+          // message.info("Session expired. Please log in again.-----");
+          dispatch(logout());
+          setTimeout(() => setIsLoggingOut(false), 1000);
         } else if (error?.response?.status === 401) {
-          message.error("Unauthorized: Please log in again.");
+          message.error("Unauthorized: Please log in again.", 2);
         }
         return Promise.reject(error);
       }
