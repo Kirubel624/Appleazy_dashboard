@@ -72,6 +72,10 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       label: <Link to="/profilesettings">Profile</Link>,
     },
     {
+      key: "3",
+      label: <Link to="/change-password">Change Password</Link>,
+    },
+    {
       key: "2",
       label: <button onClick={() => dispatch(logout())}>Logout</button>,
       icon: (
