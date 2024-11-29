@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
-import { MoreOutlined, ReloadOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Select } from "antd";
+import {
+  MoreOutlined,
+  ReloadOutlined,
+  PlusOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { Button, Dropdown, Input, message, Modal, Select } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 
@@ -33,9 +38,10 @@ const AssistantsList = ({ collapsed }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const [deleteModal, setDeleteModal] = useState(false);
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [selectedAssistant, setSelectedAssistant] = useState(null);
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -312,7 +318,87 @@ const AssistantsList = ({ collapsed }) => {
         );
       },
     },
+    {
+      title: "Action",
+      fixed: collapsed ? null : "right",
+
+      // dataIndex: "completedJobs",
+      // sorter: true,
+      render: (text, recored) => {
+        return (
+          <div>
+            {recored.User?.isDeleted ? (
+              <Button
+                onClick={() => handleRestore(recored.User?.id)}
+                type="primary"
+                style={{ backgroundColor: "#168A53" }}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                Restore
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  console.log(recored, "recored");
+                  setSelectedAssistant(recored?.User?.id);
+                  setDeleteModal(true);
+                }}
+                style={{ backgroundColor: "#FF4500" }}
+                type="primary"
+                className="hover:bg-red-700"
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        );
+      },
+    },
   ];
+  const handleDelete2 = async (id) => {
+    try {
+      // setLoading(true);
+      const response = await api.patch(
+        `/user/delete-restore/${selectedAssistant}`,
+        {
+          isDeleted: true,
+        }
+      );
+      if (response.status === 200) {
+        message.success(response.data.message);
+        searchData();
+      }
+      setDeleteModal(false);
+      setLoading(false);
+      setSelectedAssistant(null);
+    } catch (error) {
+      setLoading;
+      console.log(error);
+      message.error("Failed to delete user");
+      setLoading(false);
+    }
+  };
+
+  const handleRestore = async (id) => {
+    try {
+      // setLoading(true);
+      const response = await api.patch(`/user/delete-restore/${id}`, {
+        isDeleted: false,
+      });
+      if (response.status === 200) {
+        message.success(response.data.message);
+        searchData();
+      }
+      setDeleteModal(false);
+      setLoading(false);
+      setSelectedAssistant(null);
+    } catch (error) {
+      setLoading;
+      console.log(error);
+      message.error("Failed to delete user");
+      setLoading(false);
+    }
+  };
 
   const handleStatus = async (value, id) => {
     console.log(value, id);
@@ -334,6 +420,43 @@ const AssistantsList = ({ collapsed }) => {
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
+      <Modal
+        title={
+          <div className="flex items-center">
+            <ExclamationCircleOutlined className="text-red-500 text-xl mr-2" />
+            <span className="text-lg font-semibold">Confirm Delete</span>
+          </div>
+        }
+        open={deleteModal}
+        onCancel={() => setDeleteModal(false)}
+        footer={null}
+        centered
+      >
+        <div className="py-4">
+          <p className="text-gray-600 mb-4">
+            Are you sure you want to delete this assistant? This action cannot
+            be undone.
+          </p>
+
+          <div className="flex justify-end space-x-3">
+            <Button
+              onClick={() => setDeleteModal(false)}
+              className="hover:bg-gray-100"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              danger
+              onClick={handleDelete2}
+              loading={loading}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              Delete Assistant
+            </Button>
+          </div>
+        </div>
+      </Modal>
       {isModalOpen ? (
         <CommonModal
           width={1000}
