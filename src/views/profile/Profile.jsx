@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Upload, message, Typography, Space } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Upload,
+  message,
+  Typography,
+  Space,
+  Modal,
+} from "antd";
 import {
   UploadOutlined,
   UserOutlined,
   MailOutlined,
   EditOutlined,
+  LockOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { update_User, updateProfileAsync } from "../auth/authReducer";
 import styled from "styled-components";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Title } = Typography;
 
@@ -27,21 +38,44 @@ const StyledForm = styled(Form)`
 const Profile = ({ collapsed, setCollapsed }) => {
   const { user } = useSelector((state) => state.auth);
   const [form] = Form.useForm();
+  const api = useAPIPrivate();
   const dispatch = useDispatch();
-
-  const onFinish = (values) => {
+  const [verifyEmailModal, setVerifyEmailModal] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const onFinish = async (values) => {
     try {
-      console.log(values, "values in profile");
-      dispatch(updateProfileAsync({ id: user?.id, data: values }))
-        .then(() => {
-          dispatch(update_User(values));
-          message.success("Profile updated successfully");
-        })
-        .catch((error) => {
-          // message.error("Failed to update profile,error:", error);
-        });
+      const response = await api.post(`/user/newcode`, {
+        email: values.email,
+      });
+      if (response.status === 200) {
+        setVerifyEmailModal(true);
+      }
     } catch (error) {
       console.log(error, "error in profile");
+    }
+  };
+  const handleVerifyEmail = async (values) => {
+    try {
+      console.log(values, "values in profile");
+      const resVerify = await api.post(`/user/verify-email`, {
+        code: values.verificationCode,
+        email: form.getFieldValue("email"),
+      });
+      if (resVerify.status === 201) {
+        setVerifyLoading(true);
+        setVerifyEmailModal(false);
+        dispatch(updateProfileAsync({ id: user?.id, data: values }))
+          .then(() => {
+            dispatch(update_User(values));
+            message.success("Profile updated successfully");
+          })
+          .catch((error) => {
+            // message.error("Failed to update profile,error:", error);
+          });
+      }
+    } catch (error) {
+      console.log(error, "error in profile");
+      message.error("Invalid verification code");
     }
   };
 
@@ -58,6 +92,45 @@ const Profile = ({ collapsed, setCollapsed }) => {
         collapsed ? "ml-[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10`}
     >
+      <Modal
+        title="Verify Email"
+        open={verifyEmailModal}
+        onCancel={() => setVerifyEmailModal(false)}
+        footer={null}
+      >
+        <Form
+          name="verify-email"
+          onFinish={handleVerifyEmail}
+          layout="vertical"
+        >
+          <Form.Item
+            name="verificationCode"
+            label="Verification Code"
+            rules={[
+              {
+                required: true,
+                message:
+                  "Please input the verification code sent to your email!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<LockOutlined />}
+              placeholder="Enter verification code"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Space className="w-full justify-end">
+              <Button onClick={() => setVerifyEmailModal(false)}>Cancel</Button>
+              <Button type="primary" htmlType="submit" loading={verifyLoading}>
+                Verify
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
       <Title level={2} style={{ marginBottom: "24px" }}>
         Update Profile
       </Title>
