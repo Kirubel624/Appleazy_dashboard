@@ -20,6 +20,7 @@ import Jobs from "./views/assistants/Jobs";
 import PasswordReset from "./views/auth/PasswordReset";
 import ForgotPassword from "./views/auth/ForgotPassword";
 import ChangePassword from "./views/auth/ChangePassword";
+import ClientList from "./views/assistants/ClientList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -74,6 +75,15 @@ function App() {
               </Dashboard>
             }
             path="/assistants"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <ClientList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/clients"
           />
 
           <Route

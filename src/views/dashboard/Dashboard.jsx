@@ -29,6 +29,8 @@ function getItem(label, key, icon, children) {
   };
 }
 const menuItems = [
+  getItem("Clients", "/clients", <BookOutlined />),
+
   getItem("Assistants", "/assistants", <BookOutlined />),
   getItem("Transactions", "/transactions", <CheckSquareOutlined />),
 
