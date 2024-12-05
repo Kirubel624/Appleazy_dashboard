@@ -71,7 +71,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const items = [
     {
       key: "1",
-      label: <Link to="/profile">Profile</Link>,
+      label: <Link to="/profilesettings">Profile</Link>,
     },
     {
       key: "3",
@@ -94,8 +94,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     <Layout
       style={{
         minHeight: "100vh",
-      }}
-    >
+      }}>
       <Sider
         collapsible
         // width={20}
@@ -112,14 +111,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }}
         trigger={null}
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
+        onCollapse={(value) => setCollapsed(value)}>
         <div className="flex flex-col justify-between borde border-red-900 h-full">
           <div>
             <div
               className="bg-black my-2  text-black p-5  borde-2 rounded-full
-             flex-col flex items-start  justify-start w-"
-            >
+             flex-col flex items-start  justify-start w-">
               {collapsed ? (
                 <>
                   <div className="m- bg-rd-400">
@@ -145,8 +142,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               ) : (
                 <Link
                   to="/"
-                  className="borde border-red-900 w-[90%] flex items-center justify-center"
-                >
+                  className="borde border-red-900 w-[90%] flex items-center justify-center">
                   <img
                     className="flex justify-center   p- borde border-red-900 items-center"
                     src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723188879/Appleazy_Original_Logo_omjalx.svg"
@@ -173,8 +169,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 setCollapsed(!collapsed);
                 console.log("button clicked");
               }}
-              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4"
-            >
+              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4">
               {collapsed ? <RightOutlined /> : <LeftOutlined />}
             </button>
           </div>
@@ -190,15 +185,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             zIndex: 100,
             width: "100%",
             // overflowY: "auto",
-          }}
-        >
+          }}>
           <div className="flex flex-row boder boder-red-900 justify-end px-4">
             <Dropdown
               menu={{
                 items,
               }}
-              placement="bottomLeft"
-            >
+              placement="bottomLeft">
               <Avatar
                 shape="square"
                 src={
@@ -217,15 +210,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           style={{
             margin: "0 ",
             background: "#f0f0f0",
-          }}
-        >
+          }}>
           {children}
         </Content>
         <Footer
           style={{
             textAlign: "center",
-          }}
-        >
+          }}>
           APPLEAZY ©{new Date().getFullYear()}
         </Footer>
       </Layout>

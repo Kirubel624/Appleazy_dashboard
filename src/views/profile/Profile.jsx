@@ -35,7 +35,7 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const Profile = ({ collapsed, setCollapsed }) => {
+const Profile = () => {
   const { user } = useSelector((state) => state.auth);
   const [form] = Form.useForm();
   const api = useAPIPrivate();
@@ -142,8 +142,7 @@ const Profile = ({ collapsed, setCollapsed }) => {
           email: user?.email,
           name: user?.name,
           username: user?.username,
-        }}
-      >
+        }}>
         <Form.Item
           name="email"
           label="Email"
@@ -153,24 +152,21 @@ const Profile = ({ collapsed, setCollapsed }) => {
               type: "email",
               message: "Please input your email!",
             },
-          ]}
-        >
+          ]}>
           <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
 
         <Form.Item
           name="name"
           label="Name"
-          rules={[{ required: true, message: "Please input your name!" }]}
-        >
+          rules={[{ required: true, message: "Please input your name!" }]}>
           <Input prefix={<UserOutlined />} placeholder="Name" />
         </Form.Item>
 
         <Form.Item
           name="username"
           label="Username"
-          rules={[{ required: true, message: "Please input your username!" }]}
-        >
+          rules={[{ required: true, message: "Please input your username!" }]}>
           <Input prefix={<EditOutlined />} placeholder="Username" />
         </Form.Item>
 
@@ -178,8 +174,7 @@ const Profile = ({ collapsed, setCollapsed }) => {
           <Space style={{ width: "100%", justifyContent: "center" }}>
             <button
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-              type="submit"
-            >
+              type="submit">
               Update Profile
             </button>
           </Space>
