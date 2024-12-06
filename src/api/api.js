@@ -17,7 +17,7 @@ const instance = axios.create({
   },
 });
 const api2 = axios.create({
-  baseURL: "https://server.appleazy.com",
+  baseURL: "https://server.appleazy.com/api/v1",
   // baseURL: "http://localhost:8001",
 
   headers: {
