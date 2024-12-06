@@ -35,7 +35,7 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const Profile = () => {
+const Profile = ({ collapsed }) => {
   const { user } = useSelector((state) => state.auth);
   const [form] = Form.useForm();
   const api = useAPIPrivate();
@@ -90,19 +90,16 @@ const Profile = () => {
     <StyledContainer
       className={`${
         collapsed ? "ml-[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10`}
-    >
+      } transition-all ease-in mt-10 pl-10`}>
       <Modal
         title="Verify Email"
         open={verifyEmailModal}
         onCancel={() => setVerifyEmailModal(false)}
-        footer={null}
-      >
+        footer={null}>
         <Form
           name="verify-email"
           onFinish={handleVerifyEmail}
-          layout="vertical"
-        >
+          layout="vertical">
           <Form.Item
             name="verificationCode"
             label="Verification Code"
@@ -112,8 +109,7 @@ const Profile = () => {
                 message:
                   "Please input the verification code sent to your email!",
               },
-            ]}
-          >
+            ]}>
             <Input
               prefix={<LockOutlined />}
               placeholder="Enter verification code"

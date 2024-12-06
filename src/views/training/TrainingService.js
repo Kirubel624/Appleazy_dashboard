@@ -3,7 +3,7 @@
 class TrainingService {
   createTrainin(data, api) {
     return api
-      .post("/api/v1/assistant/training", data, {
+      .post("/nt/training", data, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },
@@ -15,7 +15,7 @@ class TrainingService {
 
   updateTrainin(data, id, api) {
     return api
-      .patch("/api/v1/assistant/training/" + id, data, {
+      .patch("/assistant/training/" + id, data, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },
@@ -26,7 +26,7 @@ class TrainingService {
   }
 
   searchTrainin({ page, limit, searchText = null, sort = null, order, api }) {
-    let url = `/api/v1/assistant/training?page=${page}&limit=${limit}`;
+    let url = `/assistant/training?page=${page}&limit=${limit}`;
     if (sort) {
       const sortValue =
         order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
@@ -43,20 +43,20 @@ class TrainingService {
   }
 
   getTrainin(id, api) {
-    return api.get("/api/v1/assistant/training/" + id).then((response) => {
+    return api.get("/assistant/training/" + id).then((response) => {
       return response.data.data;
     });
   }
 
   deleteTrainin(id, api) {
-    return api.delete("/api/v1/assistant/training/" + id).then((response) => {
+    return api.delete("/assistant/training/" + id).then((response) => {
       return response.data.data;
     });
   }
 
   trainingDo({ method, payload, api }) {
     return api
-      .post("/api/v1/assistant/training/do", { method, payload })
+      .post("/assistant/training/do", { method, payload })
       .then((response) => {
         return response.data.data;
       });
@@ -64,7 +64,7 @@ class TrainingService {
 
   traininDo({ method, payload, id, api }) {
     return api
-      .post("/api/v1/assistant/training/do/" + id, { method, payload })
+      .post("/assistant/training/do/" + id, { method, payload })
       .then((response) => {
         return response.data.data;
       });

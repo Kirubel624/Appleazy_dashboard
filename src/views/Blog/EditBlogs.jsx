@@ -52,7 +52,7 @@ const EditBlogs = ({
     formData.append("UserId", user?.id);
     try {
       const response = await api.patch(
-        `/api/v1/blog/${selectedBlogs?.data?.id}`,
+        `/blog/${selectedBlogs?.data?.id}`,
         formData,
         {
           headers: {
@@ -129,16 +129,14 @@ const EditBlogs = ({
         form={form}
         name="editForm"
         layout="vertical"
-        onFinish={handleEditing}
-      >
+        onFinish={handleEditing}>
         <Form.Item
           name="title"
           label="Title"
           className="mt-3"
           rules={[
             { required: true, message: "Please input your blogs title!" },
-          ]}
-        >
+          ]}>
           <Input placeholder="Enter title" />
         </Form.Item>
         <p className="mb-2">Previous uploaded image</p>
@@ -167,8 +165,7 @@ const EditBlogs = ({
             showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
             // previewFile={true}
             beforeUpload={() => false}
-            maxCount={1}
-          >
+            maxCount={1}>
             <Button icon={<UploadOutlined />}>Select blogs attachment</Button>
           </Upload>
         </Form.Item>
@@ -179,8 +176,7 @@ const EditBlogs = ({
           className="mt-3 h-[240px]"
           rules={[
             { required: true, message: "Please input your blogs content!" },
-          ]}
-        >
+          ]}>
           <ReactQuill
             className="h-[200px]"
             theme="snow"
@@ -204,8 +200,7 @@ const EditBlogs = ({
             type="primary"
             htmlType="submit"
             loading={loading}
-            className="bg-[#000] w-[8rem] text-center hover:border hover:border-black border border-transparent font-robotor text-sm   text-white hover:font-bold hover:bg-white hover:text-black rounded-full "
-          >
+            className="bg-[#000] w-[8rem] text-center hover:border hover:border-black border border-transparent font-robotor text-sm   text-white hover:font-bold hover:bg-white hover:text-black rounded-full ">
             Submit
           </Button>
         </Form.Item>

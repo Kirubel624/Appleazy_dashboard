@@ -27,7 +27,7 @@ const AssistantsDetail = ({ collapsed }) => {
   const featchANnswers = async () => {
     // alert("ppp");
     try {
-      let url = `/api/v1/assistant/getExercisesByTypeWithAssistantAnswers/${id}/${"one"}`;
+      let url = `/assistant/getExercisesByTypeWithAssistantAnswers/${id}/${"one"}`;
       const res = await api.get(url);
       setExcersice(res.data.data);
       console.log("answer: 11111111111111111: : ", res.data.data);
@@ -39,8 +39,7 @@ const AssistantsDetail = ({ collapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       <DetailStyle>
         <h1>User Detail</h1>
         <Divider style={{ margin: "15px 0 25px 0" }} />

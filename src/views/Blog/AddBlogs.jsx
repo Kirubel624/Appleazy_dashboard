@@ -49,7 +49,7 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
     setLoading(true);
 
     try {
-      const response = await api.post("/api/v1/blog", formData, {
+      const response = await api.post("/blog", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,
@@ -118,30 +118,26 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
       width={800}
       // onOk={handleOk}
       footer={null}
-      onCancel={() => setIsModalVisible(false)}
-    >
+      onCancel={() => setIsModalVisible(false)}>
       <Form
         name="postForm"
         layout="vertical"
         onFinish={handlePosting}
-        form={form}
-      >
+        form={form}>
         <Form.Item
           name="title"
           label="Title"
           className="mt-3"
           rules={[
             { required: true, message: "Please input your blogs title!" },
-          ]}
-        >
+          ]}>
           <Input placeholder="Enter title" />
         </Form.Item>
         <Form.Item
           name="image"
           label="Image"
           className="mt-3"
-          rules={[{ required: true, message: "Please input image!" }]}
-        >
+          rules={[{ required: true, message: "Please input image!" }]}>
           <Upload
             onRemove={handleRemove}
             onChange={handleChange}
@@ -158,8 +154,7 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
             showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
             // previewFile={true}
             beforeUpload={() => false}
-            maxCount={1}
-          >
+            maxCount={1}>
             <Button icon={<UploadOutlined />}>Select blogs attachment</Button>
           </Upload>
         </Form.Item>
@@ -170,8 +165,7 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
           className="mt-3 h-[240px]"
           rules={[
             { required: true, message: "Please input your blogs content!" },
-          ]}
-        >
+          ]}>
           <ReactQuill
             className="h-[200px]"
             theme="snow"
@@ -195,8 +189,7 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
             type="primary"
             htmlType="submit"
             loading={loading}
-            className="bg-[#000] w-[8rem] text-center hover:border hover:border-black border border-transparent font-robotor text-sm   text-white hover:font-bold hover:bg-white hover:text-black rounded-full "
-          >
+            className="bg-[#000] w-[8rem] text-center hover:border hover:border-black border border-transparent font-robotor text-sm   text-white hover:font-bold hover:bg-white hover:text-black rounded-full ">
             Submit
           </Button>
         </Form.Item>
