@@ -49,7 +49,7 @@ const AddBlogs = ({ isModalVisible, setIsModalVisible, fetchBlogs }) => {
     setLoading(true);
 
     try {
-      const response = await api.post("/api/v1/blog", formData, {
+      const response = await api.post("/blog", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${accessToken}`,

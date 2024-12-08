@@ -13,6 +13,22 @@ import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
 
+function getAccountNumber(accountField) {
+  // Split the string into account numbers using the delimiter `+*+`
+  const accounts = accountField.split("+*+");
+
+  // Try to find the account with '_preferred'
+  const preferredAccount = accounts.find((account) =>
+    account.includes("_preferred")
+  );
+
+  // If '_preferred' account exists, return it without the '_preferred' suffix
+  // Otherwise, return the first account
+  const account = preferredAccount || accounts[0];
+
+  // Remove '_preferred' from the selected account and return
+  return account.replace("_preferred", "");
+}
 const TransactionsList = ({ collapsed }) => {
   const api = useAPIPrivate();
   const [transactionsData, setTransactionsData] = useState([]);
@@ -154,7 +170,7 @@ const TransactionsList = ({ collapsed }) => {
     // },
 
     {
-      title: "Profile",
+      title: "Full name",
       dataIndex: "profileImage",
       render: (text, recored) => {
         return (
@@ -164,6 +180,15 @@ const TransactionsList = ({ collapsed }) => {
               recored?.User?.Assistant?.lastName}
           </p>
         );
+      },
+      sorter: true,
+    },
+    {
+      title: "Profile",
+      dataIndex: "profileImage",
+      render: (text, recored) => {
+        console.log("recrecrec", recored);
+        return <p>{getAccountNumber(recored?.User?.Assistant?.accounts)}</p>;
       },
       sorter: true,
     },

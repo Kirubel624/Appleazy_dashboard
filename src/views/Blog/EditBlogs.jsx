@@ -52,7 +52,7 @@ const EditBlogs = ({
     formData.append("UserId", user?.id);
     try {
       const response = await api.patch(
-        `/api/v1/blog/${selectedBlogs?.data?.id}`,
+        `/blog/${selectedBlogs?.data?.id}`,
         formData,
         {
           headers: {

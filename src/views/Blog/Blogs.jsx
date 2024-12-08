@@ -27,7 +27,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
     try {
       setLoading(true);
       const res = await api.get(
-        `/api/v1/blog?page=${page}&limit=${limit}&search=${search}`
+        `/blog?page=${page}&limit=${limit}&search=${search}`
       );
       console.log(":::", res.data);
       setBlogs(res?.data?.blogs);
@@ -42,7 +42,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
   }, [currentPage, pageSize, debouncedSearchText]);
 
   const onDelete = async (id) => {
-    const res = await api.delete(`/api/v1/blog/${id}`, {
+    const res = await api.delete(`/blog/${id}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

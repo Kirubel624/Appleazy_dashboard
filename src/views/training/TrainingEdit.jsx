@@ -236,7 +236,7 @@ const TrainingEdit = ({
       //   setLoading(false);
       // });
 
-      const res = await api.post("/api/v1/assistant/training", formData, {
+      const res = await api.post("/assistant/training", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },

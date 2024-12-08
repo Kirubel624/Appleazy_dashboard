@@ -27,7 +27,7 @@ const AssistantsDetail = ({ collapsed }) => {
   const featchANnswers = async () => {
     // alert("ppp");
     try {
-      let url = `/api/v1/assistant/getExercisesByTypeWithAssistantAnswers/${id}/${"one"}`;
+      let url = `/assistant/getExercisesByTypeWithAssistantAnswers/${id}/${"one"}`;
       const res = await api.get(url);
       setExcersice(res.data.data);
       console.log("answer: 11111111111111111: : ", res.data.data);
