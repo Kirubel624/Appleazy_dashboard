@@ -69,8 +69,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       {" "}
       <AddBlogs
         fetchBlogs={fetchBlogs}
@@ -83,8 +82,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
         open={isEditModalVisible}
         // onOk={handleOk}
         footer={null}
-        onCancel={() => setIsEditModalVisible(false)}
-      >
+        onCancel={() => setIsEditModalVisible(false)}>
         <EditBlogs
           setSelectedBlogs={setSelectedBlogs}
           selectedBlogs={selectedBlogs}
@@ -107,8 +105,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
           className="h-9 whitespace-nowrap flex items-center bg-[#248A53] px-3 rounded-lg text-white mr-3"
           onClick={() => {
             setIsModalVisible(true);
-          }}
-        >
+          }}>
           <IoIosAdd className="w-5 mr-2 text-white h-5" /> Add blogs
         </button>
       </div>
@@ -118,8 +115,7 @@ const Blogs = ({ collapsed, setCollapsed }) => {
             <div
               className={`${
                 collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-              } flex justify-center items-center transition-all ease-in mt-10 pl-10 mr-10`}
-            >
+              } flex justify-center items-center transition-all ease-in mt-10 pl-10 mr-10`}>
               <Empty />
             </div>
           ) : (
