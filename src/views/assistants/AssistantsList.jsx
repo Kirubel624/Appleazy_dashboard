@@ -25,6 +25,7 @@ import {
   assistantsSearchText,
 } from "./AssistantsRedux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
+import AssistantsService from "./AssistantsService";
 
 const AssistantsList = ({ collapsed }) => {
   const api = useAPIPrivate();
@@ -401,16 +402,19 @@ const AssistantsList = ({ collapsed }) => {
   };
 
   const handleStatus = async (value, id) => {
-    console.log(value, id);
+    console.log("-------------)))");
+    console.log("=====", value, id);
+    // alert(":;");
     try {
       setLoading(true);
       const formData = new FormData();
       formData.append("status", value);
 
-      const data = await assistantsService.updateAssistant(formData, id);
+      const data = await AssistantsService.updateAssistant(formData, id, api);
       searchData();
       setLoading(false);
     } catch (err) {
+      console.log(err);
       setLoading(false);
     }
   };
