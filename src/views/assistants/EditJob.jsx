@@ -113,14 +113,16 @@ const EditJob = ({
       onClose={() => {
         setEditModal(false);
       }}
-      footer={null}>
+      footer={null}
+    >
       <div>
         {!disable && (
           <Modal
             open={warning}
             footer={null}
             onClose={() => setWarning(false)}
-            onCancel={() => setWarning(false)}>
+            onCancel={() => setWarning(false)}
+          >
             <Result
               title="Are you sure?"
               subTitle="This action is permanent and will count towards your job application limit for this subscription. Once confirmed, you won't be able to delete this job."
@@ -134,7 +136,8 @@ const EditJob = ({
                       }
                       handleSubmission(pendingValues);
                       setWarning(false);
-                    }}>
+                    }}
+                  >
                     Yes
                   </Button>
                   <Button onClick={() => setWarning(false)} type="primary">
@@ -143,7 +146,8 @@ const EditJob = ({
                   <div style={{ marginTop: "10px" }}>
                     <Checkbox
                       checked={dontShowAgain}
-                      onChange={(e) => setDontShowAgain(e.target.checked)}>
+                      onChange={(e) => setDontShowAgain(e.target.checked)}
+                    >
                       Don't show this again
                     </Checkbox>
                   </div>
@@ -157,7 +161,8 @@ const EditJob = ({
           form={form}
           onFinish={handleUpdate}
           wrapperCol={{ span: 24 }}
-          labelCol={{ span: 24 }}>
+          labelCol={{ span: 24 }}
+        >
           {/* Job Title */}
           <div className="flex items-center">
             <Form.Item
@@ -166,7 +171,8 @@ const EditJob = ({
               name="jobTitle"
               rules={[
                 { required: true, message: "Please input the job title!" },
-              ]}>
+              ]}
+            >
               <Input placeholder="Enter job title" />
             </Form.Item>
             <Form.Item
@@ -177,7 +183,8 @@ const EditJob = ({
               name="company"
               rules={[
                 { required: true, message: "Please input the company name!" },
-              ]}>
+              ]}
+            >
               <Input placeholder="Enter company name" />
             </Form.Item>
             <Form.Item
@@ -186,35 +193,20 @@ const EditJob = ({
               name="location"
               rules={[
                 { required: true, message: "Please input the location!" },
-              ]}>
+              ]}
+            >
               <Input placeholder="Enter location" />
             </Form.Item>
           </div>
           <div className="flex items-center">
             {/* Pay */}
-            <Form.Item
-              className="w-1/3"
-              label="Pay"
-              name="pay"
-              rules={[{ required: true, message: "Please input the pay!" }]}>
-              <InputNumber
-                style={{ width: "100%" }}
-                placeholder="Enter pay"
-                min={0}
-                formatter={(value) =>
-                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-              />
-            </Form.Item>
-
             {/* Status */}
             <Form.Item
-              className="w-1/3 mx-3"
+              className="w-1/3 mr-3"
               label="Status"
               name="status"
-              rules={[
-                { required: true, message: "Please select the status!" },
-              ]}>
+              rules={[{ required: true, message: "Please select the status!" }]}
+            >
               <Select placeholder="Select status">
                 {!jobInfo.hasBeenApplied ? (
                   <>
@@ -235,24 +227,80 @@ const EditJob = ({
                 )}
               </Select>
             </Form.Item>
-
             {/* Date */}
             <Form.Item
               className="w-1/3"
               label="Date"
               name="date"
-              rules={[{ required: true, message: "Please select the date!" }]}>
+              rules={[{ required: true, message: "Please select the date!" }]}
+            >
               <DatePicker style={{ width: "100%" }} />
             </Form.Item>
+            <Form.Item
+              className="w-1/3 ml-3"
+              label="Job Setting"
+              name="jobSetting"
+              rules={[
+                { required: true, message: "Please input the job setting!" },
+              ]}
+            >
+              <Input placeholder="Enter job setting" />
+            </Form.Item>{" "}
           </div>
-
+          <div className="flex items-center">
+            <Form.Item
+              className="w-1/2"
+              label="Job Type"
+              name="jobType"
+              rules={[
+                { required: true, message: "Please input the job type!" },
+              ]}
+            >
+              <Input placeholder="Enter job type" />
+            </Form.Item>
+            <Form.Item
+              className="w-1/3 mx-3"
+              label="Minumum Pay"
+              name="minPay"
+              rules={[
+                { required: true, message: "Please input the minimum pay!" },
+              ]}
+            >
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Enter minimum pay"
+                min={0}
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              className="w-1/3"
+              label="Maximum Pay"
+              name="maxPay"
+              rules={[
+                { required: true, message: "Please input the maximum pay!" },
+              ]}
+            >
+              <InputNumber
+                style={{ width: "100%" }}
+                placeholder="Enter maximum pay"
+                min={0}
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+              />
+            </Form.Item>
+          </div>
           {/* Description */}
           <Form.Item
             label="Description"
             name="description"
             rules={[
               { required: true, message: "Please enter the job description!" },
-            ]}>
+            ]}
+          >
             <TextArea rows={4} placeholder="Enter job description" />
           </Form.Item>
 
@@ -265,7 +313,8 @@ const EditJob = ({
                 required: true,
                 message: "Please enter the job application link!",
               },
-            ]}>
+            ]}
+          >
             <Input placeholder="Enter application link" />
           </Form.Item>
 
@@ -275,7 +324,8 @@ const EditJob = ({
             <button
               type="submit"
               className="h-9 self-end flex 
-          items-center bg-[#168A53] px-4 rounded-lg text-white ">
+          items-center bg-[#168A53] px-4 rounded-lg text-white "
+            >
               {loading ? (
                 <ClipLoader
                   color="#FFFFF"

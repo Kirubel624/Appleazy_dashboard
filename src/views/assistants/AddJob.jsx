@@ -59,16 +59,16 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
         form={form}
         onFinish={handleAdd}
         wrapperCol={{ span: 24 }}
-        labelCol={{ span: 24 }}>
+        labelCol={{ span: 24 }}
+      >
         {/* Job Title */}
         <div className="flex items-center">
           <Form.Item
             className="w-1/3"
             label="Job Title"
             name="jobTitle"
-            rules={[
-              { required: true, message: "Please input the job title!" },
-            ]}>
+            rules={[{ required: true, message: "Please input the job title!" }]}
+          >
             <Input placeholder="Enter job title" />
           </Form.Item>
           <Form.Item
@@ -79,27 +79,91 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
             name="company"
             rules={[
               { required: true, message: "Please input the company name!" },
-            ]}>
+            ]}
+          >
             <Input placeholder="Enter company name" />
           </Form.Item>
           <Form.Item
             className="w-1/3"
             label="Location"
             name="location"
-            rules={[{ required: true, message: "Please input the location!" }]}>
+            rules={[{ required: true, message: "Please input the location!" }]}
+          >
             <Input placeholder="Enter location" />
           </Form.Item>
         </div>
         <div className="flex items-center">
-          {/* Pay */}
+          <Form.Item
+            className="w-1/3 mx-3"
+            label="Status"
+            name="status"
+            rules={[{ required: true, message: "Please select the status!" }]}
+          >
+            <Select placeholder="Select status">
+              <Option value="pending response">Awaiting Response</Option>
+              {/* <Option value="interview">Interview</Option>
+              <Option value="offer">Offer</Option>
+              <Option value="rejected">Rejected</Option> */}
+            </Select>
+          </Form.Item>
+          {/* Date */}
           <Form.Item
             className="w-1/3"
-            label="Pay"
-            name="pay"
-            rules={[{ required: true, message: "Please input the pay!" }]}>
+            label="Date"
+            name="date"
+            rules={[{ required: true, message: "Please select the date!" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            className="w-1/3 ml-3"
+            label="Job Setting"
+            name="jobSetting"
+            rules={[
+              { required: true, message: "Please input the job setting!" },
+            ]}
+          >
+            <Input placeholder="Enter job setting" />
+          </Form.Item>{" "}
+        </div>
+        <div className="flex items-center">
+          <Form.Item
+            className="w-1/2"
+            label="Job Type"
+            name="jobType"
+            rules={[{ required: true, message: "Please input the job type!" }]}
+          >
+            <Input placeholder="Enter job type" />
+          </Form.Item>
+          {/* Pay */}
+          <Form.Item
+            className="w-1/3 mx-3"
+            label="Minumum Pay"
+            name="minPay"
+            rules={[
+              { required: true, message: "Please input the minimum pay!" },
+            ]}
+          >
             <InputNumber
               style={{ width: "100%" }}
-              placeholder="Enter pay"
+              placeholder="Enter minimum pay"
+              min={0}
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            className="w-1/3"
+            label="Maximum Pay"
+            name="maxPay"
+            rules={[
+              { required: true, message: "Please input the maximum pay!" },
+            ]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              placeholder="Enter maximum pay"
               min={0}
               formatter={(value) =>
                 `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -108,27 +172,6 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
           </Form.Item>
 
           {/* Status */}
-          <Form.Item
-            className="w-1/3 mx-3"
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: "Please select the status!" }]}>
-            <Select placeholder="Select status">
-              <Option value="pending">Pending application</Option>
-              {/* <Option value="interview">Interview</Option>
-              <Option value="offer">Offer</Option>
-              <Option value="rejected">Rejected</Option> */}
-            </Select>
-          </Form.Item>
-
-          {/* Date */}
-          <Form.Item
-            className="w-1/3"
-            label="Date"
-            name="date"
-            rules={[{ required: true, message: "Please select the date!" }]}>
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
         </div>
 
         {/* Description */}
@@ -137,7 +180,8 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
           name="description"
           rules={[
             { required: true, message: "Please enter the job description!" },
-          ]}>
+          ]}
+        >
           <TextArea rows={4} placeholder="Enter job description" />
         </Form.Item>
 
@@ -150,7 +194,8 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
               required: true,
               message: "Please enter the job application link!",
             },
-          ]}>
+          ]}
+        >
           <Input placeholder="Enter application link" />
         </Form.Item>
 
@@ -162,7 +207,8 @@ const AddJob = ({ subscriptionId, setAddModal, fetchJobs }) => {
           <button
             type="submit"
             className="h-9 self-end flex 
-          items-center bg-[#168A53] px-4 rounded-lg text-white ">
+          items-center bg-[#168A53] px-4 rounded-lg text-white "
+          >
             {loading ? (
               <ClipLoader
                 color="#FFFFF"

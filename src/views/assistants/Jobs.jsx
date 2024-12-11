@@ -8,6 +8,7 @@ import {
   Modal,
   Pagination,
   Table,
+  Tag,
 } from "antd";
 import * as XLSX from "xlsx";
 import React, { useEffect, useRef, useState } from "react";
@@ -176,15 +177,61 @@ const Jobs = ({ collapsed, setCollapsed }) => {
       sorter: true,
     },
     {
-      title: "Pay",
-      dataIndex: "pay",
-      key: "pay",
+      title: "Min pay",
+      dataIndex: "minPay",
+      key: "minPay",
       sorter: true,
+      width: 100,
+    },
+    {
+      title: "Max pay",
+      dataIndex: "maxPay",
+      key: "maxPay",
+      sorter: true,
+      width: 100,
+    },
+    {
+      title: "Job Setting",
+      dataIndex: "jobSetting",
+      key: "jobSetting",
+      sorter: true,
+      width: 100,
+    },
+    {
+      title: "Job Type",
+      dataIndex: "jobType",
+      key: "jobType",
+      sorter: true,
+      width: 100,
     },
     {
       title: "Application status",
       dataIndex: "status",
       key: "status",
+      width: 150,
+      render: (_, record) => {
+        const statusColors = {
+          "pending application": "orange",
+          applied: "blue",
+          "pending response": "gold",
+          acknowledged: "green",
+          "no response": "gray",
+          interview: "purple",
+          offer: "cyan",
+          rejected: "red",
+        };
+        return (
+          <>
+            <Tag
+              className=" capitalize"
+              color={statusColors[record.status]}
+              key={record.status}
+            >
+              {record?.status}
+            </Tag>
+          </>
+        );
+      },
     },
     {
       title: "Link",

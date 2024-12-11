@@ -23,11 +23,11 @@ import {
   searchAssistants,
   updateAssistantsState,
   assistantsSearchText,
+  searchAssistants2,
 } from "./AssistantsRedux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
-import AssistantsService from "./AssistantsService";
 
-const AssistantsList = ({ collapsed }) => {
+const ClientList = ({ collapsed }) => {
   const api = useAPIPrivate();
 
   const [assistantsData, setAssistantsData] = useState([]);
@@ -60,7 +60,7 @@ const AssistantsList = ({ collapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchAssistants(api));
+      const { payload } = await dispatch(searchAssistants2(api));
       console.log("setAssistantsData one:", payload);
 
       setAssistantsData(payload.data);
@@ -167,158 +167,24 @@ const AssistantsList = ({ collapsed }) => {
   ];
 
   const columns = [
-    // {
-    //   title: " ",
-    //   dataIndex: "action",
-    //   render: (_, recored) => {
-    //     return (
-    //       <Dropdown
-    //         menu={{
-    //           items,
-    //           onClick: (value) => onClick(value, recored),
-    //         }}
-    //         trigger={["click"]}
-    //         placement="bottomLeft"
-    //       >
-    //         <Button
-    //           type="text"
-    //           icon={<MoreOutlined style={{ fontSize: 20 }} />}
-    //           onClick={() => {
-    //             setModeID(recored._id);
-    //           }}
-    //         ></Button>
-    //       </Dropdown>
-    //     );
-    //   },
-    // },
-
     {
-      title: "Profile",
-      dataIndex: "profileImage",
-      render: (text, recored) => {
-        return (
-          <img width={50} className="border rounded-full " src={text} alt="" />
-        );
-      },
-      sorter: true,
-    },
-    {
-      title: "First Name",
-      dataIndex: "firstName",
+      title: "Name",
+      dataIndex: "name",
       sorter: true,
     },
 
     {
-      title: "Last Name",
-      dataIndex: "lastName",
+      title: "Username",
+      dataIndex: "username",
       sorter: true,
     },
 
     {
-      title: "Experience",
-      dataIndex: "experience",
+      title: "Email",
+      dataIndex: "email",
       sorter: true,
     },
 
-    {
-      title: "Skills",
-      dataIndex: "skills",
-      sorter: true,
-    },
-
-    {
-      title: "Resume",
-      dataIndex: "resume",
-      render: (text, rec) => {
-        return (
-          <a href={text} download className="text-blue-500">
-            Clink resume
-          </a>
-        );
-      },
-      sorter: true,
-    },
-
-    {
-      title: "Availability",
-      dataIndex: "availability",
-      sorter: true,
-    },
-
-    {
-      title: "Training Status",
-      dataIndex: "trainingStatus",
-      sorter: true,
-    },
-
-    {
-      title: "Completed Jobs",
-      dataIndex: "completedJobs",
-      sorter: true,
-    },
-    {
-      title: "Jobs",
-      dataIndex: "status",
-      fixed: collapsed ? null : "right",
-      render: (text, recored) => {
-        console.log(recored, "recored");
-        return (
-          <div>
-            <NavLink
-              style={{ color: "#2f1dca" }}
-              state={recored}
-              to={`/assistants/jobs/${recored.UserId}`}
-            >
-              View Detail
-            </NavLink>
-          </div>
-        );
-      },
-    },
-
-    {
-      title: "Status",
-      dataIndex: "status",
-      fixed: collapsed ? null : "right",
-      render: (text, recored) => {
-        return (
-          <div>
-            <Select
-              defaultValue={text}
-              onChange={(info) => handleStatus(info, recored.id)}
-              className="border-gray-400 min-w-[120px]"
-              placeholder="select your availability"
-            >
-              <Option value="not_sumbited">Not Submit</Option>
-              <Option value="sumbited">Submited</Option>
-              <Option value="failed">Failed</Option>
-
-              <Option value="passed">Passed</Option>
-            </Select>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Exercises",
-      fixed: collapsed ? null : "right",
-
-      dataIndex: "completedJobs",
-      // sorter: true,
-      render: (text, recored) => {
-        return (
-          <div>
-            <NavLink
-              style={{ color: "#2f1dca" }}
-              state={recored}
-              to={`/assistants/${recored.id}`}
-            >
-              View Detail
-            </NavLink>
-          </div>
-        );
-      },
-    },
     {
       title: "Action",
       fixed: collapsed ? null : "right",
@@ -328,9 +194,9 @@ const AssistantsList = ({ collapsed }) => {
       render: (text, recored) => {
         return (
           <div>
-            {recored.User?.isDeleted ? (
+            {recored.isDeleted ? (
               <Button
-                onClick={() => handleRestore(recored.User?.id)}
+                onClick={() => handleRestore(recored?.id)}
                 type="primary"
                 style={{ backgroundColor: "#168A53" }}
                 className="bg-green-600 hover:bg-green-700"
@@ -341,7 +207,7 @@ const AssistantsList = ({ collapsed }) => {
               <Button
                 onClick={() => {
                   console.log(recored, "recored");
-                  setSelectedAssistant(recored?.User?.id);
+                  setSelectedAssistant(recored?.id);
                   setDeleteModal(true);
                 }}
                 style={{ backgroundColor: "#FF4500" }}
@@ -402,19 +268,16 @@ const AssistantsList = ({ collapsed }) => {
   };
 
   const handleStatus = async (value, id) => {
-    console.log("-------------)))");
-    console.log("=====", value, id);
-    // alert(":;");
+    console.log(value, id);
     try {
       setLoading(true);
       const formData = new FormData();
       formData.append("status", value);
 
-      const data = await AssistantsService.updateAssistant(formData, id, api);
+      const data = await assistantsService.updateAssistant(formData, id);
       searchData();
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   };
@@ -456,7 +319,7 @@ const AssistantsList = ({ collapsed }) => {
               loading={loading}
               className="bg-red-500 hover:bg-red-600"
             >
-              Delete Assistant
+              Delete Cleint
             </Button>
           </div>
         </div>
@@ -565,4 +428,4 @@ const AssistantsList = ({ collapsed }) => {
   );
 };
 
-export default AssistantsList;
+export default ClientList;

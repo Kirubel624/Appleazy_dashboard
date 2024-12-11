@@ -3,7 +3,7 @@
 class TrainingService {
   createTrainin(data, api) {
     return api
-      .post("/nt/training", data, {
+      .post("/assistant/training", data, {
         headers: {
           "Content-Type": "multipart/form-data", // Set correct headers
         },

@@ -24,6 +24,28 @@ export const searchAssistants = createAsyncThunk(
   }
 );
 
+export const searchAssistants2 = createAsyncThunk(
+  "assistants/searchAssistants",
+  async (api, { rejectWithValue, getState }) => {
+    try {
+      const { searchText, page, limit, sort, order } =
+        getState().assistants.query; // Access state directly
+
+      const res = await AssistantsService.searchCleint({
+        page,
+        limit,
+        searchText,
+        sort,
+        order,
+        api,
+      });
+
+      return res;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 export const assistantsSlice = createSlice({
   name: "assistants",
   initialState: {
