@@ -63,9 +63,15 @@ const TransactionsList = ({ collapsed }) => {
   async function searchData2(value = "") {
     try {
       const res2 = await api.get("/transaction?search=" + value);
-      console.log("res2,:", res2);
-      setTransactionsData(res2.data);
+      const user = res2.data?.filter((x) => {
+        if (x.User) {
+          return true;
+        }
+        return false;
+      });
+      setTransactionsData(user);
     } catch (err) {
+      console.log(err);
       setLoading(false);
     }
   }
