@@ -15,19 +15,18 @@ import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 function getAccountNumber(accountField) {
   // Split the string into account numbers using the delimiter `+*+`
-  const accounts = accountField.split("+*+");
+  const accounts = accountField?.split("+*+");
 
-  // Try to find the account with '_preferred'
-  const preferredAccount = accounts.find((account) =>
-    account.includes("_preferred")
-  );
+  if (accounts && accounts?.length > 0) {
+    const preferredAccount = accounts?.find((account) =>
+      account.includes("_preferred")
+    );
 
-  // If '_preferred' account exists, return it without the '_preferred' suffix
-  // Otherwise, return the first account
-  const account = preferredAccount || accounts[0];
+    const account = preferredAccount || accounts[0];
 
-  // Remove '_preferred' from the selected account and return
-  return account.replace("_preferred", "");
+    return account?.replace("_preferred", "");
+  }
+  return "";
 }
 const TransactionsList = ({ collapsed }) => {
   const api = useAPIPrivate();
