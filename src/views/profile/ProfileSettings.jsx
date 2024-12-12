@@ -13,7 +13,7 @@ const ProfileSettings = ({ collapsed, setCollapsed }) => {
     {
       key: "1",
       label: "Profile",
-      children: <Profile />,
+      children: <Profile collapsed={collapsed} />,
     },
     {
       key: "2",
