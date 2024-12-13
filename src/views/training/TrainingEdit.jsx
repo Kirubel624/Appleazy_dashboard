@@ -11,6 +11,7 @@ import {
   Divider,
   Upload,
   message,
+  Progress,
 } from "antd";
 import styled from "styled-components";
 import {
@@ -116,6 +117,7 @@ const TrainingEdit = ({
   const [fileList, setFileList] = useState([]);
   const [videoList, setVideoList] = useState([]);
   const [documentList, setDocumentList] = useState([]);
+  const [progress, setProgress] = useState(0);
 
   const onChangeImages = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -234,7 +236,22 @@ const TrainingEdit = ({
       //   setLoading(false);
       // });
 
-      const data = await trainingService.createTrainin(formData, api);
+      const res = await api.post("/assistant/training", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set correct headers
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          console.log(`Upload Progress: ${percentCompleted}%`);
+          setProgress(percentCompleted);
+          // You can update your UI here (e.g., a progress bar)
+          // Example:
+          // setProgress(percentCompleted);
+        },
+      });
+
       setIsModalOpen(false);
       searchData();
 
@@ -467,6 +484,9 @@ const TrainingEdit = ({
             </div>
           )}
         </div>
+
+        <Progress percent={progress} />
+
         <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)}>cancel</button>
           <button type="submit">Submit</button>

@@ -38,6 +38,25 @@ class AssistantsService {
       };
     });
   }
+  searchCleint({ page, limit, searchText = null, sort = null, order, api }) {
+    let url = `/user/client?page=${page}&limit=${limit}`;
+    if (sort) {
+      const sortValue =
+        order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
+      url = url + `&sort=${sortValue}`;
+    }
+
+    if (searchText) {
+      url = url + `&searchText=${searchText}`;
+    }
+
+    return api.get(url).then((response) => {
+      return {
+        data: response.data?.users,
+        total: response.data?.totalItems,
+      };
+    });
+  }
 
   getAssistant(id, api) {
     return api.get("/assistant/" + id).then((response) => {

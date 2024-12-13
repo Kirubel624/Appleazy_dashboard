@@ -13,6 +13,21 @@ import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
 
+function getAccountNumber(accountField) {
+  // Split the string into account numbers using the delimiter `+*+`
+  const accounts = accountField?.split("+*+");
+
+  if (accounts && accounts?.length > 0) {
+    const preferredAccount = accounts?.find((account) =>
+      account.includes("_preferred")
+    );
+
+    const account = preferredAccount || accounts[0];
+
+    return account?.replace("_preferred", "");
+  }
+  return "";
+}
 const TransactionsList = ({ collapsed }) => {
   const api = useAPIPrivate();
   const [transactionsData, setTransactionsData] = useState([]);
@@ -48,9 +63,15 @@ const TransactionsList = ({ collapsed }) => {
   async function searchData2(value = "") {
     try {
       const res2 = await api.get("/transaction?search=" + value);
-      console.log("res2,:", res2);
-      setTransactionsData(res2.data);
+      const user = res2.data?.filter((x) => {
+        if (x.User) {
+          return true;
+        }
+        return false;
+      });
+      setTransactionsData(user);
     } catch (err) {
+      console.log(err);
       setLoading(false);
     }
   }
@@ -154,7 +175,7 @@ const TransactionsList = ({ collapsed }) => {
     // },
 
     {
-      title: "Profile",
+      title: "Full name",
       dataIndex: "profileImage",
       render: (text, recored) => {
         return (
@@ -164,6 +185,15 @@ const TransactionsList = ({ collapsed }) => {
               recored?.User?.Assistant?.lastName}
           </p>
         );
+      },
+      sorter: true,
+    },
+    {
+      title: "Profile",
+      dataIndex: "profileImage",
+      render: (text, recored) => {
+        console.log("recrecrec", recored);
+        return <p>{getAccountNumber(recored?.User?.Assistant?.accounts)}</p>;
       },
       sorter: true,
     },
