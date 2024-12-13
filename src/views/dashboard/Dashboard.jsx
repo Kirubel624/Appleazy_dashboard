@@ -117,12 +117,14 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Training", "/training", <BookOutlined />),
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
+    getItem("FeedBacks", "/feedbacks", <CheckSquareOutlined />),
+
     getItem(
       <p
         onClick={showModal}
         className="bg-green-700 rounded-full text-center  "
       >
-        Referral
+        Signup Link
       </p>,
       "#"
       // <CheckSquareOutlined />
