@@ -207,7 +207,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         <Content
           style={{
             margin: "0 ",
-            background: "#f0f0f0",
+            background: "#edf0ff",
           }}>
           {children}
         </Content>

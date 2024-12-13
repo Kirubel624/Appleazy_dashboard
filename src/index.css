@@ -102,34 +102,10 @@
   .otpinputerror {
     width: 40px !important;
     height: 50px !important;
-    font-size: 16px; /* Adjust font size for smaller screens */
+    font-size: 16px;
   }
 }
-/* .otpfocus {
-  border: 1px solid #ff0000 !important;
-  background-color: red;
-  /* width: 47px !important;
-  height: 66px !important;
-  border-radius: 5px !important;
-  margin-right: 10px !important;
-  margin-left: 10px !important; */
-/* }  */
 
-/* .ant-pagination .ant-pagination-item-active {
-  background-color: #009d2fc8 !important;
-  color: white !important;
-  border: 1px solid white !important;
-}
-.ant-pagination .ant-pagination-item {
-  background-color: #c40090 !important;
-  color: white !important;
-} */
-.react-international-phone-input {
-  /* border: 1px solid red !important; */
-}
-.react-international-phone-country-selector-button {
-  /*  */
-}
 .jojo {
   border: 1px solid green !important;
 }
