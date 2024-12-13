@@ -13,11 +13,22 @@ import {
   LogoutOutlined,
   BookOutlined,
   CheckSquareOutlined,
+  CopyOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Dropdown, Layout, Menu, theme } from "antd";
+import {
+  Avatar,
+  Breadcrumb,
+  Dropdown,
+  Layout,
+  Menu,
+  message,
+  Modal,
+  theme,
+} from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileAsync, logout } from "../auth/authReducer";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -28,30 +39,37 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
-const menuItems = [
-  getItem("Clients", "/clients", <BookOutlined />),
-
-  getItem("Assistants", "/assistants", <BookOutlined />),
-  getItem("Transactions", "/transactions", <CheckSquareOutlined />),
-
-  getItem("Training", "/training", <BookOutlined />),
-  getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-  getItem("Blog", "/blog", <CheckSquareOutlined />),
-
-  // getItem("Job board", "/job_board", <InfoCircleOutlined />),
-
-  // getItem("History", "/histry", <BarChartOutlined />),
-];
 
 const Dashboard = ({ children, collapsed, setCollapsed }) => {
+  const api = useAPIPrivate();
+
   const location = useLocation();
   const { user, profile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [activeKey, setActiveKey] = useState();
   const navigate = useNavigate();
+  const [link, setLink] = useState("");
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = async () => {
+    try {
+      const res = await api.get("/assistant/generateReferralCode");
+      console.log(res.data);
+      setLink(res.data?.link);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const onClick = (e) => {
     setActiveKey(e.key);
     //console.log(e.key, "value");
@@ -90,11 +108,57 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       ),
     },
   ];
+  const menuItems = [
+    getItem("Clients", "/clients", <BookOutlined />),
+
+    getItem("Assistants", "/assistants", <BookOutlined />),
+    getItem("Transactions", "/transactions", <CheckSquareOutlined />),
+
+    getItem("Training", "/training", <BookOutlined />),
+    getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+    getItem("Blog", "/blog", <CheckSquareOutlined />),
+    getItem(
+      <p
+        onClick={showModal}
+        className="bg-green-700 rounded-full text-center  "
+      >
+        Referral
+      </p>,
+      "#"
+      // <CheckSquareOutlined />
+    ),
+
+    // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+
+    // getItem("History", "/histry", <BarChartOutlined />),
+  ];
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(link) // Copy the text to clipboard
+      .then(() => {
+        message.success("Text copied to clipboard!"); // Show success message
+      })
+      .catch(() => {
+        message.error("Failed to copy text!"); // Show error message if copying fails
+      });
+  };
   return (
     <Layout
       style={{
         minHeight: "100vh",
-      }}>
+      }}
+    >
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div className="flex justify-between ">
+          <p>{link}</p>
+          <CopyOutlined onClick={handleCopy} style={{ cursor: "pointer" }} />
+        </div>
+      </Modal>
       <Sider
         collapsible
         // width={20}
@@ -111,12 +175,14 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }}
         trigger={null}
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}>
+        onCollapse={(value) => setCollapsed(value)}
+      >
         <div className="flex flex-col justify-between borde border-red-900 h-full">
           <div>
             <div
               className="bg-black my-2  text-black p-5  borde-2 rounded-full
-             flex-col flex items-start  justify-start w-">
+             flex-col flex items-start  justify-start w-"
+            >
               {collapsed ? (
                 <>
                   <div className="m- bg-rd-400">
@@ -142,7 +208,8 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               ) : (
                 <Link
                   to="/"
-                  className="borde border-red-900 w-[90%] flex items-center justify-center">
+                  className="borde border-red-900 w-[90%] flex items-center justify-center"
+                >
                   <img
                     className="flex justify-center   p- borde border-red-900 items-center"
                     src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723188879/Appleazy_Original_Logo_omjalx.svg"
@@ -153,7 +220,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               )}{" "}
             </div>
             <Menu
-              className="borde px-1 border-red-900 bg-black"
+              className="borde px-1 border-red-900  h-full bg-black"
               theme="dark"
               defaultSelectedKeys={location.pathname}
               activeKey={location.pathname}
@@ -169,7 +236,8 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 setCollapsed(!collapsed);
                 console.log("button clicked");
               }}
-              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4">
+              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4"
+            >
               {collapsed ? <RightOutlined /> : <LeftOutlined />}
             </button>
           </div>
@@ -185,13 +253,15 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             zIndex: 100,
             width: "100%",
             // overflowY: "auto",
-          }}>
+          }}
+        >
           <div className="flex flex-row boder boder-red-900 justify-end px-4">
             <Dropdown
               menu={{
                 items,
               }}
-              placement="bottomLeft">
+              placement="bottomLeft"
+            >
               <Avatar
                 shape="square"
                 src={
@@ -210,13 +280,15 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           style={{
             margin: "0 ",
             background: "#f0f0f0",
-          }}>
+          }}
+        >
           {children}
         </Content>
         <Footer
           style={{
             textAlign: "center",
-          }}>
+          }}
+        >
           APPLEAZY ©{new Date().getFullYear()}
         </Footer>
       </Layout>
