@@ -151,7 +151,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       }}
     >
       <Modal
-        title="Basic Modal"
+        title="Referral"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
