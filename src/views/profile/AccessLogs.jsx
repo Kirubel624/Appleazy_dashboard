@@ -366,6 +366,9 @@ const AccessLogs = () => {
               <strong>IP Address:</strong> {selectedRecord.remoteIp || "N/A"}
             </p>
             <p>
+              <strong>Origin:</strong> {selectedRecord.origin || "N/A"}
+            </p>
+            <p>
               <strong>Timestamp:</strong>{" "}
               {new Date(selectedRecord.timestamp).toLocaleString("en-US", {
                 month: "short",
