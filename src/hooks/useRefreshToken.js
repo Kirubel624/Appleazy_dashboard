@@ -15,10 +15,13 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     try {
-      const response = await api.get("https://server.appleazy.com/refresh", {
-        withCredentials: true,
-        credentials: "include",
-      });
+      const response = await api.get(
+        "https://server.appleazy.com/api/v1/refresh",
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
 
       console.log(response?.data?.accessToken, "refresh response");
       // Assuming response.data contains the new access token
