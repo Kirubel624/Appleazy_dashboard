@@ -117,11 +117,14 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Training", "/training", <BookOutlined />),
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
+    getItem("FeedBacks", "/feedbacks", <CheckSquareOutlined />),
+
     getItem(
       <p
         onClick={showModal}
-        className="bg-green-700 rounded-full text-center  ">
-        Referral
+        className="bg-green-700 rounded-full text-center  "
+      >
+        Signup Link
       </p>,
       "#"
       // <CheckSquareOutlined />
@@ -147,7 +150,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         minHeight: "100vh",
       }}>
       <Modal
-        title="Basic Modal"
+        title="Referral"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}>
