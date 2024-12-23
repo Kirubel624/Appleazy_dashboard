@@ -22,9 +22,13 @@ import PasswordReset from "./views/auth/PasswordReset";
 import ForgotPassword from "./views/auth/ForgotPassword";
 import ChangePassword from "./views/auth/ChangePassword";
 import ClientList from "./views/assistants/ClientList";
+<<<<<<< HEAD
 import api from "./utils/api";
 import axios from "axios";
 import Coupons from "./views/coupons/Coupons";
+=======
+import FeedBack from "./views/feedback/FeedBack";
+>>>>>>> 9571747ca779f770aac55f6215400518912f9c4b
 
 function App() {
   const [count, setCount] = useState(0);
@@ -61,6 +65,15 @@ function App() {
               </Dashboard>
             }
             path="/"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <FeedBack collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/feedbacks"
           />
 
           <Route

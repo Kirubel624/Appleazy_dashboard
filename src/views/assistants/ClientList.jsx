@@ -358,7 +358,7 @@ const ClientList = ({ collapsed }) => {
 
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">Assistants</h1>
+          <h1 className="text-2xl font-bold pb-4">Clients</h1>
           <div className="flex">
             <Input
               onChange={searchHandler}
