@@ -117,6 +117,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Training", "/training", <BookOutlined />),
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
+    getItem("Coupons", "/coupons", <CheckSquareOutlined />),
     getItem(
       <p
         onClick={showModal}

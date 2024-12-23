@@ -22,12 +22,16 @@ import PasswordReset from "./views/auth/PasswordReset";
 import ForgotPassword from "./views/auth/ForgotPassword";
 import ChangePassword from "./views/auth/ChangePassword";
 import ClientList from "./views/assistants/ClientList";
+import api from "./utils/api";
+import axios from "axios";
+import Coupons from "./views/coupons/Coupons";
 
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
+    getServer();
     const handleResize = () => {
       if (window.innerWidth < 500) {
         setCollapsed(true);
@@ -39,6 +43,10 @@ function App() {
     console.log();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const getServer = async () => {
+    const res = await axios.get("https://server.appleazy.com/");
+    console.log(res, "response of get server");
+  };
   return (
     <>
       <Routes>
@@ -94,6 +102,14 @@ function App() {
               </Dashboard>
             }
             path="/blog"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <Coupons collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/coupons"
           />
           <Route
             element={
