@@ -10,7 +10,7 @@ export const apiAuth = axios.create({
   baseURL: "http://196.189.126.183:3000/",
 });
 export const apiPrivate = axios.create({
-  baseURL: LOCAL_URL,
+  baseURL: HOSTED_URL,
   headers: {
     "Content-Type": "application/json",
     // Authorization: `Bearer ${accessToken}`,
