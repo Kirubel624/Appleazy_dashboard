@@ -32,7 +32,6 @@ function App() {
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    getServer();
     const handleResize = () => {
       if (window.innerWidth < 500) {
         setCollapsed(true);
