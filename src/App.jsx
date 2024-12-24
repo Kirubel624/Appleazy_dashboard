@@ -44,10 +44,7 @@ function App() {
     console.log();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  const getServer = async () => {
-    const res = await axios.get("https://server.appleazy.com/");
-    console.log(res, "response of get server");
-  };
+
   return (
     <>
       <Routes>
