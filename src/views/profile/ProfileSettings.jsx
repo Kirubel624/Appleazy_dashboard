@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import { Tabs } from "antd";
+import AccessLogs from "./AccessLogs";
 
 const ProfileSettings = ({ collapsed, setCollapsed }) => {
   const [selectedTab, setSelectedTab] = useState("1");
@@ -20,11 +21,11 @@ const ProfileSettings = ({ collapsed, setCollapsed }) => {
       label: "Maintenance settings",
       children: <Settings />,
     },
-    // {
-    //   key: "3",
-    //   label: "Tab 3",
-    //   children: "Content of Tab Pane 3",
-    // },
+    {
+      key: "3",
+      label: "Access Logs",
+      children: <AccessLogs />,
+    },
   ];
   return (
     <div
