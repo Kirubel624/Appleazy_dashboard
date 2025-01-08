@@ -23,10 +23,14 @@ import ForgotPassword from "./views/auth/ForgotPassword";
 import ChangePassword from "./views/auth/ChangePassword";
 import ClientList from "./views/assistants/ClientList";
 import FeedBack from "./views/feedback/FeedBack";
+import ChatLayout from "./views/chat/ChatLayout";
+import BoddyCon from "./views/chat/BoddyCon";
+import { useSelector } from "react-redux";
 
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -155,6 +159,20 @@ function App() {
             }
             path="/assistants/:id"
           />
+          <Route
+            path="/chat"
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <ChatLayout userId={user?.id} collapsed={collapsed} />
+              </Dashboard>
+            }
+          >
+            <Route element={<BoddyCon />} path=":id/:to" />
+            <Route
+
+            // element={ }
+            />
+          </Route>
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
