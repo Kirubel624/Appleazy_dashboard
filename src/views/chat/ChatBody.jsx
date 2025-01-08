@@ -91,7 +91,7 @@ const ChatBody = () => {
                     { to: id, from: to, message: input, isAdmin: true }
                   );
 
-                  const sortedIds = [user?.id, id].sort();
+                  const sortedIds = [to, id].sort();
                   const ides = sortedIds.join("");
                   dispatch(
                     addChat({
@@ -101,16 +101,16 @@ const ChatBody = () => {
                       isAdmin: true,
                     })
                   );
-                  const userListW = userList?.filter(
-                    (user2) => user2?.id == id
-                  );
-                  const userList1 = userList?.filter(
-                    (user2) => user2?.id != id
-                  );
-                  console.log("[[[[[[[[[[[[", userList1, userListW);
-                  dispatch(
-                    changeUserList({ userList: [...userListW, ...userList1] })
-                  );
+                  // const userListW = userList?.filter(
+                  //   (user2) => user2?.id == id
+                  // );
+                  // const userList1 = userList?.filter(
+                  //   (user2) => user2?.id != id
+                  // );
+                  // console.log("[[[[[[[[[[[[", userList1, userListW);
+                  // dispatch(
+                  //   changeUserList({ userList: [...userListW, ...userList1] })
+                  // );
                   socket.emit("groupChatMessage", {
                     msg: input,
                     room: ides,
