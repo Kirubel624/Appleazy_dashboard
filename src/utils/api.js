@@ -1,7 +1,9 @@
 import axios from "axios";
 // const accessToken = useLocalStorageGetter("auth");
 const HOSTED_URL = "https://server.appleazy.com/api/v1";
-// const HOSTED_URL = "http://localhost:8001/api/v1";
+const LOCAL_URL = "http://localhost:8001/api/v1";
+const LOCAL_NOTIFICATION_URL = "http://localhost:8000/api/v1";
+const HOSTED_NOTIFICATION_URL = "https://notify.appleazy.com/api/v1";
 const api = axios.create({
   baseURL: HOSTED_URL,
 });
@@ -16,5 +18,7 @@ export const apiPrivate = axios.create({
     // Authorization: `Bearer ${accessToken}`,
   },
 });
-
+export const apiNotification = axios.create({
+  baseURL: HOSTED_NOTIFICATION_URL,
+});
 export default api;

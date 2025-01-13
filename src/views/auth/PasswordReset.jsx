@@ -43,13 +43,12 @@ const PasswordReset = () => {
         width={108}
         height={108}
         className=" ml-6 mt-4"
-        src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1729859428/appleazy_inverted_logo_ky0kxg.png"
+        src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/appleazy_inverted_logo_ky0kxg.png"
       />
       <div className="flex flex-col items-center justify-center h-screen bg-ray-100 mx-[2rem]">
         <div
           className="bg-white  
-        flex flex-col items-center justify-center w-full max-w-lg"
-        >
+        flex flex-col items-center justify-center w-full max-w-lg">
           <h2 className="text-2xl font-bold mb-6 text-center">
             Set New Password
           </h2>
@@ -72,8 +71,7 @@ const PasswordReset = () => {
             className="bg-[#168a53] w-full rounded py-2
       text-white font-medium border border-transparent hover:bg-white hover:border hover:border-[#168a53] hover:text-[#168a53]"
             onClick={handleResetPassword}
-            disabled={!password || !confirmPassword}
-          >
+            disabled={!password || !confirmPassword}>
             {loading ? (
               <ClipLoader
                 color="#FFFFFF"

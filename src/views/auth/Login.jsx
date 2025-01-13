@@ -38,7 +38,7 @@ const Login = () => {
         <div className="mb-8 text-start">
           <img
             className="w-[10rem] "
-            src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1725453363/Untitled-1_Recovered_mbgim5.png"
+            src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/Untitled-1_Recovered_mbgim5.png"
           />
 
           <p className="text-gray-500 mt-4">Welcome!</p>
@@ -51,13 +51,11 @@ const Login = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           // onFinishFailed={onFinishFailed}
-          className="space-y-4"
-        >
+          className="space-y-4">
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
-          >
+            rules={[{ required: true, message: "Please input your email!" }]}>
             <Input
               type="email"
               placeholder="Email"
@@ -68,8 +66,9 @@ const Login = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
+            rules={[
+              { required: true, message: "Please input your password!" },
+            ]}>
             <Input.Password
               placeholder="Password"
               className="rounded bg-blue-100"
@@ -80,8 +79,7 @@ const Login = () => {
             <Link
               to="/forgot-password"
               type="link"
-              className="text-[#168a53] underline"
-            >
+              className="text-[#168a53] underline">
               Forgot Password?
             </Link>
           </div>
@@ -89,8 +87,7 @@ const Login = () => {
           <Form.Item>
             <button
               type="submit"
-              className="w-full bg-[#168a53] py-2 px-2 hover:bg-[#267c54] text-white rounded"
-            >
+              className="w-full bg-[#168a53] py-2 px-2 hover:bg-[#267c54] text-white rounded">
               {loading ? (
                 <ClipLoader
                   color="#FFFFF"
