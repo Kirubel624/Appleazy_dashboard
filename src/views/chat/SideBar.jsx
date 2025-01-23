@@ -42,9 +42,10 @@ const SideBar = ({ socket, userId }) => {
 
     const val = userList.filter(
       (option) =>
-        option.participant1name &&
-        option.participant1name.toLowerCase().includes(searchTerm.toLowerCase())
+        option.name &&
+        option.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
     setsearchuserList(val);
     return;
   };

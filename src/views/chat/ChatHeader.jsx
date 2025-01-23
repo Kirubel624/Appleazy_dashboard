@@ -11,11 +11,11 @@ const ChatHeader = () => {
 
   useEffect(() => {
     if (userList?.length > 0) {
-      const data = userList.find((user) => user.id == id);
+      const data = userList.find((user) => user.participant1 == id);
       setheaderUser(data);
+      console.log("headerUser---------", userList, data);
     }
   }, [id, userList]);
-  console.log("headerUser---------", headerUser);
 
   return (
     <div className="border-b py-6 px-9 flex items-baseline justify-between ">

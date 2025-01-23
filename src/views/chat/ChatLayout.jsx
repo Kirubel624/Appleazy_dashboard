@@ -3,7 +3,7 @@ import SideBar from "./SideBar";
 import ChatHeader from "./ChatHeader";
 import ChatBody from "./ChatBody";
 import { io } from "socket.io-client";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addChat } from "../../redux/chatReducer";
 import { changeSocket } from "../../redux/socketReducer";
@@ -11,6 +11,7 @@ import { changeSocket } from "../../redux/socketReducer";
 const ChatLayout = ({ collapsed, userId }) => {
   const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
+  const { id } = useParams();
 
   useEffect(() => {
     if (!userId) return;
@@ -57,7 +58,12 @@ const ChatLayout = ({ collapsed, userId }) => {
       }    transition-all h-[100vh] ease-in  px-3`}
     >
       <div className="flex h-full ">
-        <div className=" min-w-[300px]   ml-5 py-10 h-full ">
+        <div
+          className={` ${
+            id ? "md:block hidden" : ""
+          }  w-full md:max-w-[300px]   md:ml-5 py-10 h-full `}
+        >
+          {" "}
           <div className="border h-full  bg-white rounded-2xl ">
             <SideBar socket={socket} userId={userId} />
           </div>

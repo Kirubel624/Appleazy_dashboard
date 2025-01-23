@@ -1,5 +1,5 @@
 import { Avatar } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,15 +8,17 @@ const SideBarCard = ({ user, socket }) => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const { id } = useParams();
   // console.log("CurrentUser:::", currentUser);
+  useEffect(() => {
+    const sortedIds = [user?.participant1, user?.participant2].sort();
+    console.log("sortedIds", sortedIds.join(""));
+    socket.emit("joinRoom", sortedIds.join(""));
+  }, [id]);
   return (
     <div
       onClick={() => {
         navigate("/chat/" + user?.participant1 + "/" + user?.participant2);
-        const sortedIds = [user?.participant1, user?.participant2].sort();
-        console.log("sortedIds", sortedIds.join(""));
-        socket.emit("joinRoom", sortedIds.join(""));
       }}
-      className={`shadow max-w-[300px] p-3 my-4 cursor-pointer rounded-lg hover:bg-[#23925e] ${
+      className={`shadow w-full md:max-w-[300px] p-3 my-4 cursor-pointer rounded-lg hover:bg-[#23925e] ${
         id == user?.participant1 ? "bg-[#168A53] text-white" : ""
       } `}
     >
