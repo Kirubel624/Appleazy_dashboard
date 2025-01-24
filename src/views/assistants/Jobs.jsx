@@ -225,8 +225,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
             <Tag
               className=" capitalize"
               color={statusColors[record.status]}
-              key={record.status}
-            >
+              key={record.status}>
               {record?.status}
             </Tag>
           </>
@@ -241,8 +240,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         <a
           href={record?.link}
           className=" text-blue-500 underline"
-          target="_blank"
-        >
+          target="_blank">
           link
         </a>
       ),
@@ -256,8 +254,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
           menu={{
             items,
             onClick: (value) => onClick(value, record, clientId),
-          }}
-        >
+          }}>
           <button className="bg-[#f0f0f0] py-2 px-4 flex items-center justify-center  border-gray-200 rounded ">
             Action <DownOutlined width={10} className="text-[0.65rem]" />
           </button>
@@ -598,8 +595,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[52px] mr-2 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10`}
-    >
+      } transition-all ease-in mt-10 pl-10`}>
       <Modal
         title="Add a job"
         width={900}
@@ -610,8 +606,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         onClose={() => {
           setAddModal(false);
         }}
-        footer={null}
-      >
+        footer={null}>
         <AddJob
           subscriptionId={id}
           setAddModal={setAddModal}
@@ -628,16 +623,14 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         onClose={() => {
           setDeleteModal(false);
         }}
-        footer={null}
-      >
+        footer={null}>
         <div>
           <p className="mb-3">Are you sure you want to delete this job?</p>
           <div className="flex items-center">
             <button
               onClick={handleDelete}
               className="h-9 self-end flex 
-          items-center bg-[#168A53] px-4 mr-2 rounded-lg text-white "
-            >
+          items-center bg-[#168A53] px-4 mr-2 rounded-lg text-white ">
               {deleteLoading ? (
                 <ClipLoader
                   color="#FFFFF"
@@ -655,8 +648,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
             <button
               onClick={() => setDeleteModal(false)}
               className="h-9 self-end flex 
-          items-center border border-[#168A53] px-4 text-[#168A53] rounded-lg"
-            >
+          items-center border border-[#168A53] px-4 text-[#168A53] rounded-lg">
               No
             </button>
           </div>
@@ -674,8 +666,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
           setImportedView(false);
           setExcelData([]);
         }}
-        footer={null}
-      >
+        footer={null}>
         <div>
           <h1 className="text-xl font-medium">Import jobs</h1>
           <div className="flex items-center mt-2">
@@ -699,8 +690,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
           <button
             onClick={handleAddImported}
             className="h-9 self-end flex 
-          items-center bg-[#168A53] px-4 rounded-lg text-white "
-          >
+          items-center bg-[#168A53] px-4 rounded-lg text-white ">
             {addloading ? (
               <ClipLoader
                 color="#FFFFF"
@@ -734,8 +724,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         <div className="flex items-center">
           <div
             onClick={() => setOpenProfile(true)}
-            className="flex items-center  mr-4 hover:cursor-pointer space-x-3 bg-white p-2 sm:p-4 rounded"
-          >
+            className="flex items-center  mr-4 hover:cursor-pointer space-x-3 bg-white p-2 sm:p-4 rounded">
             <Avatar
               className="w-8 h-8 rounded-full"
               src={
@@ -819,8 +808,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
       <div
         className="flex flex-col w-[90%] 
       items- justify-start overflow- h-[100vh]
-       borde border-red-600"
-      >
+       borde border-red-600">
         {/* <p> */}
         <div className="flex  flex-wrap gap-3 items-center w-full justify-between self-end mb-2">
           <div>
@@ -835,13 +823,12 @@ const Jobs = ({ collapsed, setCollapsed }) => {
           </div>
           <div className="flex flex-wrap gap-3 items-center">
             <a
-              href="https://res.cloudinary.com/dtwmhl1oh/raw/upload/v1727859664/appleazy_template.xlsx" // Path to your template file
+              href="https://appleazy.nyc3.cdn.digitaloceanspaces.com/templates/appleazy%20template.xlsx" // Path to your template file
               download="template.xlsx" // File name for downloading
             >
               <button
                 onClick={() => message.success("Check your downloads")}
-                className="h-9 flex items-center bg-[#168A53] px-3 rounded-lg text-white mr-3"
-              >
+                className="h-9 flex items-center bg-[#168A53] px-3 rounded-lg text-white mr-3">
                 <IoMdDownload className="w-5 mr-2 text-white h-5" /> Download
                 template
               </button>
@@ -866,8 +853,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
             </div>
             <button
               onClick={() => setAddModal(true)}
-              className="h-9 flex items-center bg-[#168A53] px-3 rounded-lg text-white"
-            >
+              className="h-9 flex items-center bg-[#168A53] px-3 rounded-lg text-white">
               <IoIosAdd className="w-5 mr-2 text-white h-5" /> Add a job
             </button>
           </div>
@@ -903,8 +889,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         placement="right"
         open={open}
         // loading={assistantProfileloading}
-        onClose={() => setOpen(false)}
-      >
+        onClose={() => setOpen(false)}>
         <AssistantProfile {...assignmentInfo} />
       </Drawer>
       <Drawer
@@ -915,8 +900,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         placement="right"
         open={openProfile}
         // loading={assistantProfileloading}
-        onClose={() => setOpenProfile(false)}
-      >
+        onClose={() => setOpenProfile(false)}>
         <EditSubscriptionProfile
           profile2={subscriptionProfile}
           fetchSubscriptionInfo={fetchSubscriptionInfo}

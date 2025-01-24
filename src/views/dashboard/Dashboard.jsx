@@ -18,18 +18,31 @@ import {
 } from "@ant-design/icons";
 import {
   Avatar,
+  Badge,
   Breadcrumb,
+  Drawer,
   Dropdown,
   Layout,
   Menu,
   message,
   Modal,
+  Popover,
   theme,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileAsync, logout } from "../auth/authReducer";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
+import {
+  getNotificationsAsync,
+  markNotificationsAsReadAsync,
+} from "./notificationReducer";
+import { useSocket } from "../../hooks/useSocket";
+import { IoCheckmarkDone } from "react-icons/io5";
+import AllNotifications from "./AllNotifications";
+import { IoIosNotificationsOutline } from "react-icons/io";
+import Notifications from "./Notifications";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -50,7 +63,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const [activeKey, setActiveKey] = useState();
   const navigate = useNavigate();
   const [link, setLink] = useState("");
+  const notifications = useSocket(user?.id);
+  const [viewSider, setViewSidebar] = useState(false);
 
+  const unreadNotifications =
+    (notifications?.length > 0 &&
+      notifications?.filter((notification) => !notification.isRead)) ||
+    [];
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -122,11 +141,11 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
 
     getItem("FeedBacks", "/feedbacks", <CheckSquareOutlined />),
 
+    getItem("Coupons", "/coupons", <CheckSquareOutlined />),
     getItem(
       <p
         onClick={showModal}
-        className="bg-green-700 rounded-full text-center  "
-      >
+        className="bg-green-700 rounded-full text-center  ">
         Signup Link
       </p>,
       "#"
@@ -147,6 +166,46 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         message.error("Failed to copy text!"); // Show error message if copying fails
       });
   };
+
+  const fetchNotifications = async () => {
+    try {
+      console.log("inside fetch notificaitons");
+      const { payload } = await dispatch(
+        getNotificationsAsync({ id: user?.id })
+      );
+      console.log(payload, "repsonse of fetch notificaitons using redux");
+      // const res = await axios.get(
+      //   `http://localhost:8000/api/v1/notification/user/${user?.id}`
+      // );
+      // console.log("res of fetch notificaitons", res);
+      // setNotifications(res?.data);
+    } catch (error) {
+      console.log(error, "erororroororooro");
+    }
+  };
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+  const handleMarkAllAsRead = async () => {
+    try {
+      const res = await dispatch(
+        markNotificationsAsReadAsync({ id: user?.id })
+      );
+      console.log(
+        res.payload.status,
+        "response of mark all notifications as read"
+      );
+
+      if (res?.payload?.status === 404) {
+        message.info("There are no unread notifications.");
+      } else {
+        fetchNotifications();
+      }
+    } catch (error) {
+      console.log(error, "erorororororoor");
+    }
+  };
+
   return (
     <Layout
       style={{
@@ -189,22 +248,9 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                   <div className="m- bg-rd-400">
                     <img
                       className="w-[5rem] h-[3rem] z-[9999] borde border-red-900 p-5 bg-whit"
-                      src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723188879/Appleazy_Original_Logo_omjalx.svg"
+                      src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/Appleazy_Original_Logo_omjalx%20(1).svg"
                     />
                   </div>
-                  {/* <Link
-                    to="/"
-                    className="sm:hidden border border-red-900 p-5 relative inline-block group justify-center
-                    
-                    items-center w-full">
-                    awdaw
-                    <img
-                      className="sm:hidden flex justify-center p-5 m-5 border border-red-900 items-center"
-                      src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723189681/Applezy_q7mb0r.svg"
-                      width={32}
-                      height={32}
-                    />
-                  </Link> */}
                 </>
               ) : (
                 <Link
@@ -212,7 +258,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                   className="borde border-red-900 w-[90%] flex items-center justify-center">
                   <img
                     className="flex justify-center   p- borde border-red-900 items-center"
-                    src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1723188879/Appleazy_Original_Logo_omjalx.svg"
+                    src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/Appleazy_Original_Logo_omjalx%20(1).svg"
                     width={96}
                     height={96}
                   />
@@ -253,7 +299,32 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             width: "100%",
             // overflowY: "auto",
           }}>
-          <div className="flex flex-row boder boder-red-900 justify-end px-4">
+          <div className="flex flex-row boder boder-red-900 items-center justify-end px-4">
+            <Popover
+              // autoAdjustOverflow
+              // zIndex={999}
+              className=" z-[9999]"
+              placement="bottom"
+              content={
+                <div
+                  className=" max-h-[300px] z-[9999] sm:max-h-[470px]"
+                  style={{
+                    // maxHeight: "550px",
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                  }}>
+                  <Notifications setViewSidebar={setViewSidebar} />
+                </div>
+              }
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              // open
+              trigger={["hover", "click"]}>
+              <Badge count={unreadNotifications?.length} offset={[-18, 5]}>
+                <div className="bg-white rounded-full border-gray-200 border-[0.1px] p-2 mr-4 shadow-sm">
+                  <IoIosNotificationsOutline className="w-5 h-5" />
+                </div>
+              </Badge>
+            </Popover>
             <Dropdown
               menu={{
                 items,
@@ -267,7 +338,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 }
                 alt="profileimg"
                 size="default"
-                className="border border-[#E6EFF5] mt-4 mr-2"
+                className="border border-[#E6EFF5] mt mr-2"
               />
             </Dropdown>
             <p className=" whitespace-nowrap">Welcome, {profile?.username}</p>
@@ -287,6 +358,26 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           APPLEAZY ©{new Date().getFullYear()}
         </Footer>
       </Layout>
+      <Drawer
+        width={500}
+        closable
+        destroyOnClose
+        title={
+          <div className="flex items-center justify-between">
+            <p>Notifications</p>{" "}
+            <button
+              onClick={handleMarkAllAsRead}
+              className="flex items-center justify-between gap-1">
+              <IoCheckmarkDone className="text-[#168A53]" />
+              <p className="text-[#168A53]">Mark all as read</p>
+            </button>
+          </div>
+        }
+        placement="right"
+        open={viewSider}
+        onClose={() => setViewSidebar(false)}>
+        <AllNotifications setViewSidebar={setViewSidebar} />
+      </Drawer>
     </Layout>
   );
 };

@@ -33,16 +33,14 @@ const ForgotPassword = () => {
         width={108}
         height={108}
         className=" ml-6 mt-4"
-        src="https://res.cloudinary.com/dtwmhl1oh/image/upload/v1729859428/appleazy_inverted_logo_ky0kxg.png"
+        src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/appleazy_inverted_logo_ky0kxg.png"
       />
       <div
         className="flex flex-col items-center justify-center
-       h-screen bg--100  mx-[2rem]"
-      >
+       h-screen bg--100  mx-[2rem]">
         <div
           className="bg-white border- p- rounded- flex flex-col items-center
-         justify-center "
-        >
+         justify-center ">
           <h2 className="text-2xl font-bold mb-6 text-center">
             Reset Your Password
           </h2>
@@ -66,8 +64,7 @@ const ForgotPassword = () => {
             text-white font-medium border border-transparent hover:bg-white hover:border hover:border-[#168a53] hover:text-[#168a53] "
             block
             onClick={handleRequestReset}
-            disabled={!email}
-          >
+            disabled={!email}>
             {loading ? (
               <ClipLoader
                 color="#FFFFF"

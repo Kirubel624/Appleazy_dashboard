@@ -16,6 +16,7 @@ import trainingReducer from "../views/training/TrainingRedux"; // import the tra
 import exerciseReducer from "../views/exercise/ExerciseRedux"; // import the exercise
 import assistantsReducer from "../views/assistants/AssistantsRedux"; // import the assistants
 import jobReducer from "../views/assistants/jobReducer";
+import notificationReducer from "../views/dashboard/notificationReducer";
 import chatSlice from "./chatReducer";
 import socketSlice from "./socketReducer";
 
@@ -35,6 +36,7 @@ export const store = configureStore({
     exercise: exerciseReducer, // add the exercise here
     assistants: assistantsReducer, // add the assistants here
     job: jobReducer,
+    notifications: notificationReducer,
     chat: chatSlice,
     socket: socketSlice,
   },
