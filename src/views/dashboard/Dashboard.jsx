@@ -14,6 +14,7 @@ import {
   BookOutlined,
   CheckSquareOutlined,
   CopyOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -136,6 +137,8 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Training", "/training", <BookOutlined />),
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
+    getItem("Chat", "/chat", <MessageOutlined />),
+
     getItem("FeedBacks", "/feedbacks", <CheckSquareOutlined />),
 
     getItem("Coupons", "/coupons", <CheckSquareOutlined />),
