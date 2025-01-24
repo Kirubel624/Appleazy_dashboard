@@ -177,8 +177,7 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }
-          >
+            }>
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
