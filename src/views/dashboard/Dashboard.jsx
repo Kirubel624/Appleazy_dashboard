@@ -137,7 +137,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Training", "/training", <BookOutlined />),
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
-    getItem("Chat", "/chat", <MessageOutlined />),
+    // getItem("Chat", "/chat", <MessageOutlined />),
 
     getItem("FeedBacks", "/feedbacks", <CheckSquareOutlined />),
 
