@@ -39,11 +39,12 @@ const AssistantsDetail = ({ collapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}>
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       <DetailStyle>
         <h1>User Detail</h1>
         <Divider style={{ margin: "15px 0 25px 0" }} />
-        <div className=" mr-10 bg-white p-6 rounded-2xl">
+        <div className="  mr-10 bg-white p-6 rounded-2xl">
           {excersice.map(
             (exc, i) =>
               exc?.type == "choice" && (
@@ -51,10 +52,10 @@ const AssistantsDetail = ({ collapsed }) => {
                   <p className="text-lg my-5">
                     {i + 1}. {exc?.question}
                   </p>
-                  <div>
+                  <div className="">
                     <Radio.Group
                       defaultValue={exc?.assistantAnswer}
-                      className=" max-w-[700px]  flex justify-around  flex-wrap "
+                      className="   flex gap-8  flex-wrap "
                       onChange={(e) => onChange(e, exc.id)}
                       // value={value}
                     >
