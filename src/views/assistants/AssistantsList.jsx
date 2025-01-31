@@ -232,7 +232,7 @@ const AssistantsList = ({ collapsed }) => {
       render: (text, rec) => {
         return (
           <a href={text} download className="text-blue-500">
-            Clink resume
+            Click resume
           </a>
         );
       },

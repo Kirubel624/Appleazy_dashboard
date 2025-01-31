@@ -96,7 +96,7 @@ const ChatBody = () => {
                   dispatch(
                     addChat({
                       message: input,
-                      isMe: true,
+                      isMe: false,
                       createdAt: new Date(),
                       isAdmin: true,
                     })
