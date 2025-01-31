@@ -6,7 +6,15 @@ import {
   PlusOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Input, message, Modal, Select } from "antd";
+import {
+  Button,
+  Dropdown,
+  Input,
+  message,
+  Modal,
+  Popconfirm,
+  Select,
+} from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 
@@ -218,12 +226,44 @@ const AssistantsList = ({ collapsed }) => {
       title: "Experience",
       dataIndex: "experience",
       sorter: true,
+      render: (text, rec) => {
+        return (
+          <Popconfirm
+            title="experience"
+            description={text}
+            // onConfirm={confirm}
+            // onCancel={cancel}
+            showCancel={false} // This removes the cancel button
+            okButtonProps={{ style: { display: "none" } }}
+          >
+            <Button download className="text-blue-500">
+              Experience
+            </Button>
+          </Popconfirm>
+        );
+      },
     },
 
     {
       title: "Skills",
       dataIndex: "skills",
       sorter: true,
+      render: (text, rec) => {
+        return (
+          <Popconfirm
+            title="Skills"
+            description={text}
+            // onConfirm={confirm}
+            // onCancel={cancel}
+            showCancel={false} // This removes the cancel button
+            okButtonProps={{ style: { display: "none" } }}
+          >
+            <Button download className="text-blue-500">
+              Skills
+            </Button>
+          </Popconfirm>
+        );
+      },
     },
 
     {
