@@ -38,7 +38,7 @@ const ChatLayout = ({ collapsed, userId }) => {
     });
 
     newSocket.on("connect_error", (error) => {
-      console.error("Connection error:", error.message);
+      console.error("Connection error:", error?.message);
       dispatch(addChat(message?.msg));
     });
 
