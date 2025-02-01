@@ -138,15 +138,14 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
     getItem("Announcement", "/announcement", <CheckSquareOutlined />),
     getItem("Blog", "/blog", <CheckSquareOutlined />),
-    // getItem("Chat", "/chat", <MessageOutlined />),
+    getItem("Chat", "/chat", <MessageOutlined />),
     getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
 
     getItem("Coupons", "/coupons", <CheckSquareOutlined />),
     getItem(
       <p
         onClick={showModal}
-        className="bg-green-700 rounded-full text-center  "
-      >
+        className="bg-green-700 rounded-full text-center  ">
         Signup Link
       </p>,
       "#"
@@ -211,14 +210,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     <Layout
       style={{
         minHeight: "100vh",
-      }}
-    >
+      }}>
       <Modal
         title="Referral"
         open={isModalOpen}
         onOk={handleOk}
-        onCancel={handleCancel}
-      >
+        onCancel={handleCancel}>
         <div className="flex justify-between ">
           <p>{link}</p>
           <CopyOutlined onClick={handleCopy} style={{ cursor: "pointer" }} />
@@ -240,14 +237,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }}
         trigger={null}
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
+        onCollapse={(value) => setCollapsed(value)}>
         <div className="flex flex-col justify-between borde border-red-900 h-full">
           <div>
             <div
               className="bg-black my-2  text-black p-5  borde-2 rounded-full
-             flex-col flex items-start  justify-start w-"
-            >
+             flex-col flex items-start  justify-start w-">
               {collapsed ? (
                 <>
                   <div className="m- bg-rd-400">
@@ -260,8 +255,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               ) : (
                 <Link
                   to="/"
-                  className="borde border-red-900 w-[90%] flex items-center justify-center"
-                >
+                  className="borde border-red-900 w-[90%] flex items-center justify-center">
                   <img
                     className="flex justify-center   p- borde border-red-900 items-center"
                     src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/Appleazy_Original_Logo_omjalx%20(1).svg"
@@ -288,8 +282,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 setCollapsed(!collapsed);
                 console.log("button clicked");
               }}
-              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4"
-            >
+              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4">
               {collapsed ? <RightOutlined /> : <LeftOutlined />}
             </button>
           </div>
@@ -305,8 +298,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             zIndex: 100,
             width: "100%",
             // overflowY: "auto",
-          }}
-        >
+          }}>
           <div className="flex flex-row boder boder-red-900 items-center justify-end px-4">
             <Popover
               // autoAdjustOverflow
@@ -320,15 +312,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                     // maxHeight: "550px",
                     overflowY: "auto",
                     overflowX: "hidden",
-                  }}
-                >
+                  }}>
                   <Notifications setViewSidebar={setViewSidebar} />
                 </div>
               }
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               // open
-              trigger={["hover", "click"]}
-            >
+              trigger={["hover", "click"]}>
               <Badge count={unreadNotifications?.length} offset={[-18, 5]}>
                 <div className="bg-white rounded-full border-gray-200 border-[0.1px] p-2 mr-4 shadow-sm">
                   <IoIosNotificationsOutline className="w-5 h-5" />
@@ -339,8 +329,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               menu={{
                 items,
               }}
-              placement="bottomLeft"
-            >
+              placement="bottomLeft">
               <Avatar
                 shape="square"
                 src={
@@ -359,15 +348,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           style={{
             margin: "0 ",
             background: "#edf0ff",
-          }}
-        >
+          }}>
           {children}
         </Content>
         <Footer
           style={{
             textAlign: "center",
-          }}
-        >
+          }}>
           APPLEAZY ©{new Date().getFullYear()}
         </Footer>
       </Layout>
@@ -380,8 +367,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             <p>Notifications</p>{" "}
             <button
               onClick={handleMarkAllAsRead}
-              className="flex items-center justify-between gap-1"
-            >
+              className="flex items-center justify-between gap-1">
               <IoCheckmarkDone className="text-[#168A53]" />
               <p className="text-[#168A53]">Mark all as read</p>
             </button>
@@ -389,8 +375,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }
         placement="right"
         open={viewSider}
-        onClose={() => setViewSidebar(false)}
-      >
+        onClose={() => setViewSidebar(false)}>
         <AllNotifications setViewSidebar={setViewSidebar} />
       </Drawer>
     </Layout>

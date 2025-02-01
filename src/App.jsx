@@ -183,7 +183,7 @@ function App() {
             }
             path="/assistants/:id"
           />
-          {/* <Route
+          <Route
             path="/chat"
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -195,7 +195,7 @@ function App() {
 
             // element={ }
             />
-          </Route> */}
+          </Route>
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
