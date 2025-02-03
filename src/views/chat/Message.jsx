@@ -13,7 +13,7 @@ const Message = ({ chat }) => {
               <>
                 <div>
                   <Avatar size={30} style={{ backgroundColor: "#075985" }}>
-                    admin
+                    Natnael (Founder)
                   </Avatar>{" "}
                 </div>
               </>
