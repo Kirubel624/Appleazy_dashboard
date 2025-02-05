@@ -9,9 +9,11 @@ const SideBarCard = ({ user, socket }) => {
   const { id } = useParams();
   // console.log("CurrentUser:::", currentUser);
   useEffect(() => {
-    const sortedIds = [user?.participant1, user?.participant2].sort();
-    console.log("sortedIds", sortedIds.join(""));
-    socket.emit("joinRoom", sortedIds.join(""));
+    if (socket) {
+      const sortedIds = [user?.participant1, user?.participant2].sort();
+      console.log("sortedIds", sortedIds.join(""));
+      socket?.emit("joinRoom", sortedIds.join(""));
+    }
   }, [id]);
   return (
     <div
