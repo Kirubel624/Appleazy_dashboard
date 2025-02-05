@@ -21,7 +21,7 @@ const SideBar = ({ socket, userId }) => {
     const fectUserList = async () => {
       try {
         const res = await api.get(
-          "http://localhost:5000/api/v1/group/admin-list"
+          "https://chat.appleazy.com/api/v1/group/admin-list"
         );
         console.log("list__11:", res.data);
         // setUserList(res.data?.chatList);

@@ -18,7 +18,7 @@ const BoddyCon = () => {
       const fectUserList = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:5000/api/v1/group/chats/" + to + "/" + id
+            "https://chat.appleazy.com/api/v1/group/chats/" + to + "/" + id
           );
           console.log("listchat__", res.data?.chats);
           dispatch(changeChats({ chats: res.data?.chats }));
@@ -33,12 +33,10 @@ const BoddyCon = () => {
     <div
       className={` ${
         id ? "" : "hidden"
-      }  md:block flex-1  mr-5 ml-3 py-10 md-py-0  `}
-    >
+      }  md:block flex-1  mr-5 ml-3 py-10 md-py-0  `}>
       <button
         onClick={() => navigate("/chat")}
-        className="block  md:hidden bg-[#168A53] py-1 px-6 rounded-full text-white my-3"
-      >
+        className="block  md:hidden bg-[#168A53] py-1 px-6 rounded-full text-white my-3">
         Back
       </button>{" "}
       <div className="border flex flex-col   bg-white h-full rounded-2xl ">

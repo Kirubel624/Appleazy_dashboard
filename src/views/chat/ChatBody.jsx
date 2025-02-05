@@ -28,7 +28,7 @@ const ChatBody = () => {
   // useEffect(() => {
   //   if (!user?.id) return;
 
-  //   const newSocket = io("http://localhost:5000", {
+  //   const newSocket = io("https://chat.appleazy.com", {
   //     query: { userId: user?.id },
   //     transports: ["websocket"],
   //     reconnection: true,
@@ -87,7 +87,7 @@ const ChatBody = () => {
 
                 try {
                   const res = await axios.post(
-                    "http://localhost:5000/api/v1/group/add-chat/",
+                    "https://chat.appleazy.com/api/v1/group/add-chat/",
                     { to: id, from: to, message: input, isAdmin: true }
                   );
 
@@ -124,8 +124,7 @@ const ChatBody = () => {
                 }
               }}
               style={{ backgroundColor: "#168A53" }}
-              className="bg-[#168A53] rounded-lg flex justify-center items-center py-2 px-3 "
-            >
+              className="bg-[#168A53] rounded-lg flex justify-center items-center py-2 px-3 ">
               <SendOutlined style={{ fontSize: 20, color: "white" }} />
             </Button>
             <button className="rounded-lg flex justify-center items-center py-2 px-3 ">

@@ -16,7 +16,7 @@ const ChatLayout = ({ collapsed, userId }) => {
   useEffect(() => {
     if (!userId) return;
 
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io("https://chat.appleazy.com", {
       query: { userId },
       transports: ["websocket"],
       reconnection: true,
@@ -38,7 +38,7 @@ const ChatLayout = ({ collapsed, userId }) => {
     });
 
     newSocket.on("connect_error", (error) => {
-      console.error("Connection error:", error.message);
+      console.error("Connection error:", error?.message);
       dispatch(addChat(message?.msg));
     });
 
@@ -55,14 +55,12 @@ const ChatLayout = ({ collapsed, userId }) => {
     <div
       className={`${
         collapsed ? "ml-[0px] sm:[0px]" : "ml-[200px] "
-      }    transition-all h-[100vh] ease-in  px-3`}
-    >
+      }    transition-all h-[100vh] ease-in  px-3`}>
       <div className="flex h-full ">
         <div
           className={` ${
             id ? "md:block hidden" : ""
-          }  w-full md:max-w-[300px]   md:ml-5 py-10 h-full `}
-        >
+          }  w-full md:max-w-[300px]   md:ml-5 py-10 h-full `}>
           {" "}
           <div className="border h-full  bg-white rounded-2xl ">
             <SideBar socket={socket} userId={userId} />
