@@ -26,12 +26,15 @@ import {
   searchAssistants2,
 } from "./AssistantsRedux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
+import ReactQuill from "react-quill";
 
 const ClientList = ({ collapsed }) => {
   const api = useAPIPrivate();
 
   const [assistantsData, setAssistantsData] = useState([]);
   const [total, setTotal] = useState();
+  const [value, setValue] = useState("");
+  const [title, setTitle] = useState("");
 
   const searchText = useSelector(assistantsSearchText);
   const [loading, setLoading] = useState();
@@ -40,9 +43,14 @@ const ClientList = ({ collapsed }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [deleteModal, setDeleteModal] = useState(false);
+  const [promostionModal, setPromostionModal] = useState(false);
+  const [senEmailModel, setSenEmailModel] = useState(false);
+
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedAssistant, setSelectedAssistant] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
+
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -61,7 +69,7 @@ const ClientList = ({ collapsed }) => {
     try {
       setLoading(true);
       const { payload } = await dispatch(searchAssistants2(api));
-      console.log("setAssistantsData one:", payload);
+      console.log("setClientData one:", payload);
 
       setAssistantsData(payload.data);
       setTotal(payload.total);
@@ -135,6 +143,43 @@ const ClientList = ({ collapsed }) => {
     }
   };
 
+  const handlePromostion = async () => {
+    try {
+      setLoading(true);
+      const response = await api.post(`/user/createSubscription`, {
+        email: selectedAssistant.email,
+        userId: selectedAssistant.id,
+
+        profile: selectedAssistant.Profile,
+      });
+      setPromostionModal(false);
+
+      searchData();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+  const handleSend = async () => {
+    try {
+      setLoading(true);
+      const response = await api.post(`/user/sendEmail`, {
+        email: selectedClient.email,
+        username: selectedClient.username,
+
+        body: value,
+        subject: title,
+      });
+      setSenEmailModel(false);
+
+      searchData();
+
+      setLoading(false);
+    } catch (err) {
+      message.error("Email send fialed");
+      setLoading(false);
+    }
+  };
   const onClick = ({ key }, record) => {
     if (key == "edit") {
       setIsModalOpen(true);
@@ -184,9 +229,97 @@ const ClientList = ({ collapsed }) => {
       dataIndex: "email",
       sorter: true,
     },
-
     {
-      title: "Action",
+      title: "Created Date",
+      dataIndex: "createdAt",
+      sorter: true,
+      render: (text, recored) => {
+        return (
+          <div>
+            <p>{formatDate(text)}</p>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Profile Created",
+      dataIndex: "accounStatus",
+      sorter: true,
+      render: (text, recored) => {
+        return (
+          <div>
+            {recored?.accountStatus ? (
+              <p className="bg-[#dcfce7] text-center rounded-md py-[2px] px-10 text-[#4ade80] border border-[#4ade80]">
+                Created
+              </p>
+            ) : (
+              <p className="bg-[#fee2e2] text-center rounded-md py-[2px] px-10 text-[#ef4444] border border-[#ef4444]">
+                Not Created
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Send Email",
+      fixed: collapsed ? null : "right",
+
+      render: (text, recored) => {
+        return (
+          <div>
+            <Button
+              onClick={() => {
+                console.log(recored, "recored profle");
+                setSelectedAssistant(recored?.id);
+                setSelectedClient(recored);
+                setSenEmailModel(true);
+              }}
+              type="primary"
+              className="bg-green-600 hover:bg-green-700"
+            >
+              Send
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Promotion",
+      fixed: collapsed ? null : "right",
+
+      // dataIndex: "completedJobs",
+      // sorter: true,
+      render: (text, recored) => {
+        return (
+          <div>
+            {recored.isPromotion_received ? (
+              <p
+                style={{ backgroundColor: "#168A53" }}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                Sent
+              </p>
+            ) : (
+              <Button
+                onClick={() => {
+                  console.log(recored, "recored profle");
+                  setSelectedAssistant(recored?.id);
+                  setPromostionModal(true);
+                }}
+                disabled={!recored?.accountStatus}
+                type="primary"
+                className="bg-green-600 hover:bg-green-700"
+              >
+                Send free Aplications
+              </Button>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Delete User",
       fixed: collapsed ? null : "right",
 
       // dataIndex: "completedJobs",
@@ -356,6 +489,73 @@ const ClientList = ({ collapsed }) => {
         ""
       )}
 
+      {promostionModal ? (
+        <CommonModal
+          title={"Send Free Applicatoin"}
+          width={700}
+          isModalOpen={promostionModal}
+          setIsModalOpen={setPromostionModal}
+        >
+          <p className="text-lg">
+            Are you sure you want to send 10 free applications?
+          </p>
+          <button
+            onClick={() => setPromostionModal(false)}
+            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handlePromostion}
+            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white"
+          >
+            Send
+          </button>
+        </CommonModal>
+      ) : (
+        ""
+      )}
+
+      {senEmailModel ? (
+        <CommonModal
+          title={"Send Email"}
+          width={700}
+          isModalOpen={senEmailModel}
+          setIsModalOpen={setSenEmailModel}
+        >
+          <p>Subject</p>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter title"
+          />
+          <div className=" py-4"></div>
+
+          <p>Body</p>
+          <ReactQuill
+            className="h-[200px]"
+            theme="snow"
+            value={value}
+            onChange={setValue}
+          />
+          <div className=" py-12"></div>
+          <button
+            onClick={() => setSenEmailModel(false)}
+            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSend}
+            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white"
+          >
+            Send
+          </button>
+        </CommonModal>
+      ) : (
+        ""
+      )}
+
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
           <h1 className="text-2xl font-bold pb-4">Clients</h1>
@@ -427,5 +627,22 @@ const ClientList = ({ collapsed }) => {
     </div>
   );
 };
+function formatDate(isoString) {
+  const date = new Date(isoString);
+
+  // Options for formatting
+  const options = {
+    weekday: "long", // Full day name (e.g., "Wednesday")
+    year: "numeric",
+    month: "long", // Full month name (e.g., "October")
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short", // Include timezone abbreviation
+  };
+
+  return date.toLocaleDateString("en-US", options);
+}
 
 export default ClientList;
