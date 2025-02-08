@@ -145,12 +145,13 @@ const ClientList = ({ collapsed }) => {
 
   const handlePromostion = async () => {
     try {
+      console.log(selectedClient);
       setLoading(true);
       const response = await api.post(`/user/createSubscription`, {
-        email: recored.email,
-        userId: recored.id,
+        email: selectedClient.email,
+        userId: selectedClient.id,
 
-        profile: recored.Profile,
+        profile: selectedClient.Profile,
       });
       setPromostionModal(false);
 
@@ -160,6 +161,7 @@ const ClientList = ({ collapsed }) => {
       setLoading(false);
     } catch (err) {
       message.error("send fialed");
+      console.log("eerr", err);
 
       setLoading(false);
     }
