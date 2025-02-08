@@ -147,16 +147,20 @@ const ClientList = ({ collapsed }) => {
     try {
       setLoading(true);
       const response = await api.post(`/user/createSubscription`, {
-        email: selectedAssistant.email,
-        userId: selectedAssistant.id,
+        email: recored.email,
+        userId: recored.id,
 
-        profile: selectedAssistant.Profile,
+        profile: recored.Profile,
       });
       setPromostionModal(false);
 
       searchData();
+      message.success("send successfully!");
+
       setLoading(false);
     } catch (err) {
+      message.error("send fialed");
+
       setLoading(false);
     }
   };
@@ -171,8 +175,11 @@ const ClientList = ({ collapsed }) => {
         subject: title,
       });
       setSenEmailModel(false);
+      setValue("");
+      setTitle("");
 
       searchData();
+      message.success("Email send successfully!");
 
       setLoading(false);
     } catch (err) {
@@ -305,6 +312,7 @@ const ClientList = ({ collapsed }) => {
                 onClick={() => {
                   console.log(recored, "recored profle");
                   setSelectedAssistant(recored?.id);
+                  setSelectedClient(recored);
                   setPromostionModal(true);
                 }}
                 disabled={!recored?.accountStatus}
