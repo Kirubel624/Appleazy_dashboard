@@ -153,6 +153,7 @@ const ClientList = ({ collapsed }) => {
 
         profile: selectedClient.Profile,
       });
+
       setPromostionModal(false);
 
       searchData();
@@ -303,10 +304,7 @@ const ClientList = ({ collapsed }) => {
         return (
           <div>
             {recored.isPromotion_received ? (
-              <p
-                style={{ backgroundColor: "#168A53" }}
-                className="bg-green-600 hover:bg-green-700"
-              >
+              <p className="border py-1 px-3 rounded-lg text-center bg-slate-200 ">
                 Sent
               </p>
             ) : (
