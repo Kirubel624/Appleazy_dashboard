@@ -58,9 +58,9 @@ const ChatBody = () => {
   return (
     <div className="flex-1 max-h-full overflow-y-auto flex flex-col py-2 px-6">
       <div className="flex-1 max-h-full overflow-y-auto">
-        {chats?.map((chat) => (
-          <Message chat={chat} />
-        ))}
+        {/* {chats?.map((chat) => ( */}
+        <Message chats={chats} />
+
         {/* {Array(8)
           .fill(2)
           .map((x, i) => {
@@ -124,7 +124,8 @@ const ChatBody = () => {
                 }
               }}
               style={{ backgroundColor: "#168A53" }}
-              className="bg-[#168A53] rounded-lg flex justify-center items-center py-2 px-3 ">
+              className="bg-[#168A53] rounded-lg flex justify-center items-center py-2 px-3 "
+            >
               <SendOutlined style={{ fontSize: 20, color: "white" }} />
             </Button>
             <button className="rounded-lg flex justify-center items-center py-2 px-3 ">
