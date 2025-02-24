@@ -19,6 +19,7 @@ import jobReducer from "../views/assistants/jobReducer";
 import notificationReducer from "../views/dashboard/notificationReducer";
 import chatSlice from "./chatReducer";
 import socketSlice from "./socketReducer";
+import userSlice from "../views/users/UsersRedux";
 
 // Persist configuration for the auth reducer
 const authPersistConfig = {
@@ -38,6 +39,8 @@ export const store = configureStore({
     job: jobReducer,
     notifications: notificationReducer,
     chat: chatSlice,
+    users: userSlice,
+
     socket: socketSlice,
   },
   middleware: (getDefaultMiddleware) =>

@@ -44,7 +44,7 @@ export const { updateUsersState } = usersSlice.actions;
 
 export default usersSlice.reducer;
 export const usersSearchText = (state) => state.users.query.searchText;
-export const usersPage = (state) => state.users.query.page;
-export const usersLimit = (state) => state.users.query.limit;
-export const usersSort = (state) => state.users.query.sort;
-export const usersQuery = (state) => state.users.query;
+export const usersPage = (state) => state.users?.query.page;
+export const usersLimit = (state) => state.users?.query.limit;
+export const usersSort = (state) => state.users?.query.sort;
+export const usersQuery = (state) => state.users?.query;

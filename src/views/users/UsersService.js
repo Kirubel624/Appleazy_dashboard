@@ -1,4 +1,5 @@
 
+    
 import api from '../../api/api';
 
 class UsersService {
@@ -18,7 +19,7 @@ class UsersService {
             });
     }
 
-    searchUser({page, limit,searchText=null,sort=null,order, username}) {
+    searchUser({page, limit,searchText=null,sort=null,order}) {
         let url = `/users?page=${page}&limit=${limit}`
         if(sort){
     const sortValue = order == 'ascend' ? sort : order == 'descend' ? '-'+sort:'';
@@ -56,7 +57,7 @@ class UsersService {
 
     usersDo({method,payload}){
         return api
-            .post("/users/do",{method:method,payload})
+            .post("/users/do",{method,payload})
             .then(response => {
                 return response.data.data;
             });
@@ -72,3 +73,5 @@ class UsersService {
 }
 
 export default new UsersService();
+
+    

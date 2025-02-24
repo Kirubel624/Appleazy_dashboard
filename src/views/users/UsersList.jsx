@@ -1,31 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
-import {
-  MoreOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  DownOutlined,
-  PrinterOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
-import { Button, Dropdown, Input, Popover, Select } from "antd";
+import { MoreOutlined, ReloadOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Input, Select } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 
-import userService from "./UsersService";
+import usersService from "./UsersService";
 import UsersEdit from "./UsersEdit";
 import { NavLink, useSearchParams } from "react-router-dom";
-import { SearchInputStyle } from "../../components/commons/CommonStyles";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUsers, updateUsersState, usersSearchText } from "./UsersRedux";
-import { useTranslation } from "react-i18next";
 
-const UsersList = () => {
+const UsersList = ({ collapsed }) => {
   const [usersData, setUsersData] = useState([]);
   const [total, setTotal] = useState();
-  const { t } = useTranslation();
+
   const searchText = useSelector(usersSearchText);
   const [loading, setLoading] = useState();
   const [usersSelection, setUsersSelection] = useState([]);
@@ -55,6 +45,7 @@ const UsersList = () => {
       const { payload } = await dispatch(searchUsers());
       setUsersData(payload.data);
       setTotal(payload.total);
+      console.log(payload);
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -106,14 +97,13 @@ const UsersList = () => {
         searchText: "",
       })
     );
-
     searchData();
   };
 
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await userService.deleteUser(modeID);
+      const data = await usersService.deleteUser(modeID);
       setIsDeleteModalOpen(false);
 
       searchData();
@@ -140,11 +130,23 @@ const UsersList = () => {
       key: "delete",
       label: <Button type="text"> Delete</Button>,
     },
+    {
+      key: "3",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.luohanacademy.com"
+        >
+          3rd menu item
+        </a>
+      ),
+    },
   ];
 
   const columns = [
     {
-      title: t("Action"),
+      title: " ",
       dataIndex: "action",
       render: (_, recored) => {
         return (
@@ -169,75 +171,42 @@ const UsersList = () => {
     },
 
     {
-      title: t("Username"),
-      dataIndex: "username",
+      title: "name",
+      dataIndex: "name",
       render: (text, recored) => {
-        return <p>{text}</p>;
+        return (
+          <NavLink
+            style={{ color: "#2f1dca" }}
+            state={recored}
+            to={`${recored._id}`}
+          >
+            {text}
+          </NavLink>
+        );
       },
       sorter: true,
     },
 
     {
-      title: t("Email"),
+      title: "username",
+      dataIndex: "username",
+      sorter: true,
+    },
+
+    {
+      title: "email",
       dataIndex: "email",
       sorter: true,
-    },
-    {
-      title: t("Type"),
-      dataIndex: "type",
-    },
-    {
-      title: t("isSystemAdmin"),
-      dataIndex: "isSystemAdmin",
-      render: (text, recored) => {
-        return recored.isSystemAdmin ? <p>true</p> : <p>false</p>;
-      },
-    },
-    {
-      title: t("Phone_Number"),
-      dataIndex: "phoneNumber",
-    },
-    {
-      title: t("Gender"),
-      dataIndex: "gender",
-    },
-    {
-      title: t("Location"),
-      dataIndex: "location",
-    },
-    {
-      title: t("Sector"),
-      dataIndex: "status",
-      render: (text, record) => {
-        return <p>{record?.sector?.name}</p>;
-      },
-    },
-
-    {
-      title: t("State"),
-      dataIndex: "status",
-      render: (text, record) => {
-        return <p>{record?.state?.name}</p>;
-      },
-    },
-    {
-      title: t("Zone"),
-      dataIndex: "status",
-      render: (text, record) => {
-        return <p>{record?.zone?.name}</p>;
-      },
-    },
-    {
-      title: t("Woreda"),
-      dataIndex: "status",
-      render: (text, record) => {
-        return <p>{record?.wereda?.name}</p>;
-      },
     },
   ];
 
   return (
-    <div>
+    <div
+      className={`${
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
+      {" "}
       {isModalOpen ? (
         <CommonModal
           width={1000}
@@ -245,9 +214,8 @@ const UsersList = () => {
           setIsModalOpen={setIsModalOpen}
         >
           <UsersEdit
-            searchData={searchData}
             usersData={usersData}
-            setUsersData={setUsersData}
+            searchData={searchData}
             setMode={setModeID}
             mode={modeID}
             isModelOpen={isModalOpen}
@@ -257,7 +225,6 @@ const UsersList = () => {
       ) : (
         ""
       )}
-
       {isDeleteModalOpen ? (
         <CommonDeleteModal
           setIsModalOpen={setIsDeleteModalOpen}
@@ -270,72 +237,30 @@ const UsersList = () => {
       ) : (
         ""
       )}
-
-      {/* <HeaderStyle>
-                <div className='header_left'>
-                    <p>Users</p>
-                </div>
-
-                <Button onClick={handleReload} size='large' >
-                    <ReloadOutlined size={25} style={{ color: 'white', fontSize: 20 }} />
-                </Button>
-
-
-                <div className='header_right'>
-                    <Button onClick={() => {
-                        setModeID('')
-                        setIsModalOpen(true)
-                    }} size='large' >Add</Button>
-
-                </div>
-
-
-            </HeaderStyle> */}
-
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">{t("Users")}</h1>
+          <h1 className="text-2xl font-bold pb-4">Userss</h1>
           <div className="flex">
-            {/* <Popover
-              placement="bottomLeft"
-              // title={text}
-              content={<FilterItems />}
-              arrow={false}
-              trigger="click"
-            >
-              <button className="py-2 px-5 drop-shadow-sm rounded-l border-[1px] border-[#D9D9D9]">
-                <div className="flex">
-                  <AdjustmentsHorizontalIcon className="w-5 border-" />
-                  <p className="ml-2">Filter</p>
-                </div>
-              </button>
-            </Popover> */}
-
-            {/* <Button text="{} "
-                style=""/>  */}
-
             <Input
               onChange={searchHandler}
-              placeholder={t("Search")}
+              placeholder="Search"
               value={searchText}
               allowClear
-              // style={{ borderRadius: "0px 0px 0px 0px" }}
-              className=" drop-shadow-sm py-3  rounded-xl "
+              style={{ borderRadius: "0px 0px 0px 0px" }}
+              className=" drop-shadow-sm rounded-r py-[0.15rem]"
             />
             {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
               <Select
                 onChange={(val) => {
-                  dispatch(updateStoresState({ category: val }));
+                
                   searchData();
                 }}
                 bordered={false}
-                //   style={{ borderRadius: "0px 8px 8px 0px" }}
+                //   style={ borderRadius: "0px 8px 8px 0px" }
                 className=""
-                placeholder={t("Select item category")} 
+                placeholder="Select item category"
               >
-                <Option value={""}>All</Option>
-                <Option value={"spare_part"}>Spare part</Option>
-                <Option value={"lubricant"}>Lubricants</Option>
+               
               </Select>
             </div> */}
           </div>
@@ -358,26 +283,13 @@ const UsersList = () => {
               setModeID("");
             }}
           >
-            {" "}
             <span className="flex flex-row">
               <PlusOutlined />
-              <p className="pl-2">{t("add")}</p>
+              <p className="pl-2">Add Item</p>
             </span>
           </button>
         </span>
       </span>
-
-      {/* <div className="flex flex-row gap-6">
-        <SearchInputStyle>
-          <Input
-            onChange={searchHandler}
-            placeholder="Search"
-            value={searchText}
-            allowClear
-          />
-        </SearchInputStyle>
-      </div> */}
-
       <CommonTable
         rowSelectionType={"checkbox"}
         data={usersData}
@@ -387,50 +299,9 @@ const UsersList = () => {
         total={total}
         loadding={loading}
         tableChange={tableChange}
-        scroll={{
-          x: "full",
-        }}
       />
     </div>
   );
 };
-
-const HeaderStyle = styled.div`
-  display: flex;
-  margin: 0;
-  padding: 20px;
-  margin-bottom: 40px;
-  position: sticky;
-  top: 0px;
-  z-index: 100;
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(217, 217, 217, 1) 0%,
-    rgba(0, 0, 0, 1) 100%,
-    rgba(0, 212, 255, 1) 100%
-  );
-  .header_left {
-    p {
-      color: 1e2987;
-      font-size: 20px;
-    }
-  }
-
-  button {
-    margin-left: 15px;
-  }
-  .header_right {
-    button {
-      margin-left: 15px;
-      background: #096e30;
-      padding: 7px 30px !important;
-      color: wheat;
-    }
-    button:hover {
-      color: white;
-    }
-  }
-`;
 
 export default UsersList;

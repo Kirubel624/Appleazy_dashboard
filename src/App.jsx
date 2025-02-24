@@ -30,7 +30,7 @@ import ChatLayout from "./views/chat/ChatLayout";
 import BoddyCon from "./views/chat/BoddyCon";
 import { useSelector } from "react-redux";
 import Announcements from "./views/Announcement/Announcements";
-
+import UsersList from "./views/users/UsersList";
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
@@ -189,7 +189,8 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }>
+            }
+          >
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
@@ -233,6 +234,15 @@ function App() {
               </Dashboard>
             }
             path="/profilesettings"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <UsersList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/users"
           />
           <Route
             element={

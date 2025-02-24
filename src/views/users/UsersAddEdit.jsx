@@ -1,13 +1,20 @@
 
-    import React, { useEffect, useState } from 'react'
-    import { Button, Form, Input, InputNumber, Select, Spin, Switch,DatePicker,Divider } from 'antd';
-    import styled from 'styled-components';
-    import { ButtonStyle, FlexStyle, FormStyle } from '../../components/commons/CommonStyles';
-    import usersService from './UsersService';
-    import CommonModal from '../../components/commons/CommonModel';
-    import UsersPick from './UsersPick';
-    import dayjs from 'dayjs';
     
+import React, { useEffect, useState } from 'react'
+import { Button, Divider, Dropdown, Form, Input, InputNumber, Select, Spin, Switch,DatePicker } from 'antd';
+import styled from 'styled-components';
+import { ButtonStyle, FlexStyle, FormStyle } from '../../components/commons/CommonStyles';
+import usersService from './UsersService';
+import CommonModal from '../../components/commons/CommonModel';
+import UsersPick from './UsersPick';
+import dayjs from 'dayjs';
+import CommonTable from '../../components/commons/CommonTable';
+import {
+  MoreOutlined,
+  ReloadOutlined
+} from '@ant-design/icons';
+
+import { NavLink } from 'react-router-dom';
     const { Option } = Select;
 
     const validateMessages = {
@@ -21,11 +28,15 @@
     },
     };
     
+    
+    
     const UsersEdit = ({setIsModalOpen,isModelOpen,mode,setMode,usersData,searchData}) => {
-    const [form] = Form.useForm();
-    const [switch2,setSwitch2] = useState("")
-    const [loading,setLoading] = useState("")
-    const [userPick,setUserPick] = useState(false)
+      const [usersData2, setUsersData2] = useState([])
+
+      const [form] = Form.useForm();
+      const [switch2,setSwitch2] = useState("")
+      const [loading,setLoading] = useState("")
+      const [userPick,setUserPick] = useState(false)
 
 
     
@@ -50,7 +61,7 @@
 
 
     const handleReset = () => {
-        form.resetFields(); // Reset form fields
+        form.resetFields();
     }; 
 
     const userPickHandler=(data)=>{
@@ -61,15 +72,16 @@
     }
 
 
-    const onAdd = async(datas)=>{
+    const onAdd = async(e)=>{
+      e.preventDefault();
         try{
 
         setLoading(true);
 
-        const data = await usersService.createUser(datas.user)
+        const data = await usersService.usersDo({method:'add_list_to_user',payload:{data:usersData2}})
         setIsModalOpen(false)
+        
         searchData()
-
         setLoading(false);
 
         }catch(err){
@@ -91,16 +103,95 @@
         }catch(err){
         setLoading(false);
         }
-    } 
+    }
     
 
     const onFinish = (values) => {
-        mode == ''? onAdd(values):onUpdate(values)
+      console.log("===========")
+        mode == ''? handleAddToList(values):onUpdate(values)
     };
+    const handleAddToList = (e)=>{
+      // e.preventDefault()
+      setUsersData2([{...form.getFieldsValue()?.user,_id:new Date().getTime()},...usersData2])
+      handleReset()
+    }
     
     
+    const onClick = ({ key }, record) => {
+      if (key == 'edit') {
+        console.log("========",record)
+
+        form.setFieldsValue({user:record})
+        const data = usersData2.filter((user)=>user._id !== record._id)
+        setUsersData2(data)
+
+      } else if (key === 'delete') {
+        console.log("========",record)
+          const data = usersData2.filter((user)=>user._id !== record._id)
+          setUsersData2(data)
+      }
+  };
+    const items = [
+      {
+          key: 'edit',
+          label: (
+              <Button type="text">Edit</Button>
+          ),
+
+
+      },
+      {
+          key: 'delete',
+          label: (
+              <Button type="text"> Delete</Button>
+          ),
+      },
+      {
+          key: '3',
+          label: (
+              <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                  3rd menu item
+              </a>
+          ),
+      },
+  ];
+  
+     const columns = [
+         
     
-        return (
+     
+            {
+                title: 'name',
+                dataIndex: 'name',
+
+            },
+             
+            {
+                title: 'username',
+                dataIndex: 'username',
+
+            },
+             
+            {
+                title: 'email',
+                dataIndex: 'email',
+
+            },
+             
+            {
+                title: 'password',
+                dataIndex: 'password',
+
+            },
+            
+         
+         ];
+    
+    
+  
+  
+  
+    return (
     <div>
       {/*******  picks **********/}
       {userPick ? <CommonModal
@@ -121,18 +212,20 @@
       <button onClick={() => setUserPick(true)}>hhhhhh</button>
       
       
+      
     <FormStyle
         form={form}
         layout="vertical"
         name="nest-messages"
         onFinish={onFinish}
-        onError={() => { } }
+        onError={() => {} }
 
         validateMessages={validateMessages}
       >
       
+      
 
-    
+        
             <Form.Item
             className=' flex-1'
             name={['user', 'name']}
@@ -194,23 +287,44 @@
             </Form.Item>
             
       
+      
+    {usersData2.length>0 && <CommonTable
+                    rowSelectionType={"checkbox"}
+                    data={usersData2}
+                    columns={columns}
+                    total={usersData2.lenght}
+                    loadding={loading}
+                    type={true}
+
+                />}
+
+                <Divider/>
+            
+      
       <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)} >
             cancel
           </button>
-          <button type="submit" >
+
+          {mode?<button type='submit'  >
+           Submit
+          </button>:<button type='submit'  >
+            Add List
+          </button>}
+
+          {!mode&&<button disabled={usersData2.length==0} onClick={onAdd} className={usersData2.length>0?"":'disable'} type='submit'  >
             Submit
-          </button>
+          </button>}
         </ButtonStyle>
       </FormStyle>
-      
     
+      
+       
       </div>
   )
-      
-      
-      
     
+    
+  
    }  
    
    
@@ -238,4 +352,5 @@
 
 
 export default UsersEdit
+    
     
