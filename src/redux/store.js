@@ -21,6 +21,8 @@ import chatSlice from "./chatReducer";
 import socketSlice from "./socketReducer";
 import userSlice from "../views/users/UsersRedux";
 import roelSlice from "../views/roles/RolesRedux";
+import permissionsSlice from "../views/permissions/PermissionsRedux";
+
 // Persist configuration for the auth reducer
 const authPersistConfig = {
   key: "auth",
@@ -41,6 +43,7 @@ export const store = configureStore({
     chat: chatSlice,
     users: userSlice,
     roles: roelSlice,
+    permissions: permissionsSlice,
 
     socket: socketSlice,
   },
