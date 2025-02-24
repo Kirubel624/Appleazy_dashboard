@@ -61,6 +61,8 @@ const ChatBody = () => {
         {/* {chats?.map((chat) => ( */}
         <Message chats={chats} />
 
+        {/* {JSON.stringify(chats)} */}
+
         {/* {Array(8)
           .fill(2)
           .map((x, i) => {
@@ -99,6 +101,7 @@ const ChatBody = () => {
                       isMe: false,
                       createdAt: new Date(),
                       isAdmin: true,
+                      createdAt: new Date().toISOString(),
                     })
                   );
                   // const userListW = userList?.filter(
