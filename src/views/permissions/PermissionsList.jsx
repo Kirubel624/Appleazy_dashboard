@@ -17,7 +17,7 @@ import {
   permissionsSearchText,
 } from "./PermissionsRedux";
 
-const PermissionsList = () => {
+const PermissionsList = ({ collapsed }) => {
   const [permissionsData, setPermissionsData] = useState([]);
   const [total, setTotal] = useState();
 
@@ -184,7 +184,11 @@ const PermissionsList = () => {
   ];
 
   return (
-    <div>
+    <div
+      className={`${
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       {isModalOpen ? (
         <CommonModal
           title={"Access Control"}

@@ -31,6 +31,8 @@ import BoddyCon from "./views/chat/BoddyCon";
 import { useSelector } from "react-redux";
 import Announcements from "./views/Announcement/Announcements";
 import UsersList from "./views/users/UsersList";
+import RolesList from "./views/roles/RolesList";
+import PermissionsList from "./views/permissions/PermissionsList";
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
@@ -244,6 +246,26 @@ function App() {
             }
             path="/users"
           />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <PermissionsList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/permissions"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <RolesList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/roles"
+          />
+
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>

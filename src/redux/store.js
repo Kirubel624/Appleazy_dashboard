@@ -20,7 +20,7 @@ import notificationReducer from "../views/dashboard/notificationReducer";
 import chatSlice from "./chatReducer";
 import socketSlice from "./socketReducer";
 import userSlice from "../views/users/UsersRedux";
-
+import roelSlice from "../views/roles/RolesRedux";
 // Persist configuration for the auth reducer
 const authPersistConfig = {
   key: "auth",
@@ -40,6 +40,7 @@ export const store = configureStore({
     notifications: notificationReducer,
     chat: chatSlice,
     users: userSlice,
+    roles: roelSlice,
 
     socket: socketSlice,
   },

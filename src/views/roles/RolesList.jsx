@@ -26,7 +26,7 @@ import RolepermissionsService from "../rolepermissions/RolepermissionsService";
 
 const { Panel } = Collapse;
 
-const RolesList = () => {
+const RolesList = ({ collapsed }) => {
   const [rolesData, setRolesData] = useState([]);
   const [total, setTotal] = useState();
   const [permissions, setPermissions] = useState([]);
@@ -274,7 +274,11 @@ const RolesList = () => {
   };
 
   return (
-    <div>
+    <div
+      className={`${
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       {isModalOpen && (
         <CommonModal
           width={1000}
