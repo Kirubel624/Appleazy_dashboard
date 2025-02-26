@@ -7,7 +7,7 @@
     import { Divider, Input } from 'antd';
 
     
-    const Group_usersPick = ({setIsModalOpen,selectHandler}) => {
+    const Group_usersPick = ({setIsModalOpen,type="radio",selectHandler}) => {
     const [group_usersData, setGroup_usersData] = useState([])
     const [total, setTotal] = useState()
     const [searchParams,setSearchParams] = useSearchParams()
@@ -102,7 +102,7 @@
 
 
     <CommonTable
-                rowSelectionType={"radio"}
+                rowSelectionType={type}
                 data={group_usersData}
                 columns={columns}
                 setSelection={setGroup_usersSelection}

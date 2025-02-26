@@ -32,7 +32,9 @@ import { useSelector } from "react-redux";
 import Announcements from "./views/Announcement/Announcements";
 import UsersList from "./views/users/UsersList";
 import RolesList from "./views/roles/RolesList";
-import PermissionsList from "./views/permissions/PermissionsList";import JobsList from "./views/Jobs/JobsList";
+import Group_usersList from "./views/group_users/Group_usersList";
+import PermissionsList from "./views/permissions/PermissionsList";
+import JobsList from "./views/Jobs/JobsList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -192,8 +194,7 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }
-          >
+            }>
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
@@ -273,6 +274,18 @@ function App() {
               </Dashboard>
             }
             path="/roles"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <Group_usersList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/roles/:id"
           />
 
           <Route

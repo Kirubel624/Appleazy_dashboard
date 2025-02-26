@@ -258,7 +258,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
 
   const items2 = [
     {
-      key: "users",
+      key: "/users",
       label: "User",
     },
     {
@@ -270,15 +270,15 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       //   label: 'Group',
       // },
       // {
-      key: "roles",
+      key: "/roles",
       label: "Role",
     },
     {
-      key: "permissions",
+      key: "/permissions",
       label: "Permission",
     },
     {
-      key: "settings",
+      key: "/settings",
       label: "Setting",
     },
   ];

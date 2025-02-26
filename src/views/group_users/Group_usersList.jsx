@@ -18,7 +18,7 @@ import {
 } from "./Group_usersRedux";
 import UsersPick from "../users/UsersPick";
 
-const Group_usersList = () => {
+const Group_usersList = ({ collapsed }) => {
   const [group_usersData, setGroup_usersData] = useState([]);
   const [total, setTotal] = useState();
   const [userPick, setUserPick] = useState(false);
@@ -50,6 +50,7 @@ const Group_usersList = () => {
 
   const userPickHandler = async (data) => {
     setUserPickData(data);
+    console.log("data:::::", data);
     try {
       setLoading(true);
       const res = await group_usersService.group_userDo({
@@ -232,7 +233,11 @@ const Group_usersList = () => {
   ];
 
   return (
-    <div>
+    <div
+      className={`${
+        collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       {isModalOpen ? (
         <CommonModal
           width={1000}
@@ -258,6 +263,7 @@ const Group_usersList = () => {
           setIsModalOpen={setUserPick}
         >
           <UsersPick
+            type="checkbox"
             setIsModalOpen={setUserPick}
             selectHandler={userPickHandler}
           />
