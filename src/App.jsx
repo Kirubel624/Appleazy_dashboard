@@ -30,6 +30,7 @@ import ChatLayout from "./views/chat/ChatLayout";
 import BoddyCon from "./views/chat/BoddyCon";
 import { useSelector } from "react-redux";
 import Announcements from "./views/Announcement/Announcements";
+import JobsList from "./views/Jobs/JobsList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -206,6 +207,14 @@ function App() {
               </Dashboard>
             }
             path="/exercise"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <JobsList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/jobs"
           />
           <Route
             element={

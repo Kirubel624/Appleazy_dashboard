@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
+import Icon, {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
@@ -15,6 +15,8 @@ import {
   CheckSquareOutlined,
   CopyOutlined,
   MessageOutlined,
+  UsergroupAddOutlined,
+  TransactionOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -42,7 +44,17 @@ import { IoCheckmarkDone } from "react-icons/io5";
 import AllNotifications from "./AllNotifications";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import Notifications from "./Notifications";
-
+import { RiCoupon2Line } from "react-icons/ri";
+import { VscFeedback } from "react-icons/vsc";
+import { GrAnnounce } from "react-icons/gr";
+import { TfiWrite } from "react-icons/tfi";
+import { BsPersonGear } from "react-icons/bs";
+import { GrTransaction } from "react-icons/gr";
+import { IoBookOutline } from "react-icons/io5";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { BiBookContent } from "react-icons/bi";
+import { IoBriefcaseOutline } from "react-icons/io5";
+import { FaRegHourglass } from "react-icons/fa";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -129,33 +141,69 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     },
   ];
   const menuItems = [
-    getItem("Clients", "/clients", <BookOutlined />),
-
-    getItem("Assistants", "/assistants", <BookOutlined />),
-    getItem("Transactions", "/transactions", <CheckSquareOutlined />),
-
-    getItem("Training", "/training", <BookOutlined />),
-    getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-    getItem("Announcement", "/announcement", <CheckSquareOutlined />),
-    getItem("Blog", "/blog", <CheckSquareOutlined />),
-    getItem("Chat", "/chat", <MessageOutlined />),
-    getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
-
-    getItem("Coupons", "/coupons", <CheckSquareOutlined />),
     getItem(
-      <p
-        onClick={showModal}
-        className="bg-green-700 rounded-full text-center  ">
+      "User Management",
+      null,
+      <Icon component={() => <BsPersonGear />} />,
+      [
+        getItem("Clients", "/clients", <UserOutlined />),
+        getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
+      ]
+    ),
+    getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
+      getItem("Assigned", "/jobs", <UserOutlined />),
+      getItem(
+        "Unassigned",
+        "/unassigned-jobs",
+        <Icon component={() => <FaRegHourglass />} />
+      ),
+    ]),
+
+    getItem("Financial", null, <Icon component={() => <GrTransaction />} />, [
+      getItem("Transactions", "/transactions", <TransactionOutlined />),
+      getItem(
+        "Coupons",
+        "/coupons",
+        <Icon component={() => <RiCoupon2Line />} />
+      ),
+    ]),
+
+    getItem("Course", null, <Icon component={() => <IoBookOutline />} />, [
+      getItem("Training", "/training", <BookOutlined />),
+      getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+    ]),
+
+    getItem(
+      "Communication",
+      null,
+      <Icon component={() => <IoChatbubblesOutline />} />,
+      [
+        getItem("Chat", "/chat", <MessageOutlined />),
+        getItem(
+          "Feedback",
+          "/feedbacks",
+          <Icon component={() => <VscFeedback />} />
+        ),
+      ]
+    ),
+
+    getItem("Content", null, <Icon component={() => <BiBookContent />} />, [
+      getItem(
+        "Announcement",
+        "/announcement",
+        <Icon component={() => <GrAnnounce />} />
+      ),
+      getItem("Blog", "/blog", <Icon component={() => <TfiWrite />} />),
+    ]),
+
+    getItem(
+      <p onClick={showModal} className="bg-green-700 rounded-full text-center">
         Signup Link
       </p>,
       "#"
-      // <CheckSquareOutlined />
     ),
-
-    // getItem("Job board", "/job_board", <InfoCircleOutlined />),
-
-    // getItem("History", "/histry", <BarChartOutlined />),
   ];
+
   const handleCopy = () => {
     navigator.clipboard
       .writeText(link) // Copy the text to clipboard
@@ -229,7 +277,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           height: "100vh",
           position: "fixed",
           // inset: 0,
-
+          overflow: "auto",
           background: "black",
           borderRight: "1px solid #E6EFF5",
           // display: collapsed && "none",

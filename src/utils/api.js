@@ -5,7 +5,7 @@ const LOCAL_URL = "http://localhost:8001/api/v1";
 const LOCAL_NOTIFICATION_URL = "http://localhost:8000/api/v1";
 const HOSTED_NOTIFICATION_URL = "https://notify.appleazy.com/api/v1";
 const api = axios.create({
-  baseURL: HOSTED_URL,
+  baseURL: LOCAL_URL,
 });
 export const apiAuth = axios.create({
   // baseURL: "http://192.168.0.116:3000",

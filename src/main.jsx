@@ -8,6 +8,8 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store.js";
 import { setup } from "./api/api.js";
+import "swiper/css";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
