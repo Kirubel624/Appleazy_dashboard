@@ -145,8 +145,8 @@ const RolesList = ({ collapsed }) => {
     } else if (key === "delete") {
       setIsDeleteModalOpen(true);
     } else if (key === "addPermission") {
-      setSelectedRoleId(record._id);
-      fetchPermissions(record._id);
+      setSelectedRoleId(record.id);
+      fetchPermissions(record.id);
     }
   };
 
@@ -183,7 +183,7 @@ const RolesList = ({ collapsed }) => {
               type="text"
               icon={<MoreOutlined style={{ fontSize: 20 }} />}
               onClick={() => {
-                setModeID(record._id);
+                setModeID(record.id);
               }}
             ></Button>
           </Dropdown>
@@ -198,7 +198,7 @@ const RolesList = ({ collapsed }) => {
           <NavLink
             style={{ color: "#2f1dca" }}
             state={record}
-            to={`${record._id}`}
+            to={`${record.id}`}
           >
             {text}
           </NavLink>
@@ -345,31 +345,31 @@ const RolesList = ({ collapsed }) => {
                     <Checkbox
                       onChange={(e) =>
                         handleSelectAllForPermission(
-                          permission._id,
+                          permission.id,
                           e.target.checked
                         )
                       }
                       checked={
-                        selectedPermissions[permission._id]?.create &&
-                        selectedPermissions[permission._id]?.delete &&
-                        selectedPermissions[permission._id]?.update &&
-                        selectedPermissions[permission._id]?.read &&
-                        selectedPermissions[permission._id]?.readOnly
+                        selectedPermissions[permission.id]?.create &&
+                        selectedPermissions[permission.id]?.delete &&
+                        selectedPermissions[permission.id]?.update &&
+                        selectedPermissions[permission.id]?.read &&
+                        selectedPermissions[permission.id]?.readOnly
                       }
                     >
                       Select All
                     </Checkbox>
                   </div>
                 }
-                key={permission._id}
+                key={permission.id}
               >
                 <div className="permission-group">
                   <div className="permission-actions">
                     <Checkbox
-                      checked={selectedPermissions[permission._id]?.create}
+                      checked={selectedPermissions[permission.id]?.create}
                       onChange={(e) =>
                         handlePermissionChange(
-                          permission._id,
+                          permission.id,
                           "create",
                           e.target.checked
                         )
@@ -378,10 +378,10 @@ const RolesList = ({ collapsed }) => {
                       Create
                     </Checkbox>
                     <Checkbox
-                      checked={selectedPermissions[permission._id]?.delete}
+                      checked={selectedPermissions[permission.id]?.delete}
                       onChange={(e) =>
                         handlePermissionChange(
-                          permission._id,
+                          permission.id,
                           "delete",
                           e.target.checked
                         )
@@ -390,10 +390,10 @@ const RolesList = ({ collapsed }) => {
                       Delete
                     </Checkbox>
                     <Checkbox
-                      checked={selectedPermissions[permission._id]?.update}
+                      checked={selectedPermissions[permission.id]?.update}
                       onChange={(e) =>
                         handlePermissionChange(
-                          permission._id,
+                          permission.id,
                           "update",
                           e.target.checked
                         )
@@ -402,10 +402,10 @@ const RolesList = ({ collapsed }) => {
                       Update
                     </Checkbox>
                     <Checkbox
-                      checked={selectedPermissions[permission._id]?.read}
+                      checked={selectedPermissions[permission.id]?.read}
                       onChange={(e) =>
                         handlePermissionChange(
-                          permission._id,
+                          permission.id,
                           "read",
                           e.target.checked
                         )
@@ -414,10 +414,10 @@ const RolesList = ({ collapsed }) => {
                       Read
                     </Checkbox>
                     <Checkbox
-                      checked={selectedPermissions[permission._id]?.readOnly}
+                      checked={selectedPermissions[permission.id]?.readOnly}
                       onChange={(e) =>
                         handlePermissionChange(
-                          permission._id,
+                          permission.id,
                           "readOnly",
                           e.target.checked
                         )

@@ -116,6 +116,7 @@ const Group_usersEdit = ({
           setIsModalOpen={setGroup_userPick}
         >
           <Group_usersPick
+            type="checkbox"
             setIsModalOpen={setGroup_userPick}
             selectHandler={group_userPickHandler}
           />

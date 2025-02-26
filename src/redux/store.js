@@ -22,6 +22,7 @@ import socketSlice from "./socketReducer";
 import userSlice from "../views/users/UsersRedux";
 import roelSlice from "../views/roles/RolesRedux";
 import permissionsSlice from "../views/permissions/PermissionsRedux";
+import group_usersReducer from "../views/group_users/Group_usersRedux"; // import the group_users
 
 // Persist configuration for the auth reducer
 const authPersistConfig = {
@@ -44,7 +45,7 @@ export const store = configureStore({
     users: userSlice,
     roles: roelSlice,
     permissions: permissionsSlice,
-
+    group_users: group_usersReducer,
     socket: socketSlice,
   },
   middleware: (getDefaultMiddleware) =>

@@ -32,7 +32,9 @@ import { useSelector } from "react-redux";
 import Announcements from "./views/Announcement/Announcements";
 import UsersList from "./views/users/UsersList";
 import RolesList from "./views/roles/RolesList";
+import Group_usersList from "./views/group_users/Group_usersList";
 import PermissionsList from "./views/permissions/PermissionsList";
+
 function App() {
   const [count, setCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
@@ -264,6 +266,18 @@ function App() {
               </Dashboard>
             }
             path="/roles"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <Group_usersList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/roles/:id"
           />
 
           <Route
