@@ -17,6 +17,7 @@ import Icon, {
   MessageOutlined,
   UsergroupAddOutlined,
   TransactionOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   Avatar,
@@ -29,6 +30,7 @@ import {
   message,
   Modal,
   Popover,
+  Space,
   theme,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -42,7 +44,7 @@ import {
 import { useSocket } from "../../hooks/useSocket";
 import { IoCheckmarkDone } from "react-icons/io5";
 import AllNotifications from "./AllNotifications";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import Notifications from "./Notifications";
 import { RiCoupon2Line } from "react-icons/ri";
 import { VscFeedback } from "react-icons/vsc";
@@ -254,6 +256,32 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     }
   };
 
+  const items2 = [
+    {
+      key: "users",
+      label: "User",
+    },
+    {
+      //   key: 'access_controls',
+      //   label: 'Access Controls',
+      // },
+      // {
+      //   key: 'groups',
+      //   label: 'Group',
+      // },
+      // {
+      key: "roles",
+      label: "Role",
+    },
+    {
+      key: "permissions",
+      label: "Permission",
+    },
+    {
+      key: "settings",
+      label: "Setting",
+    },
+  ];
   return (
     <Layout
       style={{
@@ -373,6 +401,35 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 </div>
               </Badge>
             </Popover>
+
+            {user?.isSystemAdmin ? (
+              <div className="max-h-[50px] flex items-center bg-white px-4 rounded-lg ">
+                <Dropdown
+                  onOpenChange={() => console.log("onOpenChange")}
+                  menu={{
+                    items: items2,
+                    onClick,
+                    selectable: true,
+                    defaultSelectedKeys: ["3"],
+                  }}
+                  trigger={["click"]}>
+                  <span className="header__right">
+                    {/* <WrenchScrewdriverIcon className="h-5 w-5 text-gray-700" /> */}
+                    {/* <IoIosArrowDown className="h-5 w-5 text-gray-700" /> */}
+
+                    <Space>
+                      <p className="text-black">{"System Admin"}</p>
+                      <DownOutlined />
+                    </Space>
+
+                    {/* */}
+                  </span>
+                </Dropdown>
+              </div>
+            ) : (
+              ""
+            )}
+
             <Dropdown
               menu={{
                 items,

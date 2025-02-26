@@ -20,6 +20,7 @@ import { ClipLoader } from "react-spinners";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
 const { Option } = Select;
 const { TextArea } = Input;
+
 const EditJob = ({
   editModal,
   setEditModal,

@@ -28,6 +28,20 @@ import {
 import useAPIPrivate from "../../hooks/useAPIPrivate";
 import ReactQuill from "react-quill";
 
+const emailTemplates = [
+  {
+    id: 1,
+    title: "Welcome Email",
+    subject: "Welcome to Appleazy! 🎉 Enjoy 15 Free Applications",
+    body: `Thank you for signing up for Appleazy! As one of the first 200 people, you get 15 free applications to jumpstart your job search.`,
+  },
+  {
+    id: 2,
+    title: "Completion Email",
+    subject: "Your Applications Are Complete! 🎉 Here's a Special Gift",
+    body: `Your applications are complete! As a thank-you, enjoy an exclusive coupon for 25 additional applications.`,
+  },
+];
 const ClientList = ({ collapsed }) => {
   const api = useAPIPrivate();
 
@@ -50,6 +64,7 @@ const ClientList = ({ collapsed }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedAssistant, setSelectedAssistant] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   const delayTimerRef = useRef(null);
   const dispatch = useDispatch();
@@ -174,8 +189,7 @@ const ClientList = ({ collapsed }) => {
         email: selectedClient.email,
         username: selectedClient.username,
 
-        body: value,
-        subject: title,
+        template: selectedTemplate?.id,
       });
       setSenEmailModel(false);
       setValue("");
@@ -531,13 +545,13 @@ const ClientList = ({ collapsed }) => {
           isModalOpen={senEmailModel}
           setIsModalOpen={setSenEmailModel}
         >
-          <p>Subject</p>
+          {/* <p>Subject</p>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter title"
-          />
-          <div className=" py-4"></div>
+          /> */}
+          {/* <div className=" py-4"></div>
 
           <p>Body</p>
           <ReactQuill
@@ -545,8 +559,26 @@ const ClientList = ({ collapsed }) => {
             theme="snow"
             value={value}
             onChange={setValue}
-          />
-          <div className=" py-12"></div>
+          /> */}
+          <h1 className="text-xl mt-4 ">Select an Email Template</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {emailTemplates.map((template) => (
+              <div
+                key={template.id}
+                className={`cursor-pointer border-2 rounded-lg p-4 shadow-md ${
+                  selectedTemplate?.id === template.id
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200"
+                }`}
+                onClick={() => setSelectedTemplate(template)}
+              >
+                <h2 className="text-lg font-semibold">{template.title}</h2>
+                <p className="text-sm text-gray-600 mt-2">{template.subject}</p>
+                <p className="text-xs text-gray-500 mt-1">{template.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className=" py-3"></div>
           <button
             onClick={() => setSenEmailModel(false)}
             className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white"
