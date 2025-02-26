@@ -152,14 +152,14 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
       ]
     ),
-    getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
-      getItem("Assigned", "/jobs", <UserOutlined />),
-      getItem(
-        "Unassigned",
-        "/unassigned-jobs",
-        <Icon component={() => <FaRegHourglass />} />
-      ),
-    ]),
+    // getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
+    //   getItem("Assigned", "/jobs", <UserOutlined />),
+    //   getItem(
+    //     "Unassigned",
+    //     "/unassigned-jobs",
+    //     <Icon component={() => <FaRegHourglass />} />
+    //   ),
+    // ]),
 
     getItem("Financial", null, <Icon component={() => <GrTransaction />} />, [
       getItem("Transactions", "/transactions", <TransactionOutlined />),
