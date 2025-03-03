@@ -39,7 +39,12 @@ class AuthService {
     const response = await api2.patch(`/user/update/${id}`, data);
     return response.data;
   }
-
+  async checkPermmision(permmission, value, api) {
+    const res = await api.get(
+      `/users/check-permission/${permmission}/${value}`
+    );
+    return res.data?.data;
+  }
   //   getCurrentUser() {
   //     return TokenService.getUser();
   //   }

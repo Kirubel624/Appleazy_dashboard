@@ -44,6 +44,7 @@ import { IoCheckmarkDone } from "react-icons/io5";
 import AllNotifications from "./AllNotifications";
 import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import Notifications from "./Notifications";
+import authService from "../auth/authService";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -67,7 +68,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const [link, setLink] = useState("");
   const notifications = useSocket(user?.id);
   const [viewSider, setViewSidebar] = useState(false);
-
+  const [menuItems, setmenuItems] = useState([]);
   const unreadNotifications =
     (notifications?.length > 0 &&
       notifications?.filter((notification) => !notification.isRead)) ||
@@ -86,6 +87,9 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     }
     setIsModalOpen(true);
   };
+  useEffect(() => {
+    getItems();
+  }, []);
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -130,35 +134,58 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       ),
     },
   ];
-  const menuItems = [
-    getItem("Clients", "/clients", <BookOutlined />),
+  const getItems = async () => {
+    console.log(
+      "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+    );
+    const item = [
+      (await authService.checkPermmision("clients", "readOnly", api)) &&
+        getItem("Clients", "/clients", <BookOutlined />),
 
-    getItem("Assistants", "/assistants", <BookOutlined />),
-    getItem("Transactions", "/transactions", <CheckSquareOutlined />),
+      (await authService.checkPermmision("assistants", "readOnly", api)) &&
+        getItem("Assistants", "/assistants", <BookOutlined />),
 
-    getItem("Training", "/training", <BookOutlined />),
-    getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-    getItem("Announcement", "/announcement", <CheckSquareOutlined />),
-    getItem("Blog", "/blog", <CheckSquareOutlined />),
-    getItem("Chat", "/chat", <MessageOutlined />),
-    getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
+      (await authService.checkPermmision("transactions", "readOnly", api)) &&
+        getItem("Transactions", "/transactions", <CheckSquareOutlined />),
 
-    getItem("Coupons", "/coupons", <CheckSquareOutlined />),
-    getItem(
-      <p
-        onClick={showModal}
-        className="bg-green-700 rounded-full text-center  "
-      >
-        Signup Link
-      </p>,
-      "#"
-      // <CheckSquareOutlined />
-    ),
+      (await authService.checkPermmision("training", "readOnly", api)) &&
+        getItem("Training", "/training", <BookOutlined />),
+      (await authService.checkPermmision("exercise", "readOnly", api)) &&
+        getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+      (await authService.checkPermmision("announcement", "readOnly", api)) &&
+        getItem("Announcement", "/announcement", <CheckSquareOutlined />),
+      (await authService.checkPermmision("blog", "readOnly", api)) &&
+        getItem("Blog", "/blog", <CheckSquareOutlined />),
+      (await authService.checkPermmision("chat", "readOnly", api)) &&
+        getItem("Chat", "/chat", <MessageOutlined />),
+      (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
+        getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
 
-    // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+      (await authService.checkPermmision("coupons", "readOnly", api)) &&
+        getItem("Coupons", "/coupons", <CheckSquareOutlined />),
+      (await authService.checkPermmision("signup-link", "readOnly", api)) &&
+        getItem(
+          <p
+            onClick={showModal}
+            className="bg-green-700 rounded-full text-center  "
+          >
+            Signup Link
+          </p>,
+          "#"
+          // <CheckSquareOutlined />
+        ),
 
-    // getItem("History", "/histry", <BarChartOutlined />),
-  ];
+      // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+
+      // getItem("History", "/histry", <BarChartOutlined />),
+    ];
+    console.log(
+      "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp22223",
+      item
+    );
+
+    setmenuItems(item);
+  };
   const handleCopy = () => {
     navigator.clipboard
       .writeText(link) // Copy the text to clipboard

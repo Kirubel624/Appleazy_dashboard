@@ -99,7 +99,6 @@ const ChatBody = () => {
                     addChat({
                       message: input,
                       isMe: false,
-                      createdAt: new Date(),
                       isAdmin: true,
                       createdAt: new Date().toISOString(),
                     })

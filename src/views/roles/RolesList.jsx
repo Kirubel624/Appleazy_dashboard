@@ -23,10 +23,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchRoles, updateRolesState, rolesSearchText } from "./RolesRedux";
 import permissionsService from "../permissions/PermissionsService";
 import RolepermissionsService from "../rolepermissions/RolepermissionsService";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Panel } = Collapse;
 
 const RolesList = ({ collapsed }) => {
+  const api = useAPIPrivate();
+
   const [rolesData, setRolesData] = useState([]);
   const [total, setTotal] = useState();
   const [permissions, setPermissions] = useState([]);
@@ -59,7 +62,7 @@ const RolesList = ({ collapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchRoles());
+      const { payload } = await dispatch(searchRoles(api));
       setRolesData(payload.data);
       setTotal(payload.total);
       setLoading(false);
