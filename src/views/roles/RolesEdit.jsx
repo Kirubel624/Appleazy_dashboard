@@ -25,6 +25,7 @@ import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
 
 import { NavLink } from "react-router-dom";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 const { Option } = Select;
 
 const validateMessages = {
@@ -47,6 +48,7 @@ const RolesEdit = ({
   searchData,
 }) => {
   const [rolesData2, setRolesData2] = useState([]);
+  const api = useAPIPrivate();
 
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
@@ -56,7 +58,7 @@ const RolesEdit = ({
   useEffect(() => {
     const featchData = async () => {
       try {
-        const data = await rolesService.getRole(mode);
+        const data = await rolesService.getRole(mode, api);
         form.setFieldsValue({
           role: { ...data, updatedAt: dayjs(data.updatedAt) },
         });
@@ -86,6 +88,7 @@ const RolesEdit = ({
       const data = await rolesService.rolesDo({
         method: "add_list_to_role",
         payload: { data: rolesData2 },
+        api: api,
       });
       setIsModalOpen(false);
 
@@ -100,7 +103,7 @@ const RolesEdit = ({
     try {
       setLoading(true);
 
-      const data = await rolesService.updateRole(datas.role, mode);
+      const data = await rolesService.updateRole(datas.role, mode, api);
       searchData();
       setIsModalOpen(false);
       setLoading(false);

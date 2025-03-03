@@ -162,7 +162,7 @@ const UsersList = ({ collapsed }) => {
               type="text"
               icon={<MoreOutlined style={{ fontSize: 20 }} />}
               onClick={() => {
-                setModeID(recored._id);
+                setModeID(recored.id);
               }}
             ></Button>
           </Dropdown>
@@ -178,7 +178,7 @@ const UsersList = ({ collapsed }) => {
           <NavLink
             style={{ color: "#2f1dca" }}
             state={recored}
-            to={`${recored._id}`}
+            to={`${recored.id}`}
           >
             {text}
           </NavLink>

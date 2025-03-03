@@ -184,6 +184,9 @@ const ClientList = ({ collapsed }) => {
   };
   const handleSend = async () => {
     try {
+      if (!selectedTemplate) {
+        return;
+      }
       setLoading(true);
       const response = await api.post(`/user/sendEmail`, {
         email: selectedClient.email,
@@ -566,12 +569,17 @@ const ClientList = ({ collapsed }) => {
               <div
                 key={template.id}
                 className={`cursor-pointer border-2 rounded-lg p-4 shadow-md ${
-                  selectedTemplate?.id === template.id
+                  selectedClient.emailTemplate
+                    .split(",")
+                    .includes(template.id.toString())
+                    ? "border-green-500 bg-green-50"
+                    : selectedTemplate?.id === template.id
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-200"
                 }`}
                 onClick={() => setSelectedTemplate(template)}
               >
+                {JSON.stringify()}
                 <h2 className="text-lg font-semibold">{template.title}</h2>
                 <p className="text-sm text-gray-600 mt-2">{template.subject}</p>
                 <p className="text-xs text-gray-500 mt-1">{template.body}</p>
