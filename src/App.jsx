@@ -34,6 +34,7 @@ import UsersList from "./views/users/UsersList";
 import RolesList from "./views/roles/RolesList";
 import Group_usersList from "./views/group_users/Group_usersList";
 import PermissionsList from "./views/permissions/PermissionsList";
+import JobsList from "./views/Jobs/JobsList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -193,8 +194,7 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }
-          >
+            }>
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
@@ -211,6 +211,14 @@ function App() {
               </Dashboard>
             }
             path="/exercise"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <JobsList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/jobs"
           />
           <Route
             element={

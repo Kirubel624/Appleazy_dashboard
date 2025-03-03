@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
+import Icon, {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
@@ -15,6 +15,8 @@ import {
   CheckSquareOutlined,
   CopyOutlined,
   MessageOutlined,
+  UsergroupAddOutlined,
+  TransactionOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 import {
@@ -44,8 +46,17 @@ import { IoCheckmarkDone } from "react-icons/io5";
 import AllNotifications from "./AllNotifications";
 import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import Notifications from "./Notifications";
-import authService from "../auth/authService";
-
+import { RiCoupon2Line } from "react-icons/ri";
+import { VscFeedback } from "react-icons/vsc";
+import { GrAnnounce } from "react-icons/gr";
+import { TfiWrite } from "react-icons/tfi";
+import { BsPersonGear } from "react-icons/bs";
+import { GrTransaction } from "react-icons/gr";
+import { IoBookOutline } from "react-icons/io5";
+import { IoChatbubblesOutline } from "react-icons/io5";
+import { BiBookContent } from "react-icons/bi";
+import { IoBriefcaseOutline } from "react-icons/io5";
+import { FaRegHourglass } from "react-icons/fa";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -68,7 +79,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const [link, setLink] = useState("");
   const notifications = useSocket(user?.id);
   const [viewSider, setViewSidebar] = useState(false);
-  const [menuItems, setmenuItems] = useState([]);
+
   const unreadNotifications =
     (notifications?.length > 0 &&
       notifications?.filter((notification) => !notification.isRead)) ||
@@ -87,9 +98,6 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     }
     setIsModalOpen(true);
   };
-  useEffect(() => {
-    getItems();
-  }, []);
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -134,58 +142,70 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       ),
     },
   ];
-  const getItems = async () => {
-    console.log(
-      "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
-    );
-    const item = [
-      (await authService.checkPermmision("clients", "readOnly", api)) &&
-        getItem("Clients", "/clients", <BookOutlined />),
+  const menuItems = [
+    getItem(
+      "User Management",
+      null,
+      <Icon component={() => <BsPersonGear />} />,
+      [
+        getItem("Clients", "/clients", <UserOutlined />),
+        getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
+      ]
+    ),
+    // getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
+    //   getItem("Assigned", "/jobs", <UserOutlined />),
+    //   getItem(
+    //     "Unassigned",
+    //     "/unassigned-jobs",
+    //     <Icon component={() => <FaRegHourglass />} />
+    //   ),
+    // ]),
 
-      (await authService.checkPermmision("assistants", "readOnly", api)) &&
-        getItem("Assistants", "/assistants", <BookOutlined />),
+    getItem("Financial", null, <Icon component={() => <GrTransaction />} />, [
+      getItem("Transactions", "/transactions", <TransactionOutlined />),
+      getItem(
+        "Coupons",
+        "/coupons",
+        <Icon component={() => <RiCoupon2Line />} />
+      ),
+    ]),
 
-      (await authService.checkPermmision("transactions", "readOnly", api)) &&
-        getItem("Transactions", "/transactions", <CheckSquareOutlined />),
+    getItem("Course", null, <Icon component={() => <IoBookOutline />} />, [
+      getItem("Training", "/training", <BookOutlined />),
+      getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+    ]),
 
-      (await authService.checkPermmision("training", "readOnly", api)) &&
-        getItem("Training", "/training", <BookOutlined />),
-      (await authService.checkPermmision("exercise", "readOnly", api)) &&
-        getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-      (await authService.checkPermmision("announcement", "readOnly", api)) &&
-        getItem("Announcement", "/announcement", <CheckSquareOutlined />),
-      (await authService.checkPermmision("blog", "readOnly", api)) &&
-        getItem("Blog", "/blog", <CheckSquareOutlined />),
-      (await authService.checkPermmision("chat", "readOnly", api)) &&
+    getItem(
+      "Communication",
+      null,
+      <Icon component={() => <IoChatbubblesOutline />} />,
+      [
         getItem("Chat", "/chat", <MessageOutlined />),
-      (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
-        getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
-
-      (await authService.checkPermmision("coupons", "readOnly", api)) &&
-        getItem("Coupons", "/coupons", <CheckSquareOutlined />),
-      (await authService.checkPermmision("signup-link", "readOnly", api)) &&
         getItem(
-          <p
-            onClick={showModal}
-            className="bg-green-700 rounded-full text-center  "
-          >
-            Signup Link
-          </p>,
-          "#"
-          // <CheckSquareOutlined />
+          "Feedback",
+          "/feedbacks",
+          <Icon component={() => <VscFeedback />} />
         ),
+      ]
+    ),
 
-      // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+    getItem("Content", null, <Icon component={() => <BiBookContent />} />, [
+      getItem(
+        "Announcement",
+        "/announcement",
+        <Icon component={() => <GrAnnounce />} />
+      ),
+      getItem("Blog", "/blog", <Icon component={() => <TfiWrite />} />),
+    ]),
 
-      // getItem("History", "/histry", <BarChartOutlined />),
-    ];
-    console.log(
-      "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp22223",
-      item
-    );
+    getItem(
+      <p onClick={showModal} className="bg-green-700 rounded-full text-center">
+        Signup Link
+      </p>,
+      "#"
+    ),
+  ];
 
-    setmenuItems(item);
-  };
   const handleCopy = () => {
     navigator.clipboard
       .writeText(link) // Copy the text to clipboard
@@ -266,14 +286,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     <Layout
       style={{
         minHeight: "100vh",
-      }}
-    >
+      }}>
       <Modal
         title="Referral"
         open={isModalOpen}
         onOk={handleOk}
-        onCancel={handleCancel}
-      >
+        onCancel={handleCancel}>
         <div className="flex justify-between ">
           <p>{link}</p>
           <CopyOutlined onClick={handleCopy} style={{ cursor: "pointer" }} />
@@ -287,7 +305,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           height: "100vh",
           position: "fixed",
           // inset: 0,
-
+          overflow: "auto",
           background: "black",
           borderRight: "1px solid #E6EFF5",
           // display: collapsed && "none",
@@ -295,14 +313,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }}
         trigger={null}
         collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
+        onCollapse={(value) => setCollapsed(value)}>
         <div className="flex flex-col justify-between borde border-red-900 h-full">
           <div>
             <div
               className="bg-black my-2  text-black p-5  borde-2 rounded-full
-             flex-col flex items-start  justify-start w-"
-            >
+             flex-col flex items-start  justify-start w-">
               {collapsed ? (
                 <>
                   <div className="m- bg-rd-400">
@@ -315,8 +331,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               ) : (
                 <Link
                   to="/"
-                  className="borde border-red-900 w-[90%] flex items-center justify-center"
-                >
+                  className="borde border-red-900 w-[90%] flex items-center justify-center">
                   <img
                     className="flex justify-center   p- borde border-red-900 items-center"
                     src="https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/Appleazy_Original_Logo_omjalx%20(1).svg"
@@ -343,8 +358,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 setCollapsed(!collapsed);
                 console.log("button clicked");
               }}
-              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4"
-            >
+              className="flex bg-gray-800 items-center justify-center border border-gray-800 rounded w-full py-4">
               {collapsed ? <RightOutlined /> : <LeftOutlined />}
             </button>
           </div>
@@ -360,8 +374,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             zIndex: 100,
             width: "100%",
             // overflowY: "auto",
-          }}
-        >
+          }}>
           <div className="flex flex-row boder boder-red-900 items-center justify-end px-4">
             <Popover
               // autoAdjustOverflow
@@ -375,15 +388,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                     // maxHeight: "550px",
                     overflowY: "auto",
                     overflowX: "hidden",
-                  }}
-                >
+                  }}>
                   <Notifications setViewSidebar={setViewSidebar} />
                 </div>
               }
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               // open
-              trigger={["hover", "click"]}
-            >
+              trigger={["hover", "click"]}>
               <Badge count={unreadNotifications?.length} offset={[-18, 5]}>
                 <div className="bg-white rounded-full border-gray-200 border-[0.1px] p-2 mr-4 shadow-sm">
                   <IoIosNotificationsOutline className="w-5 h-5" />
@@ -401,8 +412,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                     selectable: true,
                     defaultSelectedKeys: ["3"],
                   }}
-                  trigger={["click"]}
-                >
+                  trigger={["click"]}>
                   <span className="header__right">
                     {/* <WrenchScrewdriverIcon className="h-5 w-5 text-gray-700" /> */}
                     {/* <IoIosArrowDown className="h-5 w-5 text-gray-700" /> */}
@@ -424,8 +434,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               menu={{
                 items,
               }}
-              placement="bottomLeft"
-            >
+              placement="bottomLeft">
               <Avatar
                 shape="square"
                 src={
@@ -444,15 +453,13 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
           style={{
             margin: "0 ",
             background: "#edf0ff",
-          }}
-        >
+          }}>
           {children}
         </Content>
         <Footer
           style={{
             textAlign: "center",
-          }}
-        >
+          }}>
           APPLEAZY ©{new Date().getFullYear()}
         </Footer>
       </Layout>
@@ -465,8 +472,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
             <p>Notifications</p>{" "}
             <button
               onClick={handleMarkAllAsRead}
-              className="flex items-center justify-between gap-1"
-            >
+              className="flex items-center justify-between gap-1">
               <IoCheckmarkDone className="text-[#168A53]" />
               <p className="text-[#168A53]">Mark all as read</p>
             </button>
@@ -474,8 +480,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         }
         placement="right"
         open={viewSider}
-        onClose={() => setViewSidebar(false)}
-      >
+        onClose={() => setViewSidebar(false)}>
         <AllNotifications setViewSidebar={setViewSidebar} />
       </Drawer>
     </Layout>
