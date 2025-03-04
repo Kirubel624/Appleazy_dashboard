@@ -208,12 +208,12 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
 
   const handleCopy = () => {
     navigator.clipboard
-      .writeText(link) // Copy the text to clipboard
+      .writeText(link)
       .then(() => {
-        message.success("Text copied to clipboard!"); // Show success message
+        message.success("Text copied to clipboard!");
       })
       .catch(() => {
-        message.error("Failed to copy text!"); // Show error message if copying fails
+        message.error("Failed to copy text!");
       });
   };
 
