@@ -61,7 +61,6 @@ const AssistantsList = ({ collapsed }) => {
   useEffect(() => {
     const [page, limit] = getPaginationInfo();
     dispatch(updateAssistantsState({ page: page, limit: limit }));
-    // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
     searchData();
   }, []);
 
@@ -83,8 +82,6 @@ const AssistantsList = ({ collapsed }) => {
   const searchHandler = (e) => {
     const { value } = e.target;
     const [page, limit] = getPaginationInfo();
-
-    // setSearchParams({ page: page, limit: limit })
     dispatch(
       updateAssistantsState({ page: page, limit: limit, searchText: value })
     );
@@ -95,12 +92,6 @@ const AssistantsList = ({ collapsed }) => {
   };
 
   const handlePagination = async (page, pageSize) => {
-    // permmission exmple
-
-    // if (!(await authService.checkPermmision('assistants', 'read'))) {
-    //     return message.error('You have not a permmission');
-    // }
-
     setSearchParams({ page: page, limit: pageSize });
     dispatch(updateAssistantsState({ page: page, limit: pageSize }));
 
@@ -166,8 +157,7 @@ const AssistantsList = ({ collapsed }) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
+          href="https://www.luohanacademy.com">
           3rd menu item
         </a>
       ),
@@ -175,31 +165,6 @@ const AssistantsList = ({ collapsed }) => {
   ];
 
   const columns = [
-    // {
-    //   title: " ",
-    //   dataIndex: "action",
-    //   render: (_, recored) => {
-    //     return (
-    //       <Dropdown
-    //         menu={{
-    //           items,
-    //           onClick: (value) => onClick(value, recored),
-    //         }}
-    //         trigger={["click"]}
-    //         placement="bottomLeft"
-    //       >
-    //         <Button
-    //           type="text"
-    //           icon={<MoreOutlined style={{ fontSize: 20 }} />}
-    //           onClick={() => {
-    //             setModeID(recored._id);
-    //           }}
-    //         ></Button>
-    //       </Dropdown>
-    //     );
-    //   },
-    // },
-
     {
       title: "Profile",
       dataIndex: "profileImage",
@@ -234,8 +199,7 @@ const AssistantsList = ({ collapsed }) => {
             // onConfirm={confirm}
             // onCancel={cancel}
             showCancel={false} // This removes the cancel button
-            okButtonProps={{ style: { display: "none" } }}
-          >
+            okButtonProps={{ style: { display: "none" } }}>
             <Button download className="text-blue-500">
               Experience
             </Button>
@@ -256,8 +220,7 @@ const AssistantsList = ({ collapsed }) => {
             // onConfirm={confirm}
             // onCancel={cancel}
             showCancel={false} // This removes the cancel button
-            okButtonProps={{ style: { display: "none" } }}
-          >
+            okButtonProps={{ style: { display: "none" } }}>
             <Button download className="text-blue-500">
               Skills
             </Button>
@@ -307,8 +270,7 @@ const AssistantsList = ({ collapsed }) => {
             <NavLink
               style={{ color: "#2f1dca" }}
               state={recored}
-              to={`/assistants/jobs/${recored.UserId}`}
-            >
+              to={`/assistants/jobs/${recored.UserId}`}>
               View Detail
             </NavLink>
           </div>
@@ -327,8 +289,7 @@ const AssistantsList = ({ collapsed }) => {
               defaultValue={text}
               onChange={(info) => handleStatus(info, recored.id)}
               className="border-gray-400 min-w-[120px]"
-              placeholder="select your availability"
-            >
+              placeholder="select your availability">
               <Option value="not_sumbited">Not Submit</Option>
               <Option value="sumbited">Submited</Option>
               <Option value="failed">Failed</Option>
@@ -351,8 +312,7 @@ const AssistantsList = ({ collapsed }) => {
             <NavLink
               style={{ color: "#2f1dca" }}
               state={recored}
-              to={`/assistants/${recored.id}`}
-            >
+              to={`/assistants/${recored.id}`}>
               View Detail
             </NavLink>
           </div>
@@ -373,8 +333,7 @@ const AssistantsList = ({ collapsed }) => {
                 onClick={() => handleRestore(recored.User?.id)}
                 type="primary"
                 style={{ backgroundColor: "#168A53" }}
-                className="bg-green-600 hover:bg-green-700"
-              >
+                className="bg-green-600 hover:bg-green-700">
                 Restore
               </Button>
             ) : (
@@ -386,8 +345,7 @@ const AssistantsList = ({ collapsed }) => {
                 }}
                 style={{ backgroundColor: "#FF4500" }}
                 type="primary"
-                className="hover:bg-red-700"
-              >
+                className="hover:bg-red-700">
                 Delete
               </Button>
             )}
@@ -462,8 +420,7 @@ const AssistantsList = ({ collapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       <Modal
         title={
           <div className="flex items-center">
@@ -474,8 +431,7 @@ const AssistantsList = ({ collapsed }) => {
         open={deleteModal}
         onCancel={() => setDeleteModal(false)}
         footer={null}
-        centered
-      >
+        centered>
         <div className="py-4">
           <p className="text-gray-600 mb-4">
             Are you sure you want to delete this assistant? This action cannot
@@ -485,8 +441,7 @@ const AssistantsList = ({ collapsed }) => {
           <div className="flex justify-end space-x-3">
             <Button
               onClick={() => setDeleteModal(false)}
-              className="hover:bg-gray-100"
-            >
+              className="hover:bg-gray-100">
               Cancel
             </Button>
             <Button
@@ -494,8 +449,7 @@ const AssistantsList = ({ collapsed }) => {
               danger
               onClick={handleDelete2}
               loading={loading}
-              className="bg-red-500 hover:bg-red-600"
-            >
+              className="bg-red-500 hover:bg-red-600">
               Delete Assistant
             </Button>
           </div>
@@ -505,8 +459,7 @@ const AssistantsList = ({ collapsed }) => {
         <CommonModal
           width={1000}
           isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        >
+          setIsModalOpen={setIsModalOpen}>
           <AssistantsEdit
             assistantsData={assistantsData}
             searchData={searchData}
@@ -525,8 +478,7 @@ const AssistantsList = ({ collapsed }) => {
           setIsModalOpen={setIsDeleteModalOpen}
           handleDelete={handleDelete}
           loading={loading}
-          isModalOpen={isDeleteModalOpen}
-        >
+          isModalOpen={isDeleteModalOpen}>
           <h1 className=" text-2xl">Are you sure?</h1>
         </CommonDeleteModal>
       ) : (
@@ -567,8 +519,7 @@ const AssistantsList = ({ collapsed }) => {
             onClick={handleReload}
             className="
              border border-[#168A53] py-2 px-3
-             text-[#168A53] rounded mr-4 flex items-center justify-center"
-          >
+             text-[#168A53] rounded mr-4 flex items-center justify-center">
             <ReloadOutlined className=" boder boder-red-900" />
           </button>
 
