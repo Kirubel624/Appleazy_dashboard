@@ -3,7 +3,7 @@ import UsersService from "./UsersService";
 
 export const searchUsers = createAsyncThunk(
   "users/searchUsers",
-  async (data, { rejectWithValue, getState }) => {
+  async (api, { rejectWithValue, getState }) => {
     try {
       const { searchText, page, limit, sort, order } = getState().users.query; // Access state directly
 
@@ -13,6 +13,7 @@ export const searchUsers = createAsyncThunk(
         searchText,
         sort,
         order,
+        api,
       });
 
       return res;

@@ -286,23 +286,6 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
               style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
               className=" drop-shadow-sm rounded-r mr-4 h-9"
             />
-            {/* <div className="hover:border-[#4096FF] transition-all delay-75 ease-in hover:border border-y-[0.5px] py-[0.15rem] border-r-[0.5px] rounded-r-[8px] border-[#CCCCCC] searchSelect">
-              <Select
-                onChange={(val) => {
-                  searchData();
-                }}
-                bordered={false}
-                //   style={ borderRadius: "0px 8px 8px 0px" }
-                className=""
-                placeholder="Select item category"
-              >
-                <Option value="all">All</Option>
-                <Option value={"training_one"}>Training one</Option>
-                <Option value={"training_two"}>Training two</Option>
-                <Option value={"training_three"}>Training three</Option>
-                <Option value={"training_four"}>Training four</Option>
-              </Select>
-            </div> */}
           </div>
         </div>
 

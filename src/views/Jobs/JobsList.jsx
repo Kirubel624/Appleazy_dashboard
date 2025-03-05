@@ -201,14 +201,16 @@ const JobsList = ({ collapsed, setCollapsed }) => {
     <div
       className={`${
         collapsed ? " mr-0 ml-[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}>
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       <Modal
         title="Edit job"
         destroyOnClose
         open={editModal}
         onClose={() => setEditModal(false)}
         onCancel={() => setEditModal(false)}
-        footer={null}>
+        footer={null}
+      >
         <EditJobs
           editModal={editModal}
           setEditModal={setEditModal}
@@ -225,7 +227,8 @@ const JobsList = ({ collapsed, setCollapsed }) => {
         open={reassignModal}
         onClose={() => setEditModal(false)}
         onCancel={() => setEditModal(false)}
-        footer={null}>
+        footer={null}
+      >
         <ReassignJob
           reassignModal={reassignModal}
           setReassignModal={setReassignModal}
@@ -240,7 +243,8 @@ const JobsList = ({ collapsed, setCollapsed }) => {
       <div className="mb-4 relative sm:hidden block ">
         <button
           className="absolute left-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slidePrev()}>
+          onClick={() => swiperRef.current.slidePrev()}
+        >
           <IoIosArrowBack className=" w-4 h-4" />
         </button>
         <Swiper
@@ -252,7 +256,8 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           spaceBetween={50}
           slidesPerView={1}
           navigation
-          loop={true}>
+          loop={true}
+        >
           <SwiperSlide>
             <div className="">
               <StatCard
@@ -320,14 +325,16 @@ const JobsList = ({ collapsed, setCollapsed }) => {
         </Swiper>
         <button
           className="absolute right-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slideNext()}>
+          onClick={() => swiperRef.current.slideNext()}
+        >
           <IoIosArrowForward className=" w-4 h-4" />
         </button>
       </div>
 
       <div
         id="job-cards"
-        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4"
+      >
         <StatCard
           statusname="Total No of Jobs"
           statusamount={"0" || "0"}

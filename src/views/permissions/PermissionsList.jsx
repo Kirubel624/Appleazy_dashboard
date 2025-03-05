@@ -16,8 +16,11 @@ import {
   updatePermissionsState,
   permissionsSearchText,
 } from "./PermissionsRedux";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const PermissionsList = ({ collapsed }) => {
+  const api = useAPIPrivate();
+
   const [permissionsData, setPermissionsData] = useState([]);
   const [total, setTotal] = useState();
 
@@ -47,7 +50,7 @@ const PermissionsList = ({ collapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchPermissions());
+      const { payload } = await dispatch(searchPermissions(api));
       setPermissionsData(payload.data);
       setTotal(payload.total);
       setLoading(false);
@@ -110,7 +113,7 @@ const PermissionsList = ({ collapsed }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await permissionsService.deletePermission(modeID);
+      const data = await permissionsService.deletePermission(modeID, api);
       setIsDeleteModalOpen(false);
 
       searchData();
@@ -157,7 +160,7 @@ const PermissionsList = ({ collapsed }) => {
               type="text"
               icon={<MoreOutlined style={{ fontSize: 20 }} />}
               onClick={() => {
-                setModeID(recored._id);
+                setModeID(recored.id);
               }}
             ></Button>
           </Dropdown>
@@ -169,15 +172,7 @@ const PermissionsList = ({ collapsed }) => {
       title: "perm_name",
       dataIndex: "perm_name",
       render: (text, recored) => {
-        return (
-          <NavLink
-            style={{ color: "#2f1dca" }}
-            state={recored}
-            to={`${recored._id}`}
-          >
-            {text}
-          </NavLink>
-        );
+        return <p>{text}</p>;
       },
       sorter: true,
     },
@@ -222,37 +217,6 @@ const PermissionsList = ({ collapsed }) => {
         ""
       )}
 
-      {/* <HeaderStyle>
-        <div className="header_left">
-          <p>Permissions</p>
-        </div>
-
-        <Button onClick={handleReload} size="large">
-          <ReloadOutlined size={25} style={{ color: "white", fontSize: 20 }} />
-        </Button>
-
-        <div className="header_right">
-          <Button
-            onClick={() => {
-              setModeID("");
-              setIsModalOpen(true);
-            }}
-            size="large"
-          >
-            Add
-          </Button>
-        </div>
-      </HeaderStyle>
-      <div className="flex flex-row gap-6">
-        <SearchInputStyle>
-          <Input
-            onChange={searchHandler}
-            placeholder="Search"
-            value={searchText}
-            allowClear
-          />
-        </SearchInputStyle>
-      </div> */}
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
           <h1 className="text-2xl font-bold pb-4">Permissions</h1>
@@ -262,30 +226,29 @@ const PermissionsList = ({ collapsed }) => {
               placeholder="Search"
               value={searchText}
               allowClear
-              // style={{ borderRadius: "0px 0px 0px 0px" }}
-              className=" drop-shadow-sm py-3  rounded-xl "
+              style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
+              className=" drop-shadow-sm rounded-r mr-4 h-9"
             />
           </div>
         </div>
+
         <span className="flex ml-6 mb-6 md:mr-6">
           <button
             onClick={handleReload}
             className="
-             border border-[#1D9BF0] py-2 px-3
-             text-[#1D9BF0] rounded mr-4 flex items-center justify-center"
+            border border-[#168A53] py-2 px-3
+            text-[#168A53] rounded mr-4 flex items-center justify-center"
           >
             <ReloadOutlined className=" boder boder-red-900" />
           </button>
 
           <button
-            className="px-4  py-2 border border-[#1D9BF0] 
-            text-white bg-[#1D9BF0] rounded"
+            className="h-9 whitespace-nowrap flex items-center bg-[#248A53] px-3 rounded-lg text-white mr-3"
             onClick={() => {
               setIsModalOpen(true);
               setModeID("");
             }}
           >
-            {" "}
             <span className="flex flex-row">
               <PlusOutlined />
               <p className="pl-2">Add Item</p>

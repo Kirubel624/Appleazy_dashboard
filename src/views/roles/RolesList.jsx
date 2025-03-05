@@ -445,20 +445,24 @@ const RolesList = ({ collapsed }) => {
               placeholder="Search"
               value={searchText}
               allowClear
-              className="drop-shadow-sm py-3 rounded-xl"
+              style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
+              className=" drop-shadow-sm rounded-r mr-4 h-9"
             />
           </div>
         </div>
+
         <span className="flex ml-6 mb-6 md:mr-6">
           <button
             onClick={handleReload}
-            className="border border-[#1D9BF0] py-2 px-3 text-[#1D9BF0] rounded mr-4 flex items-center justify-center"
+            className="
+            border border-[#168A53] py-2 px-3
+            text-[#168A53] rounded mr-4 flex items-center justify-center"
           >
-            <ReloadOutlined className="boder boder-red-900" />
+            <ReloadOutlined className=" boder boder-red-900" />
           </button>
 
           <button
-            className="px-4 py-2 border border-[#1D9BF0] text-white bg-[#1D9BF0] rounded"
+            className="h-9 whitespace-nowrap flex items-center bg-[#248A53] px-3 rounded-lg text-white mr-3"
             onClick={() => {
               setIsModalOpen(true);
               setModeID("");

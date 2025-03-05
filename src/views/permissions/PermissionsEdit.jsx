@@ -20,6 +20,7 @@ import permissionsService from "./PermissionsService";
 import CommonModal from "../../components/commons/CommonModel";
 import PermissionsPick from "./PermissionsPick";
 import dayjs from "dayjs";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Option } = Select;
 
@@ -42,6 +43,8 @@ const PermissionsEdit = ({
   permissionsData,
   searchData,
 }) => {
+  const api = useAPIPrivate();
+
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
   const [loading, setLoading] = useState("");
@@ -50,7 +53,7 @@ const PermissionsEdit = ({
   useEffect(() => {
     const featchData = async () => {
       try {
-        const data = await permissionsService.getPermission(mode);
+        const data = await permissionsService.getPermission(mode, api);
         form.setFieldsValue({
           permission: { ...data, updatedAt: dayjs(data.updatedAt) },
         });
@@ -76,7 +79,10 @@ const PermissionsEdit = ({
     try {
       setLoading(true);
 
-      const data = await permissionsService.createPermission(datas.permission);
+      const data = await permissionsService.createPermission(
+        datas.permission,
+        api
+      );
       setIsModalOpen(false);
       searchData();
 
@@ -92,7 +98,8 @@ const PermissionsEdit = ({
 
       const data = await permissionsService.updatePermission(
         datas.permission,
-        mode
+        mode,
+        api
       );
       searchData();
       setIsModalOpen(false);
