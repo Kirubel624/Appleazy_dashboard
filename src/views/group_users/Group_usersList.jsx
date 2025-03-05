@@ -17,8 +17,11 @@ import {
   group_usersSearchText,
 } from "./Group_usersRedux";
 import UsersPick from "../users/UsersPick";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const Group_usersList = ({ collapsed }) => {
+  const api = useAPIPrivate();
+
   const [group_usersData, setGroup_usersData] = useState([]);
   const [total, setTotal] = useState();
   const [userPick, setUserPick] = useState(false);
@@ -57,6 +60,7 @@ const Group_usersList = ({ collapsed }) => {
         method: "add_users_to_group",
         payload: { data: data },
         id,
+        api,
       });
 
       searchData();
@@ -73,7 +77,7 @@ const Group_usersList = ({ collapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchGroup_users({ id }));
+      const { payload } = await dispatch(searchGroup_users({ id, api }));
 
       console.log(payload);
       setGroup_usersData(payload.data);
@@ -139,7 +143,7 @@ const Group_usersList = ({ collapsed }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await group_usersService.deleteGroup_user(modeID);
+      const data = await group_usersService.deleteGroup_user(modeID, api);
       setIsDeleteModalOpen(false);
 
       searchData();
@@ -158,10 +162,10 @@ const Group_usersList = ({ collapsed }) => {
   };
 
   const items = [
-    {
-      key: "edit",
-      label: <Button type="text">Edit</Button>,
-    },
+    // {
+    //   key: "edit",
+    //   label: <Button type="text">Edit</Button>,
+    // },
     {
       key: "delete",
       label: <Button type="text"> Delete</Button>,
@@ -186,7 +190,7 @@ const Group_usersList = ({ collapsed }) => {
               type="text"
               icon={<MoreOutlined style={{ fontSize: 20 }} />}
               onClick={() => {
-                setModeID(recored._id);
+                setModeID(recored.id + "*+*" + id);
               }}
             ></Button>
           </Dropdown>
@@ -202,7 +206,7 @@ const Group_usersList = ({ collapsed }) => {
           <NavLink
             style={{ color: "#2f1dca" }}
             state={recored}
-            to={`${recored._id}`}
+            to={`${recored.id}`}
           >
             {text}
           </NavLink>
@@ -316,8 +320,47 @@ const Group_usersList = ({ collapsed }) => {
 
 
                 </div> */}
-
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
+        <div className="flex flex-col p-6 md:w-[45vw] w-full">
+          <h1 className="text-2xl font-bold pb-4">Group Users</h1>
+          <div className="flex">
+            <Input
+              onChange={searchHandler}
+              placeholder="Search"
+              value={searchText}
+              allowClear
+              style={{ borderRadius: "10px 10px  10px 10px", width: "30rem" }}
+              className=" drop-shadow-sm rounded-r mr-4 h-9"
+            />
+          </div>
+        </div>
+
+        <span className="flex ml-6 mb-6 md:mr-6">
+          <button
+            onClick={handleReload}
+            className="
+            border border-[#168A53] py-2 px-3
+            text-[#168A53] rounded mr-4 flex items-center justify-center"
+          >
+            <ReloadOutlined className=" boder boder-red-900" />
+          </button>
+
+          <button
+            className="h-9 whitespace-nowrap flex items-center bg-[#248A53] px-3 rounded-lg text-white mr-3"
+            onClick={() => {
+              setUserPick(true);
+              setModeID("");
+            }}
+          >
+            <span className="flex flex-row">
+              <PlusOutlined />
+              <p className="pl-2">Add Item</p>
+            </span>
+          </button>
+        </span>
+      </span>
+
+      {/* <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
           <h1 className="text-2xl font-bold pb-4">Group Users</h1>
           <div className="flex">
@@ -356,7 +399,7 @@ const Group_usersList = ({ collapsed }) => {
             </span>
           </button>
         </span>
-      </span>
+      </span> */}
       <CommonTable
         rowSelectionType={"checkbox"}
         data={group_usersData}

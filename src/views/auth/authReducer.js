@@ -31,9 +31,9 @@ export const loginAsync = createAsyncThunk(
 // Create the login async thunk
 export const getProfileAsync = createAsyncThunk(
   "auth/profile",
-  async (id, { rejectWithValue }) => {
+  async ({ id, api }, { rejectWithValue }) => {
     try {
-      const response = await AuthService.getProfile(id);
+      const response = await AuthService.getProfile(id, api);
       console.log(response, "response***********");
 
       return response;
