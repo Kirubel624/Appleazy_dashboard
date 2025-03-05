@@ -57,6 +57,7 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { BiBookContent } from "react-icons/bi";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { FaRegHourglass } from "react-icons/fa";
+import authService from "../auth/authService";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -79,7 +80,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const [link, setLink] = useState("");
   const notifications = useSocket(user?.id);
   const [viewSider, setViewSidebar] = useState(false);
-
+  const [menuItems, setmenuItems] = useState([]);
   const unreadNotifications =
     (notifications?.length > 0 &&
       notifications?.filter((notification) => !notification.isRead)) ||
@@ -116,6 +117,11 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     const res = await dispatch(getProfileAsync({ id: user?.id, api }));
     console.log(res, "response of fetch profiel");
   };
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
   useEffect(() => {
     fetchProfile();
     console.log(user, "user proifiolehjb");
@@ -142,69 +148,147 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
       ),
     },
   ];
-  const menuItems = [
-    getItem(
-      "User Management",
-      null,
-      <Icon component={() => <BsPersonGear />} />,
-      [
-        getItem("Clients", "/clients", <UserOutlined />),
-        getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
-      ]
-    ),
-    // getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
-    //   getItem("Assigned", "/jobs", <UserOutlined />),
-    //   getItem(
-    //     "Unassigned",
-    //     "/unassigned-jobs",
-    //     <Icon component={() => <FaRegHourglass />} />
-    //   ),
-    // ]),
 
-    getItem("Financial", null, <Icon component={() => <GrTransaction />} />, [
-      getItem("Transactions", "/transactions", <TransactionOutlined />),
-      getItem(
-        "Coupons",
-        "/coupons",
-        <Icon component={() => <RiCoupon2Line />} />
-      ),
-    ]),
+  const getItems = async () => {
+    console.log(
+      "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
+    );
+    const item10 = [
+      (await authService.checkPermmision("clients", "readOnly", api)) &&
+        getItem("Clients", "/clients", <BookOutlined />),
 
-    getItem("Course", null, <Icon component={() => <IoBookOutline />} />, [
-      getItem("Training", "/training", <BookOutlined />),
-      getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-    ]),
+      (await authService.checkPermmision("assistants", "readOnly", api)) &&
+        getItem("Assistants", "/assistants", <BookOutlined />),
 
-    getItem(
-      "Communication",
-      null,
-      <Icon component={() => <IoChatbubblesOutline />} />,
-      [
+      (await authService.checkPermmision("transactions", "readOnly", api)) &&
+        getItem("Transactions", "/transactions", <CheckSquareOutlined />),
+
+      (await authService.checkPermmision("training", "readOnly", api)) &&
+        getItem("Training", "/training", <BookOutlined />),
+      (await authService.checkPermmision("exercise", "readOnly", api)) &&
+        getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+      (await authService.checkPermmision("announcement", "readOnly", api)) &&
+        getItem("Announcement", "/announcement", <CheckSquareOutlined />),
+      (await authService.checkPermmision("blog", "readOnly", api)) &&
+        getItem("Blog", "/blog", <CheckSquareOutlined />),
+      (await authService.checkPermmision("chat", "readOnly", api)) &&
         getItem("Chat", "/chat", <MessageOutlined />),
+      (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
+        getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
+
+      (await authService.checkPermmision("coupons", "readOnly", api)) &&
+        getItem("Coupons", "/coupons", <CheckSquareOutlined />),
+      (await authService.checkPermmision("signup-link", "readOnly", api)) &&
         getItem(
-          "Feedback",
-          "/feedbacks",
-          <Icon component={() => <VscFeedback />} />
+          <p
+            onClick={showModal}
+            className="bg-green-700 rounded-full text-center  "
+          >
+            Signup Link
+          </p>,
+          "#"
+          // <CheckSquareOutlined />
         ),
-      ]
-    ),
 
-    getItem("Content", null, <Icon component={() => <BiBookContent />} />, [
-      getItem(
-        "Announcement",
-        "/announcement",
-        <Icon component={() => <GrAnnounce />} />
-      ),
-      getItem("Blog", "/blog", <Icon component={() => <TfiWrite />} />),
-    ]),
+      // getItem("Job board", "/job_board", <InfoCircleOutlined />),
 
-    getItem(
-      <p onClick={showModal} className="bg-green-700 rounded-full text-center">
-        Signup Link
-      </p>,
-      "#"
-    ),
-  ];
+      // getItem("History", "/histry", <BarChartOutlined />),
+    ];
+
+    const item = [
+      (await authService.checkPermmision("user_managment", "readOnly", api)) &&
+        getItem(
+          "User Management",
+          null,
+          <Icon component={() => <BsPersonGear />} />,
+          [
+            (await authService.checkPermmision("clients", "readOnly", api)) &&
+              getItem("Clients", "/clients", <UserOutlined />),
+            (await authService.checkPermmision(
+              "assistants",
+              "readOnly",
+              api
+            )) &&
+              getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
+          ]
+        ),
+
+      (await authService.checkPermmision("financial", "readOnly", api)) &&
+        getItem(
+          "Financial",
+          null,
+          <Icon component={() => <GrTransaction />} />,
+          [
+            (await authService.checkPermmision(
+              "transactions",
+              "readOnly",
+              api
+            )) &&
+              getItem("Transactions", "/transactions", <TransactionOutlined />),
+            (await authService.checkPermmision("coupons", "readOnly", api)) &&
+              getItem(
+                "Coupons",
+                "/coupons",
+                <Icon component={() => <RiCoupon2Line />} />
+              ),
+          ]
+        ),
+
+      (await authService.checkPermmision("course", "readOnly", api)) &&
+        getItem("Course", null, <Icon component={() => <IoBookOutline />} />, [
+          (await authService.checkPermmision("training", "readOnly", api)) &&
+            getItem("Training", "/training", <BookOutlined />),
+          (await authService.checkPermmision("exercise", "readOnly", api)) &&
+            getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+        ]),
+
+      (await authService.checkPermmision("communication", "readOnly", api)) &&
+        getItem(
+          "Communication",
+          null,
+          <Icon component={() => <IoChatbubblesOutline />} />,
+          [
+            (await authService.checkPermmision("chat", "readOnly", api)) &&
+              getItem("Chat", "/chat", <MessageOutlined />),
+            (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
+              getItem(
+                "Feedback",
+                "/feedbacks",
+                <Icon component={() => <VscFeedback />} />
+              ),
+          ]
+        ),
+
+      (await authService.checkPermmision("content", "readOnly", api)) &&
+        getItem("Content", null, <Icon component={() => <BiBookContent />} />, [
+          (await authService.checkPermmision(
+            "announcement",
+            "readOnly",
+            api
+          )) &&
+            getItem(
+              "Announcement",
+              "/announcement",
+              <Icon component={() => <GrAnnounce />} />
+            ),
+          (await authService.checkPermmision("blog", "readOnly", api)) &&
+            getItem("Blog", "/blog", <Icon component={() => <TfiWrite />} />),
+        ]),
+
+      (await authService.checkPermmision("signup_Link", "readOnly", api)) &&
+        getItem(
+          <p
+            onClick={showModal}
+            className="bg-green-700 rounded-full text-center"
+          >
+            Signup Link
+          </p>,
+          "#"
+        ),
+    ];
+
+    setmenuItems(item);
+  };
 
   const handleCopy = () => {
     navigator.clipboard
