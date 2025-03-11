@@ -11,7 +11,6 @@ const handleErrorResponse = (errorMessage) => {
 
 const instance = axios.create({
   baseURL: HOSTED_URL,
-  // baseURL: "http://localhost:8001/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
