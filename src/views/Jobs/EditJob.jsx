@@ -3,12 +3,13 @@ import {
   DatePicker,
   Form,
   Input,
+  InputNumber,
   message,
   Progress,
   Tag,
   Tooltip,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
+import { useForm, useWatch } from "antd/es/form/Form";
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import dayjs from "dayjs";
@@ -23,20 +24,35 @@ const EditJobs = ({
   subscriptionId,
   setSelectedJob,
 }) => {
+  const [form] = useForm();
+
   const statusColors = {
     ongoing: "orange",
     completed: "green",
     reassigned: "red",
   };
   const [loading, setLoading] = useState(false);
+  const [originalRemaining, setOriginalRemaining] = useState(
+    selectedJob?.remainingApplications || 0
+  );
+  const [originalApplicationsTotal, setOriginalApplicationsTotal] = useState(
+    selectedJob?.applicationsTotal || 0
+  );
+  const currentApplicationsTotal = useWatch("applicationsTotal", form);
 
-  const [form] = useForm();
   const fetchJob = async () => {
     const data = { ...selectedJob, dueDate: dayjs(selectedJob?.dueDate) };
     form.setFieldsValue(data);
+    setOriginalRemaining(selectedJob?.remainingApplications || 0);
+    setOriginalApplicationsTotal(selectedJob?.applicationsTotal || 0);
   };
   const handleUpdate = async (values) => {
     setLoading(true);
+    const data = {
+      ...values,
+      dueDate: dayjs(selectedJob?.dueDate).format("YYYY-MM-DD HH:mm:ss.SSSZ"),
+    };
+    console.log(data, "data");
     try {
       const res = await api.patch(`/assignment/${selectedJob?.id}`, values);
       console.log(res, "resposne of update");
@@ -59,6 +75,39 @@ const EditJobs = ({
     // // console.log(fetchJob(), "resut.......////////////////////////////////");
     fetchJob();
   }, [id]);
+  const handleCalculation = () => {
+    const newTotal = currentApplicationsTotal;
+    const oldTotal = originalApplicationsTotal;
+    const oldRemaining = originalRemaining;
+    let currentRemaining = form.getFieldValue("remainingApplications");
+
+    if (newTotal === undefined || newTotal === null) {
+      return; // Do nothing if newTotal is not set
+    }
+
+    if (newTotal === 0) {
+      form.setFieldValue("remainingApplications", oldRemaining);
+      return;
+    }
+
+    const difference = newTotal - oldTotal;
+    currentRemaining += difference;
+
+    if (currentRemaining > newTotal) {
+      currentRemaining = newTotal;
+    }
+
+    if (currentRemaining < oldRemaining) {
+      currentRemaining = oldRemaining;
+    }
+
+    form.setFieldValue("remainingApplications", currentRemaining);
+  };
+
+  useEffect(() => {
+    handleCalculation();
+  }, [currentApplicationsTotal]);
+
   return (
     <div>
       <Form
@@ -67,14 +116,27 @@ const EditJobs = ({
         wrapperCol={{ span: 24 }}
         labelCol={{ span: 24 }}>
         <div className="flex items-center gap-4">
+          {/* <p>{selectedJob?.remainingApplications}</p> */}
           <Form.Item className="w-1/2" name="dueDate" label="Due date">
             <DatePicker className="w-full" />
           </Form.Item>
           <Form.Item
             className="w-1/2"
             name="applicationsTotal"
-            label="Applications total">
-            <Input type="number" />
+            label="Applications total"
+            rules={[
+              {
+                validator: (_, value) => {
+                  if (value < (selectedJob?.remainingApplications || 0)) {
+                    return Promise.reject(
+                      "Amount cannot be less than remaining applications"
+                    );
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}>
+            <InputNumber className="w-full" type="number" />
           </Form.Item>
         </div>
         <div className="flex items-center gap-4">
@@ -82,10 +144,27 @@ const EditJobs = ({
             className="w-1/2"
             name="remainingApplications"
             label="Remaining applications">
-            <Input type="number" />
+            <Input disabled type="number" />
           </Form.Item>
-          <Form.Item className="w-1/2" name="maxRating" label="Max rating">
-            <Input type="number" />
+          <Form.Item
+            className="w-1/2"
+            name="maxRating"
+            label="Max rating"
+            rules={[
+              {
+                required: true,
+                message: "Please enter rating",
+              },
+              {
+                validator: (_, value) => {
+                  if (value !== undefined && (value < 1 || value > 5)) {
+                    return Promise.reject("Rating must be between 1 and 5");
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}>
+            <InputNumber className="w-full" type="number" />
           </Form.Item>
         </div>
         <Form.Item>

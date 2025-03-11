@@ -37,7 +37,11 @@ const ReassignJob = ({
     form.setFieldsValue(data);
   };
   const fetchAssistants = async () => {
-    const res = await api.get(`/assistant?page=${page}&limit=${limit}`);
+    const res = await api.get(
+      `/assistant/getAllAssistantsWithOngoingAssignments`
+      // ?page=${page}&limit=${limit}
+    );
+    console.log(res, "response of fetch assistatns");
   };
   const handleUpdate = async (values) => {
     setLoading(true);
@@ -61,43 +65,11 @@ const ReassignJob = ({
   useEffect(() => {
     console.log(selectedJob, "inside use effect.......................");
     // // console.log(fetchJob(), "resut.......////////////////////////////////");
-    fetchJob();
+    // fetchJob();
+    fetchAssistants();
   }, [id]);
   return (
     <div>
-      <Form
-        form={form}
-        onFinish={handleUpdate}
-        wrapperCol={{ span: 24 }}
-        labelCol={{ span: 24 }}>
-        <Form.Item name="" label="Select new assitant to assign">
-          <Select className="w-full">
-            <Select.Option>Henok</Select.Option>
-            <Select.Option>Tsion</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item>
-          {/* <Button type="primary" loading={loading} htmlType="submit"></Button> */}
-          <button
-            type="submit"
-            className="h-9 self-end flex 
-          items-center bg-[#168A53] px-4 rounded-lg text-white ">
-            {loading ? (
-              <ClipLoader
-                color="#FFFFF"
-                loading={loading}
-                //  cssOverride={override}
-                className=" rounded-full"
-                size={20}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            ) : (
-              "Submit"
-            )}
-          </button>
-        </Form.Item>
-      </Form>
       <div className="bg-white border[1px] flex flex-col justify- h-full border-gray-200 shadow- px-4 pb-4 pt-4 rounded ">
         <h1 className="text-xl font-bold">Assignment information</h1>
         <div className="flex items-start justify-between mt-2">

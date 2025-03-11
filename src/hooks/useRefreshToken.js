@@ -16,7 +16,8 @@ const useRefreshToken = () => {
   const refresh = async () => {
     try {
       const response = await api.get(
-        "https://server.appleazy.com/api/v1/refresh",
+        // "https://server.appleazy.com/api/v1/refresh",
+        "http://localhost:8001/api/v1/refresh",
         {
           withCredentials: true,
           credentials: "include",
