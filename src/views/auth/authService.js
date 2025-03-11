@@ -29,9 +29,9 @@ class AuthService {
     const response = await api2.get("logout/");
     return response.data;
   }
-  async getProfile(id) {
+  async getProfile(id, api) {
     console.log(id, ":id insied ethe service");
-    const response = await api2.get(`/user/profile/${id}`);
+    const response = await api.get(`/user/profile/${id}`);
     return response.data;
   }
   async updateProfile(id, data) {
