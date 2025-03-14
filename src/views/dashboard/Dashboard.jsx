@@ -154,11 +154,11 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     ),
     getItem("Jobs", null, <Icon component={() => <IoBriefcaseOutline />} />, [
       getItem("Assigned", "/jobs", <UserOutlined />),
-      getItem(
-        "Unassigned",
-        "/unassigned-jobs",
-        <Icon component={() => <FaRegHourglass />} />
-      ),
+      // getItem(
+      //   "Unassigned",
+      //   "/unassigned-jobs",
+      //   <Icon component={() => <FaRegHourglass />} />
+      // ),
     ]),
 
     getItem("Financial", null, <Icon component={() => <GrTransaction />} />, [
