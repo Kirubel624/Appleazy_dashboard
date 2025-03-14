@@ -6,9 +6,19 @@ import { FaComments, FaTachometerAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { GoKebabHorizontal } from "react-icons/go";
 import Icon, { EditOutlined, ReloadOutlined } from "@ant-design/icons";
+import { BiRepost } from "react-icons/bi";
+import { TfiReload } from "react-icons/tfi";
+import { Link } from "react-router-dom";
 dayjs.extend(utc);
 
-const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
+const JobCard = ({
+  data,
+  setSelectedJob,
+  setEditModal,
+  setReassignModal,
+  setRepostModal,
+  repostModal,
+}) => {
   const statusColors = {
     ongoing: "orange",
     completed: "green",
@@ -24,6 +34,9 @@ const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
     } else if (key == "reassign") {
       setSelectedJob(record);
       setReassignModal(true);
+    } else if (key == "repost") {
+      setSelectedJob(record);
+      setRepostModal(true);
     }
   };
   const items = [
@@ -36,6 +49,11 @@ const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
       key: "reassign",
       label: "Reassign",
       icon: <Icon component={() => <ReloadOutlined />} />,
+    },
+    {
+      key: "repost",
+      label: "Repost",
+      icon: <Icon component={() => <TfiReload />} />,
     },
   ];
   const isCreatedToday = dayjs(data?.createdAt).isSame(dayjs(), "day");
@@ -56,14 +74,16 @@ const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
             </p>
           </div>
 
-          <Dropdown
-            className=" mb-"
-            menu={{
-              items,
-              onClick: (value) => onClick(value, data),
-            }}>
-            <GoKebabHorizontal className=" border- w-5 h-5  flex justify-end items-end" />
-          </Dropdown>
+          {!data?.hasBeenCompleted && (
+            <Dropdown
+              className=" mb-"
+              menu={{
+                items,
+                onClick: (value) => onClick(value, data),
+              }}>
+              <GoKebabHorizontal className=" border- w-5 h-5  flex justify-end items-end" />
+            </Dropdown>
+          )}
         </div>
 
         <div className="flex items-center justify-between mb-3">
@@ -96,7 +116,7 @@ const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
               <Progress
                 trailColor="#F0F0F0"
                 strokeColor={"#8efeca"}
-                percent={data?.elapsedPercentage}
+                percent={Number(data?.elapsedPercentage).toFixed(2)}
                 success={{
                   percent: Number(data?.completionPercentage).toFixed(2),
                   strokeColor: "#168A53",
@@ -177,21 +197,22 @@ const JobCard = ({ data, setSelectedJob, setEditModal, setReassignModal }) => {
             </div>
           </div>
           <div className="flex items-center gap-4 my-3">
-            <button
+            <Link
+              to={`/chat/${data.assistantId}/${data.clientId}`}
               className="flex items-center gap-2 bg-[#000000] 
-            
             border-[1px] border-[#000000] text-white px-4 py-2 rounded
            hover:bg-[#ffffff] hover:border-[1px] hover:border-black hover:text-black  transition">
               <FaComments />
               Chat
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to={`${data.subscriptionId}/${data.clientId}`}
               className="flex items-center gap-2 border-[1px] border-black text-[#000000]
            px-4 py-2 rounded hover:bg-[#000000] hover:text-white transition">
               <MdDashboard />
               Dashboard
-            </button>
+            </Link>
           </div>
         </div>
       </div>

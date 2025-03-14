@@ -21,14 +21,19 @@ import { MdAttachMoney, MdOutlineWork } from "react-icons/md";
 import { TfiReload } from "react-icons/tfi";
 import { VscGraph } from "react-icons/vsc";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { Modal } from "antd";
+import { message, Modal, Radio } from "antd";
 import EditJobs from "./EditJob";
 import ReassignJob from "./ReassignJob";
+import { ClipLoader, GridLoader, ScaleLoader } from "react-spinners";
+import api from "../../utils/api";
 const JobsList = ({ collapsed, setCollapsed }) => {
   const apiPrivate = useAPIPrivate();
   const [jobs, setJobs] = useState();
   const [editModal, setEditModal] = useState(false);
   const [reassignModal, setReassignModal] = useState(false);
+  const [repostOption, setRepostOption] = useState("penalty");
+  const [loading, setLoading] = useState(false);
+  const [repostModal, setRepostModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(false);
   const swiperRef = useRef();
 
@@ -134,6 +139,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
   };
 
   const fetchAssignments = async () => {
+    setLoading(true);
     try {
       const res = await apiPrivate.get(`/assignment`);
       console.log(res, "assignment info ???????????????????????????????????");
@@ -191,26 +197,48 @@ const JobsList = ({ collapsed, setCollapsed }) => {
       setJobs(modifiedAssignments); // Set state after resolving promises
     } catch (error) {
       console.log(error, "error fetching assignments");
+    } finally {
+      setLoading(false);
     }
   };
-
+  const handleRepost = async (repostOption, reassignmentOption) => {
+    setLoading(true);
+    const data = {
+      id: selectedJob.id,
+      reassignmentOption,
+      repostOption,
+    };
+    console.log(data, "passed values");
+    try {
+      const res = await api.patch(`/assignment/reassign`, data);
+      console.log(res, "resposne of update");
+      if (res.status === 201) {
+        message.success("Job reposted successfully!");
+        setLoading(false);
+        setRepostModal(false);
+        fetchAssignments();
+      }
+    } catch (error) {
+      console.log(error, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     fetchAssignments();
   }, []);
   return (
     <div
       className={`${
-        collapsed ? " mr-0 ml-[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
+        collapsed ? "mr-0 ml-[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       <Modal
         title="Edit job"
         destroyOnClose
         open={editModal}
         onClose={() => setEditModal(false)}
         onCancel={() => setEditModal(false)}
-        footer={null}
-      >
+        footer={null}>
         <EditJobs
           editModal={editModal}
           setEditModal={setEditModal}
@@ -224,11 +252,12 @@ const JobsList = ({ collapsed, setCollapsed }) => {
       <Modal
         title="Reassign job"
         destroyOnClose
+        className="mt-[-50px]"
         open={reassignModal}
-        onClose={() => setEditModal(false)}
-        onCancel={() => setEditModal(false)}
+        onClose={() => setReassignModal(false)}
+        onCancel={() => setReassignModal(false)}
         footer={null}
-      >
+        width={800}>
         <ReassignJob
           reassignModal={reassignModal}
           setReassignModal={setReassignModal}
@@ -239,12 +268,60 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           setSelectedJob={setSelectedJob}
         />
       </Modal>
+      <Modal
+        title="Repost job"
+        destroyOnClose
+        // className="mt-[-50px]"
+        open={repostModal}
+        onClose={() => setRepostModal(false)}
+        onCancel={() => setRepostModal(false)}
+        footer={null}
+        // width={800}
+      >
+        <Radio.Group
+          onChange={(e) => setRepostOption(e.target.value)}
+          value={repostOption}
+          className="flex flex-col gap-3">
+          <Radio value="penalty">
+            <span className="font-medium">Repost with penalty</span> – The
+            assistant's maximum rating will decrease, and this will count as a
+            failed job.
+          </Radio>
+          <Radio value="no_penalty">
+            <span className="font-medium">Repost without penalty</span> – The
+            assistant will not receive any penalty, and the subscription will be
+            reposted. They will still be paid for completed jobs.
+          </Radio>
+          <Radio value="no_record">
+            <span className="font-medium">No record</span> – The assignment will
+            be deleted, and the assistant will not have a record of it as a
+            failed job. (Recommended for jobs where the assistant hasn't started
+            applying yet.)
+          </Radio>
+        </Radio.Group>
+        <button
+          onClick={() => handleRepost(repostOption, "repost")}
+          className="bg-[#168A53] mt-4 text-sm text-white py-2 px-5 font- ">
+          {loading ? (
+            <ClipLoader
+              color="#FFFFF"
+              loading={loading}
+              //  cssOverride={override}
+              className=" rounded-full"
+              size={20}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Continue"
+          )}
+        </button>
+      </Modal>
       <h1 className="font-medium font-sans text-2xl pb-6">Jobs</h1>
       <div className="mb-4 relative sm:hidden block ">
         <button
           className="absolute left-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slidePrev()}
-        >
+          onClick={() => swiperRef.current.slidePrev()}>
           <IoIosArrowBack className=" w-4 h-4" />
         </button>
         <Swiper
@@ -256,8 +333,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           spaceBetween={50}
           slidesPerView={1}
           navigation
-          loop={true}
-        >
+          loop={true}>
           <SwiperSlide>
             <div className="">
               <StatCard
@@ -325,16 +401,14 @@ const JobsList = ({ collapsed, setCollapsed }) => {
         </Swiper>
         <button
           className="absolute right-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slideNext()}
-        >
+          onClick={() => swiperRef.current.slideNext()}>
           <IoIosArrowForward className=" w-4 h-4" />
         </button>
       </div>
 
       <div
         id="job-cards"
-        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4"
-      >
+        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         <StatCard
           statusname="Total No of Jobs"
           statusamount={"0" || "0"}
@@ -384,16 +458,31 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           cardStyle="py-6 px-6 "
         />
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 border- border-red-900 gap-4 w-full">
-        {jobs?.map((job) => (
-          <JobCard
-            data={job}
-            setEditModal={setEditModal}
-            setReassignModal={setReassignModal}
-            setSelectedJob={setSelectedJob}
+      {!loading ? (
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 border- border-red-900 gap-4 w-full">
+          {jobs?.map((job) => (
+            <JobCard
+              data={job}
+              setEditModal={setEditModal}
+              setReassignModal={setReassignModal}
+              setRepostModal={setRepostModal}
+              setSelectedJob={setSelectedJob}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full flex flex-col pt-10 border-red-900 items-center justify-center">
+          <ScaleLoader
+            color="#168a53"
+            loading={loading}
+            //  cssOverride={override}
+            className=" rounded-full"
+            size={20}
+            aria-label="Loading Spinner"
+            data-testid="loader"
           />
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
