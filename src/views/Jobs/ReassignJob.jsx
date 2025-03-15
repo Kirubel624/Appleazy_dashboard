@@ -261,16 +261,17 @@ const ReassignJob = ({
           </div>
         </div>
       )}
-      <div className="flex md:flex-row flex-col items-start md:items-center justify-between mb-3 lg:w-[60%] md:w-[80%] w-full">
+      <div className="flex flex-col items-start mb-3 lg:w-[60%] md:w-[80%] w-full">
         <Input
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="Search"
           value={searchText}
           allowClear
           style={{ borderRadius: "10px 10px  10px 10px" }}
-          className=" drop-shadow-sm rounded-r md:mb-0 mb-4 "
+          className=" drop-shadow-sm rounded-r md:mb-0  "
         />
         <Pagination
+          className="my-4"
           total={total}
           defaultPageSize={6}
           defaultCurrent={1}
