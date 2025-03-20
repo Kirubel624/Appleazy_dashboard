@@ -35,6 +35,7 @@ import RolesList from "./views/roles/RolesList";
 import Group_usersList from "./views/group_users/Group_usersList";
 import PermissionsList from "./views/permissions/PermissionsList";
 import JobsList from "./views/Jobs/JobsList";
+import SubscriptionList from "./views/Jobs/SubscriptionList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -219,6 +220,17 @@ function App() {
               </Dashboard>
             }
             path="/jobs"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <SubscriptionList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/unassigned-jobs"
           />
           <Route
             element={

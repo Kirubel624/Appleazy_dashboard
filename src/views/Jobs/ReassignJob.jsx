@@ -288,6 +288,7 @@ const ReassignJob = ({
       ">
             {assistants.map((data) => (
               <AssistantCard
+                type="assignment"
                 data={data}
                 handleReassignment={handleReassignment}
                 reassignOption={reassignOption}
