@@ -1,3 +1,4 @@
+import { Avatar } from "antd";
 import React, { useState } from "react";
 import { FaCheckCircle, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -13,6 +14,7 @@ const SubscriptionsCard = ({
   selectedJob,
   setSelectedJob,
   data,
+  User,
 }) => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -72,7 +74,7 @@ const SubscriptionsCard = ({
           There are {jobsRemaining} applications remaining in this subscription.
         </p>
       </div>
-      <div className="flex justify-en space-x-4 mt-4">
+      <div className="flex items-center justify-between space-x-4 mt-4">
         {/* View Jobs Button */}
         <button
           onClick={() => {
@@ -83,7 +85,24 @@ const SubscriptionsCard = ({
            hover:bg-[#168A53] transition">
           Assign
         </button>
-
+        <div className="flex items-center">
+          <Avatar
+            size={42}
+            style={{ border: "0.1px solid #d8d8d8" }}
+            className="w-8 h-8 rounded-full  mr-4"
+            src={
+              User?.Profile?.profileImage ||
+              `https://robohash.org/${User?.username}`
+            }
+            alt="Assistant's Profile Picture"
+          />
+          <div className="flex flex-col">
+            <span className="font-sans text-sm font-medium">
+              {User?.username}
+            </span>
+            <span className="text-xs text-gray-500">Client</span>
+          </div>
+        </div>
         {/* Manage Subscription Button */}
         {/* <button
           // onClick={handleManageSubscription}
