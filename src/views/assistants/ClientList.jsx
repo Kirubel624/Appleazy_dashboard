@@ -330,7 +330,7 @@ const ClientList = ({ collapsed }) => {
                   setSelectedClient(recored);
                   setPromostionModal(true);
                 }}
-                disabled={!recored?.accountStatus}
+                disabled={!recored?.completedSteps?.completed}
                 type="primary"
                 className="bg-green-600 hover:bg-green-700">
                 Send free Aplications
