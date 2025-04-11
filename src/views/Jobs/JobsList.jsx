@@ -242,6 +242,8 @@ const JobsList = ({ collapsed, setCollapsed }) => {
     }
   };
   useEffect(() => {
+    console.log(search, "pppppppppaaaaaaaaa");
+
     fetchAssignments();
   }, [page, search, status, pageSize]);
   const handleDelete = async () => {
@@ -523,6 +525,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
               onSearch={(value) => {
                 setPage(1);
                 setSearch(value);
+                console.log(value, "object");
               }}
               // enterButton
               allowClear
