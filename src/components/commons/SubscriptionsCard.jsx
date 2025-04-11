@@ -1,6 +1,8 @@
-import { Avatar } from "antd";
+import Icon, { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Avatar, Dropdown } from "antd";
 import React, { useState } from "react";
 import { FaCheckCircle, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { GoKebabHorizontal } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +17,7 @@ const SubscriptionsCard = ({
   setSelectedJob,
   data,
   User,
+  setDeleteModal,
 }) => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -22,12 +25,35 @@ const SubscriptionsCard = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const onClick = ({ key }, record) => {
+    if (key == "delete") {
+      setSelectedJob(record);
+      setDeleteModal(true);
+    }
+  };
+  const items = [
+    {
+      key: "delete",
+      label: "Delete",
+      icon: (
+        <Icon style={{ color: "red" }} component={() => <DeleteOutlined />} />
+      ),
+    },
+  ];
   return (
     <div
       className="md:max-w-md p-6 rounded-lg shadow
      bg-white border border-gray-200">
-      {/* Tier and Type */}
+      <div className=" mb- borde flex items-end justify-end self-end w-full">
+        <Dropdown
+          className="self-end"
+          menu={{
+            items,
+            onClick: (value) => onClick(value, data),
+          }}>
+          <GoKebabHorizontal className="  borde border-red-900 w-5 h-5  " />
+        </Dropdown>
+      </div>
       <div className="flex items-center justify-between">
         <div className="mb-4">
           <h2 className="text-xl font-bold text-gray-900">
@@ -42,8 +68,6 @@ const SubscriptionsCard = ({
           {jobLimit}
         </div>
       </div>
-      {/* Features List */}
-      {/* Collapsible Features List */}
       <div className="mb-6">
         <button
           onClick={toggleExpand}
@@ -51,8 +75,6 @@ const SubscriptionsCard = ({
           <span className="text-lg font-medium text-gray-900">Features</span>
           {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
         </button>
-
-        {/* Collapsible List */}
         {isExpanded && (
           <div>
             {SubscriptionPricing?.features.map((feature) => (
@@ -67,15 +89,12 @@ const SubscriptionsCard = ({
           </div>
         )}
       </div>
-
-      {/* Footer */}
       <div className="border-b pb-4 mb-4 text-center">
         <p className="text-sm text-gray-500">
           There are {jobsRemaining} applications remaining in this subscription.
         </p>
       </div>
       <div className="flex items-center justify-between space-x-4 mt-4">
-        {/* View Jobs Button */}
         <button
           onClick={() => {
             setAssignModal(true);
@@ -103,12 +122,6 @@ const SubscriptionsCard = ({
             <span className="text-xs text-gray-500">Client</span>
           </div>
         </div>
-        {/* Manage Subscription Button */}
-        {/* <button
-          // onClick={handleManageSubscription}
-          className="bg-white text-[#168A53] border border-[#168A53] px-4 py-2  hover:bg-gray-600 transition">
-          Manage
-        </button> */}
       </div>
     </div>
   );

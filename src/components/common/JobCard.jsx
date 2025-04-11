@@ -5,7 +5,11 @@ import utc from "dayjs/plugin/utc";
 import { FaComments, FaTachometerAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { GoKebabHorizontal } from "react-icons/go";
-import Icon, { EditOutlined, ReloadOutlined } from "@ant-design/icons";
+import Icon, {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { BiRepost } from "react-icons/bi";
 import { TfiReload } from "react-icons/tfi";
 import { Link } from "react-router-dom";
@@ -18,6 +22,7 @@ const JobCard = ({
   setReassignModal,
   setRepostModal,
   repostModal,
+  setDeleteModal,
 }) => {
   const statusColors = {
     ongoing: "orange",
@@ -38,6 +43,10 @@ const JobCard = ({
       setSelectedJob(record);
       setRepostModal(true);
     }
+    // else if (key == "delete") {
+    //   setSelectedJob(record);
+    //   setDeleteModal(true);
+    // }
   };
   const items = [
     {
@@ -55,6 +64,13 @@ const JobCard = ({
       label: "Repost",
       icon: <Icon component={() => <TfiReload />} />,
     },
+    // {
+    //   key: "delete",
+    //   label: "Delete",
+    //   icon: (
+    //     <Icon style={{ color: "red" }} component={() => <DeleteOutlined />} />
+    //   ),
+    // },
   ];
   const isCreatedToday = dayjs(data?.createdAt).isSame(dayjs(), "day");
   return (

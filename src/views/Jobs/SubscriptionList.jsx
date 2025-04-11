@@ -1,4 +1,4 @@
-import { Empty, Modal } from "antd";
+import { Button, Empty, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 import SubscriptionsCard from "../../components/commons/SubscriptionsCard";
@@ -11,7 +11,7 @@ const SubscriptionList = ({ collapsed, setCollapsed }) => {
   const apiPrivate = useAPIPrivate();
   const [assignModal, setAssignModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(false);
-
+  const [deleteModal, setDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const fetchSubscriptions = async () => {
     setLoading(true);
@@ -27,6 +27,13 @@ const SubscriptionList = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     fetchSubscriptions();
   }, []);
+  const handleDelete = async () => {
+    console.log(selectedJob, "asiodfjioejfiojseioaf");
+    const res = await apiPrivate.delete(`/subscription/${selectedJob.id}`);
+    message.success("Assignment deleted successfully");
+    setDeleteModal(false);
+    await fetchSubscriptions();
+  };
   return (
     <div
       className={`${
@@ -51,6 +58,27 @@ const SubscriptionList = ({ collapsed, setCollapsed }) => {
           setSelectedJob={setSelectedJob}
         />
       </Modal>
+      <Modal
+        title="Confirm Delete"
+        open={deleteModal}
+        onOk={handleDelete}
+        onCancel={() => setDeleteModal(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setDeleteModal(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="delete"
+            type="primary"
+            danger
+            onClick={handleDelete}
+            style={{ backgroundColor: "#FF4D4F", borderColor: "#FF4D4F" }}>
+            Delete
+          </Button>,
+        ]}
+        confirmLoading={false}>
+        <p>Are you sure you want to delete this subscription?</p>
+      </Modal>
       {!loading && subscriptions.length > 0 ? (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 border- border-red-900 gap-4 w-full">
           {subscriptions?.map((data) => (
@@ -60,6 +88,7 @@ const SubscriptionList = ({ collapsed, setCollapsed }) => {
               assignModal={assignModal}
               setSelectedJob={setSelectedJob}
               data={data}
+              setDeleteModal={setDeleteModal}
             />
           ))}
           {/* <JobCard {...jobData} /> */}
