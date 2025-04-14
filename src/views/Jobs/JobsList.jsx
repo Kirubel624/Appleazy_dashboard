@@ -2,34 +2,51 @@ import React, { useEffect, useRef, useState } from "react";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
 import JobCard from "../../components/common/JobCard";
 import StatCard from "../../components/common/StatCard";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
-import { Navigation, Scrollbar, A11y } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import {
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosCheckmarkCircleOutline,
-  IoMdPerson,
 } from "react-icons/io";
-import { FaFileAlt } from "react-icons/fa";
-import {
-  IoChatboxEllipsesSharp,
-  IoNewspaperOutline,
-  IoNewspaperSharp,
-  IoReload,
-} from "react-icons/io5";
-import { MdAttachMoney, MdOutlineWork } from "react-icons/md";
+import { IoReload } from "react-icons/io5";
 import { TfiReload } from "react-icons/tfi";
-import { VscGraph } from "react-icons/vsc";
 import { MdOutlineWorkOutline } from "react-icons/md";
-import { Modal } from "antd";
+import {
+  Button,
+  Col,
+  Input,
+  message,
+  Modal,
+  Pagination,
+  Radio,
+  Row,
+  Select,
+} from "antd";
 import EditJobs from "./EditJob";
 import ReassignJob from "./ReassignJob";
+import { ClipLoader, ScaleLoader } from "react-spinners";
+import api from "../../utils/api";
+const { Option } = Select;
+const { Search } = Input;
 const JobsList = ({ collapsed, setCollapsed }) => {
   const apiPrivate = useAPIPrivate();
   const [jobs, setJobs] = useState();
   const [editModal, setEditModal] = useState(false);
   const [reassignModal, setReassignModal] = useState(false);
+  const [repostOption, setRepostOption] = useState("penalty");
+  const [loading, setLoading] = useState(false);
+  const [repostModal, setRepostModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [limit] = useState(10);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+
+  const [total, setTotal] = useState(0);
+
   const swiperRef = useRef();
 
   const isOnTrack = async (
@@ -134,12 +151,19 @@ const JobsList = ({ collapsed, setCollapsed }) => {
   };
 
   const fetchAssignments = async () => {
+    setLoading(true);
     try {
-      const res = await apiPrivate.get(`/assignment`);
-      console.log(res, "assignment info ???????????????????????????????????");
+      const params = {
+        page,
+        limit: pageSize,
+        ...(search && { search }),
+        ...(status && { status }),
+      };
+
+      const res = await apiPrivate.get(`/assignment`, { params });
 
       const modifiedAssignments = await Promise.all(
-        res.data.map(async (job) => {
+        res.data.data.map(async (job) => {
           const onTrackResult = await isOnTrack(
             job?.applicationsTotal,
             job?.applicationsTotal - job?.remainingApplications,
@@ -158,9 +182,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
             const percentageBehind = Math.abs(progressDifference).toFixed(2);
             progressMessage = `${
               job?.assistant?.name?.split(" ")[0]
-            } is currently ${Math.abs(
-              percentageBehind
-            )}% behind the expected progress and has done ${
+            } is currently ${percentageBehind}% behind the expected progress and has done ${
               job?.applicationsTotal - job?.remainingApplications
             }/${job?.applicationsTotal} applications.`;
           } else if (progressDifference > 0) {
@@ -177,7 +199,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
               job?.applicationsTotal - job?.remainingApplications
             }/${job?.applicationsTotal} applications.`;
           }
-          console.log(onTrackResult.message, "on track result");
+
           return {
             ...job,
             onTrackMessage: onTrackResult?.message,
@@ -187,30 +209,62 @@ const JobsList = ({ collapsed, setCollapsed }) => {
         })
       );
 
-      console.log(modifiedAssignments, "modified assignments");
-      setJobs(modifiedAssignments); // Set state after resolving promises
+      setJobs(modifiedAssignments);
+      setTotal(res.data.total);
     } catch (error) {
       console.log(error, "error fetching assignments");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleRepost = async (repostOption, reassignmentOption) => {
+    setLoading(true);
+    const data = {
+      id: selectedJob.id,
+      reassignmentOption,
+      repostOption,
+    };
+    console.log(data, "passed values");
+    try {
+      const res = await api.patch(`/assignment/reassign`, data);
+      console.log(res, "resposne of update");
+      if (res.status === 201) {
+        message.success("Job reposted successfully!");
+        setLoading(false);
+        setRepostModal(false);
+        fetchAssignments();
+      }
+    } catch (error) {
+      console.log(error, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
+    console.log(search, "pppppppppaaaaaaaaa");
+
     fetchAssignments();
-  }, []);
+  }, [page, search, status, pageSize]);
+  const handleDelete = async () => {
+    console.log(selectedJob, "asiodfjioejfiojseioaf");
+    const res = await apiPrivate.delete(`/assignment/${selectedJob.id}`);
+    message.success("Assignment deleted successfully");
+    setDeleteModal(false);
+    await fetchAssignments();
+  };
   return (
     <div
       className={`${
-        collapsed ? " mr-0 ml-[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
+        collapsed ? "mr-0 ml-[80px]" : "ml-[200px]"
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       <Modal
         title="Edit job"
         destroyOnClose
         open={editModal}
         onClose={() => setEditModal(false)}
         onCancel={() => setEditModal(false)}
-        footer={null}
-      >
+        footer={null}>
         <EditJobs
           editModal={editModal}
           setEditModal={setEditModal}
@@ -224,11 +278,12 @@ const JobsList = ({ collapsed, setCollapsed }) => {
       <Modal
         title="Reassign job"
         destroyOnClose
+        className="mt-[-50px]"
         open={reassignModal}
-        onClose={() => setEditModal(false)}
-        onCancel={() => setEditModal(false)}
+        onClose={() => setReassignModal(false)}
+        onCancel={() => setReassignModal(false)}
         footer={null}
-      >
+        width={800}>
         <ReassignJob
           reassignModal={reassignModal}
           setReassignModal={setReassignModal}
@@ -239,12 +294,81 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           setSelectedJob={setSelectedJob}
         />
       </Modal>
+      <Modal
+        title="Repost job"
+        destroyOnClose
+        // className="mt-[-50px]"
+        open={repostModal}
+        onClose={() => setRepostModal(false)}
+        onCancel={() => setRepostModal(false)}
+        footer={null}
+        // width={800}
+      >
+        <Radio.Group
+          onChange={(e) => setRepostOption(e.target.value)}
+          value={repostOption}
+          className="flex flex-col gap-3">
+          <Radio value="penalty">
+            <span className="font-medium">Repost with penalty</span> – The
+            assistant's maximum rating will decrease, and this will count as a
+            failed job.
+          </Radio>
+          <Radio value="no_penalty">
+            <span className="font-medium">Repost without penalty</span> – The
+            assistant will not receive any penalty, and the subscription will be
+            reposted. They will still be paid for completed jobs.
+          </Radio>
+          <Radio value="no_record">
+            <span className="font-medium">No record</span> – The assignment will
+            be deleted, and the assistant will not have a record of it as a
+            failed job. (Recommended for jobs where the assistant hasn't started
+            applying yet.)
+          </Radio>
+        </Radio.Group>
+        <button
+          onClick={() => handleRepost(repostOption, "repost")}
+          className="bg-[#168A53] mt-4 text-sm text-white py-2 px-5 font- ">
+          {loading ? (
+            <ClipLoader
+              color="#FFFFF"
+              loading={loading}
+              //  cssOverride={override}
+              className=" rounded-full"
+              size={20}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "Continue"
+          )}
+        </button>
+      </Modal>
+      <Modal
+        title="Confirm Delete"
+        open={deleteModal}
+        onOk={handleDelete}
+        onCancel={() => setDeleteModal(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setDeleteModal(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="delete"
+            type="primary"
+            danger
+            onClick={handleDelete}
+            style={{ backgroundColor: "#FF4D4F", borderColor: "#FF4D4F" }}>
+            Delete
+          </Button>,
+        ]}
+        confirmLoading={false}>
+        <p>Are you sure you want to delete this assignment?</p>
+      </Modal>
       <h1 className="font-medium font-sans text-2xl pb-6">Jobs</h1>
       <div className="mb-4 relative sm:hidden block ">
         <button
           className="absolute left-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slidePrev()}
-        >
+          onClick={() => swiperRef.current.slidePrev()}>
           <IoIosArrowBack className=" w-4 h-4" />
         </button>
         <Swiper
@@ -256,8 +380,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           spaceBetween={50}
           slidesPerView={1}
           navigation
-          loop={true}
-        >
+          loop={true}>
           <SwiperSlide>
             <div className="">
               <StatCard
@@ -325,16 +448,14 @@ const JobsList = ({ collapsed, setCollapsed }) => {
         </Swiper>
         <button
           className="absolute right-2 top-1/2 z-[10]"
-          onClick={() => swiperRef.current.slideNext()}
-        >
+          onClick={() => swiperRef.current.slideNext()}>
           <IoIosArrowForward className=" w-4 h-4" />
         </button>
       </div>
 
       <div
         id="job-cards"
-        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4"
-      >
+        className="mb-6 sm:grid hidden lg:grid-cols-4 mdssl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
         <StatCard
           statusname="Total No of Jobs"
           statusamount={"0" || "0"}
@@ -384,16 +505,89 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           cardStyle="py-6 px-6 "
         />
       </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 border- border-red-900 gap-4 w-full">
-        {jobs?.map((job) => (
-          <JobCard
-            data={job}
-            setEditModal={setEditModal}
-            setReassignModal={setReassignModal}
-            setSelectedJob={setSelectedJob}
+      <div>
+        <div className="mb-6 flex items-center w-full">
+          <div className="mr-2">
+            <Search
+              enterButton={
+                <Button
+                  type="primary"
+                  style={{
+                    backgroundColor: "#168A53",
+                    borderColor: "#168A53",
+                  }}>
+                  Search
+                </Button>
+              }
+              // enterButton="Go"
+              className=" lg:w-[500px] w-full"
+              placeholder="Search assistant or client"
+              onSearch={(value) => {
+                setPage(1);
+                setSearch(value);
+                console.log(value, "object");
+              }}
+              // enterButton
+              allowClear
+            />
+          </div>
+          <div>
+            <Select
+              placeholder="Filter by Status"
+              onChange={(value) => {
+                setPage(1);
+                setStatus(value);
+              }}
+              allowClear
+              style={{ width: "100%" }}>
+              <Option value="pending">Pending</Option>
+              <Option value="ongoing">In Progress</Option>
+              <Option value="reassigned">Reassigned</Option>
+              <Option value="completed">Completed</Option>
+            </Select>
+          </div>
+        </div>
+        <div className="mb-6">
+          <Pagination
+            current={page}
+            pageSize={pageSize}
+            total={total}
+            showSizeChanger
+            pageSizeOptions={["5", "10", "20", "50", "100"]}
+            onChange={(pageNum, pageSize) => {
+              setPage(pageNum);
+              setPageSize(pageSize);
+            }}
+            style={{ marginTop: 20, textAlign: "center" }}
           />
-        ))}
+        </div>
       </div>
+      {!loading ? (
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 border- border-red-900 gap-4 w-full">
+          {jobs?.map((job) => (
+            <JobCard
+              data={job}
+              setEditModal={setEditModal}
+              setReassignModal={setReassignModal}
+              setRepostModal={setRepostModal}
+              setDeleteModal={setDeleteModal}
+              setSelectedJob={setSelectedJob}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full flex flex-col pt-10 border-red-900 items-center justify-center">
+          <ScaleLoader
+            color="#168a53"
+            loading={loading}
+            //  cssOverride={override}
+            className=" rounded-full"
+            size={20}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )}
     </div>
   );
 };
