@@ -62,10 +62,12 @@ function App() {
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
-                <AssistantsList
-                  collapsed={collapsed}
-                  setCollapsed={setCollapsed}
-                />{" "}
+                {user?.isSystemAdmin && (
+                  <AssistantsList
+                    collapsed={collapsed}
+                    setCollapsed={setCollapsed}
+                  />
+                )}
               </Dashboard>
             }
             path="/"
@@ -195,7 +197,8 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }>
+            }
+          >
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
