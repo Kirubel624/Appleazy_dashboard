@@ -31,6 +31,7 @@ import {
   Modal,
   Popover,
   Space,
+  Spin,
   theme,
 } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -58,6 +59,7 @@ import { BiBookContent } from "react-icons/bi";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { FaRegHourglass } from "react-icons/fa";
 import authService from "../auth/authService";
+import { ScaleLoader } from "react-spinners";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -81,6 +83,8 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
   const notifications = useSocket(user?.id);
   const [viewSider, setViewSidebar] = useState(false);
   const [menuItems, setmenuItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const unreadNotifications =
     (notifications?.length > 0 &&
       notifications?.filter((notification) => !notification.isRead)) ||
@@ -153,48 +157,48 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     console.log(
       "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"
     );
-    const item10 = [
-      (await authService.checkPermmision("clients", "readOnly", api)) &&
-        getItem("Clients", "/clients", <BookOutlined />),
+    // const item10 = [
+    //   (await authService.checkPermmision("clients", "readOnly", api)) &&
+    //     getItem("Clients", "/clients", <BookOutlined />),
 
-      (await authService.checkPermmision("assistants", "readOnly", api)) &&
-        getItem("Assistants", "/assistants", <BookOutlined />),
+    //   (await authService.checkPermmision("assistants", "readOnly", api)) &&
+    //     getItem("Assistants", "/assistants", <BookOutlined />),
 
-      (await authService.checkPermmision("transactions", "readOnly", api)) &&
-        getItem("Transactions", "/transactions", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("transactions", "readOnly", api)) &&
+    //     getItem("Transactions", "/transactions", <CheckSquareOutlined />),
 
-      (await authService.checkPermmision("training", "readOnly", api)) &&
-        getItem("Training", "/training", <BookOutlined />),
-      (await authService.checkPermmision("exercise", "readOnly", api)) &&
-        getItem("Exercise", "/exercise", <CheckSquareOutlined />),
-      (await authService.checkPermmision("announcement", "readOnly", api)) &&
-        getItem("Announcement", "/announcement", <CheckSquareOutlined />),
-      (await authService.checkPermmision("blog", "readOnly", api)) &&
-        getItem("Blog", "/blog", <CheckSquareOutlined />),
-      (await authService.checkPermmision("chat", "readOnly", api)) &&
-        getItem("Chat", "/chat", <MessageOutlined />),
-      (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
-        getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("training", "readOnly", api)) &&
+    //     getItem("Training", "/training", <BookOutlined />),
+    //   (await authService.checkPermmision("exercise", "readOnly", api)) &&
+    //     getItem("Exercise", "/exercise", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("announcement", "readOnly", api)) &&
+    //     getItem("Announcement", "/announcement", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("blog", "readOnly", api)) &&
+    //     getItem("Blog", "/blog", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("chat", "readOnly", api)) &&
+    //     getItem("Chat", "/chat", <MessageOutlined />),
+    //   (await authService.checkPermmision("feedbacks", "readOnly", api)) &&
+    //     getItem("Feedback", "/feedbacks", <CheckSquareOutlined />),
 
-      (await authService.checkPermmision("coupons", "readOnly", api)) &&
-        getItem("Coupons", "/coupons", <CheckSquareOutlined />),
-      (await authService.checkPermmision("signup-link", "readOnly", api)) &&
-        getItem(
-          <p
-            onClick={showModal}
-            className="bg-green-700 rounded-full text-center  "
-          >
-            Signup Link
-          </p>,
-          "#"
-          // <CheckSquareOutlined />
-        ),
+    //   (await authService.checkPermmision("coupons", "readOnly", api)) &&
+    //     getItem("Coupons", "/coupons", <CheckSquareOutlined />),
+    //   (await authService.checkPermmision("signup-link", "readOnly", api)) &&
+    //     getItem(
+    //       <p
+    //         onClick={showModal}
+    //         className="bg-green-700 rounded-full text-center  "
+    //       >
+    //         Signup Link
+    //       </p>,
+    //       "#"
+    //       // <CheckSquareOutlined />
+    //     ),
 
-      // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+    //   // getItem("Job board", "/job_board", <InfoCircleOutlined />),
 
-      // getItem("History", "/histry", <BarChartOutlined />),
-    ];
-
+    //   // getItem("History", "/histry", <BarChartOutlined />),
+    // ];
+    setLoading(true);
     const item = [
       (await authService.checkPermmision("user_managment", "readOnly", api)) &&
         getItem(
@@ -308,6 +312,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
     ];
 
     setmenuItems(item);
+    setLoading(false);
   };
 
   const handleCopy = () => {
@@ -450,16 +455,32 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
                 </Link>
               )}{" "}
             </div>
-            <Menu
-              className="borde px-1 border-red-900  h-full bg-black"
-              theme="dark"
-              defaultSelectedKeys={location.pathname}
-              activeKey={location.pathname}
-              selectedKeys={[location.pathname]}
-              mode="inline"
-              items={menuItems}
-              onClick={onClick}
-            />
+            {loading ? (
+              <div className="flex justify-center h-52 items-center">
+                <div className="w-full flex flex-col pt-10 border-red-900 items-center justify-center">
+                  <ScaleLoader
+                    color="white"
+                    loading={loading}
+                    //  cssOverride={override}
+                    className=" rounded-full"
+                    size={20}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </div>
+              </div>
+            ) : (
+              <Menu
+                className="borde px-1 border-red-900  h-full bg-black"
+                theme="dark"
+                defaultSelectedKeys={location.pathname}
+                activeKey={location.pathname}
+                selectedKeys={[location.pathname]}
+                mode="inline"
+                items={menuItems}
+                onClick={onClick}
+              />
+            )}
           </div>
           <div className="text-white borde border-emerald-700">
             <button
