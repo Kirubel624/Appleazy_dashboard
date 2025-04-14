@@ -212,6 +212,26 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
           ]
         ),
+      (await authService.checkPermmision("jobs", "readOnly", api)) &&
+        getItem(
+          "Jobs",
+          null,
+          <Icon component={() => <IoBriefcaseOutline />} />,
+          [
+            (await authService.checkPermmision("jobs", "readOnly", api)) &&
+              getItem("Assigned", "/jobs", <UserOutlined />),
+            (await authService.checkPermmision(
+              "unassigned-jobs",
+              "readOnly",
+              api
+            )) &&
+              getItem(
+                "Unassigned",
+                "/unassigned-jobs",
+                <Icon component={() => <FaRegHourglass />} />
+              ),
+          ]
+        ),
 
       (await authService.checkPermmision("financial", "readOnly", api)) &&
         getItem(
