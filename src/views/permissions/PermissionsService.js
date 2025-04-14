@@ -32,9 +32,13 @@ class PermissionsService {
       url = url + `&searchText=${searchText}`;
     }
 
-    return api.get(url).then((response) => {
-      return { data: response.data.data, total: response.data.total };
-    });
+    return api
+      .get(url)
+      .then((response) => {
+        console.log(response, "pppppppppppppppppppppppppp");
+        return { data: response.data.data, total: response.data.total };
+      })
+      .catch((err) => console.log(err, "ooeoeoeooeoeo"));
   }
 
   getPermission(id, api) {
