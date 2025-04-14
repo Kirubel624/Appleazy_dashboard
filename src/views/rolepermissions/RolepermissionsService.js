@@ -50,7 +50,8 @@ class RolepermissionsService {
       .get("/rolepermissions/" + id + "/permissions")
       .then((response) => {
         return response.data.data;
-      });
+      })
+      .catch((err) => console.log(err, "eepepepep"));
   }
   deleteRolepermission(id) {
     return api.delete("/rolepermissions/" + id).then((response) => {
