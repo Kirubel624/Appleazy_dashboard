@@ -131,6 +131,7 @@ const RolesList = ({ collapsed }) => {
       const response = await permissionsService.searchPermission({
         page: 1,
         limit: 1000,
+        api,
       });
       const response2 = await RolepermissionsService.getRolePermissions(roleId);
       console.log("response2 =============", response2);
