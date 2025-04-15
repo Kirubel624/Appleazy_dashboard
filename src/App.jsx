@@ -36,6 +36,7 @@ import Group_usersList from "./views/group_users/Group_usersList";
 import PermissionsList from "./views/permissions/PermissionsList";
 import JobsList from "./views/Jobs/JobsList";
 import SubscriptionList from "./views/Jobs/SubscriptionList";
+import ConsultationList from "./views/consultation/Consultation";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -136,6 +137,17 @@ function App() {
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <ConsultationList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/consultation"
+          />
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <Coupons collapsed={collapsed} setCollapsed={setCollapsed} />
               </Dashboard>
             }
@@ -197,8 +209,7 @@ function App() {
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
                 <ChatLayout userId={user?.id} collapsed={collapsed} />
               </Dashboard>
-            }
-          >
+            }>
             <Route element={<BoddyCon />} path=":id/:to" />
             <Route
 
