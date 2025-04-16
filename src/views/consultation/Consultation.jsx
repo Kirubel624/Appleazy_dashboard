@@ -56,7 +56,15 @@ const ConsultationList = ({ collapsed, setCollapsed }) => {
       message.error("Failed to update status.");
     }
   };
+  const formatPreferredTime = (input) => {
+    const [dateStr, timeRange] = input.split(" | ");
+    const date = new Date(dateStr);
 
+    const options = { month: "short", day: "2-digit", year: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-US", options);
+
+    return `${formattedDate} | ${timeRange}`;
+  };
   const columns = [
     {
       title: "Name",
@@ -82,6 +90,7 @@ const ConsultationList = ({ collapsed, setCollapsed }) => {
       dataIndex: "preferredTime",
       key: "preferredTime",
       width: 180,
+      render: (text) => <p className="">{formatPreferredTime(text)}</p>,
     },
     {
       title: "Status",
@@ -120,7 +129,6 @@ const ConsultationList = ({ collapsed, setCollapsed }) => {
         columns={columns}
         dataSource={consultations}
         loading={loading}
-        bordered
         rowkey={(record) => record.id}
         scroll={{
           x: 700,
