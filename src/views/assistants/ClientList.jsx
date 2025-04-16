@@ -41,6 +41,19 @@ const emailTemplates = [
     subject: "Your Applications Are Complete! 🎉 Here's a Special Gift",
     body: `Your applications are complete! As a thank-you, enjoy an exclusive coupon for 25 additional applications.`,
   },
+  {
+    id: 3,
+    title: "Getting Started Email",
+    subject: "Hi FirstName! Let’s Get Started on Your Job Search 🚀",
+    body: `Hi FirstName!
+
+We’re excited to get started on your job search journey! Before we start, please ensure that you have completed the sign-up process by providing your resume, preference, shared email, etc. I have included an example of a shared email below—please note that this should not be your personal email but rather a new email that can be shared between you and your job application assistant.
+
+Looking forward to helping you land your dream job!
+
+Email: Firstname.app@gmail.com  
+Password: Firstname_appleazy`,
+  },
 ];
 const ClientList = ({ collapsed }) => {
   const api = useAPIPrivate();
@@ -195,6 +208,8 @@ const ClientList = ({ collapsed }) => {
         template: selectedTemplate?.id,
       });
       setSenEmailModel(false);
+      setSelectedTemplate(null);
+
       setValue("");
       setTitle("");
 
@@ -230,7 +245,8 @@ const ClientList = ({ collapsed }) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://www.luohanacademy.com">
+          href="https://www.luohanacademy.com"
+        >
           3rd menu item
         </a>
       ),
@@ -302,7 +318,8 @@ const ClientList = ({ collapsed }) => {
                 setSenEmailModel(true);
               }}
               type="primary"
-              className="bg-green-600 hover:bg-green-700">
+              className="bg-green-600 hover:bg-green-700"
+            >
               Send
             </Button>
           </div>
@@ -332,7 +349,8 @@ const ClientList = ({ collapsed }) => {
                 }}
                 disabled={!recored?.completedSteps?.completed}
                 type="primary"
-                className="bg-green-600 hover:bg-green-700">
+                className="bg-green-600 hover:bg-green-700"
+              >
                 Send free Aplications
               </Button>
             )}
@@ -354,7 +372,8 @@ const ClientList = ({ collapsed }) => {
                 onClick={() => handleRestore(recored?.id)}
                 type="primary"
                 style={{ backgroundColor: "#168A53" }}
-                className="bg-green-600 hover:bg-green-700">
+                className="bg-green-600 hover:bg-green-700"
+              >
                 Restore
               </Button>
             ) : (
@@ -366,7 +385,8 @@ const ClientList = ({ collapsed }) => {
                 }}
                 style={{ backgroundColor: "#FF4500" }}
                 type="primary"
-                className="hover:bg-red-700">
+                className="hover:bg-red-700"
+              >
                 Delete
               </Button>
             )}
@@ -438,7 +458,8 @@ const ClientList = ({ collapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}>
+      } transition-all ease-in mt-10 pl-10 mr-10`}
+    >
       <Modal
         title={
           <div className="flex items-center">
@@ -449,7 +470,8 @@ const ClientList = ({ collapsed }) => {
         open={deleteModal}
         onCancel={() => setDeleteModal(false)}
         footer={null}
-        centered>
+        centered
+      >
         <div className="py-4">
           <p className="text-gray-600 mb-4">
             Are you sure you want to delete this assistant? This action cannot
@@ -459,7 +481,8 @@ const ClientList = ({ collapsed }) => {
           <div className="flex justify-end space-x-3">
             <Button
               onClick={() => setDeleteModal(false)}
-              className="hover:bg-gray-100">
+              className="hover:bg-gray-100"
+            >
               Cancel
             </Button>
             <Button
@@ -467,7 +490,8 @@ const ClientList = ({ collapsed }) => {
               danger
               onClick={handleDelete2}
               loading={loading}
-              className="bg-red-500 hover:bg-red-600">
+              className="bg-red-500 hover:bg-red-600"
+            >
               Delete Cleint
             </Button>
           </div>
@@ -477,7 +501,8 @@ const ClientList = ({ collapsed }) => {
         <CommonModal
           width={1000}
           isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}>
+          setIsModalOpen={setIsModalOpen}
+        >
           <AssistantsEdit
             assistantsData={assistantsData}
             searchData={searchData}
@@ -496,7 +521,8 @@ const ClientList = ({ collapsed }) => {
           setIsModalOpen={setIsDeleteModalOpen}
           handleDelete={handleDelete}
           loading={loading}
-          isModalOpen={isDeleteModalOpen}>
+          isModalOpen={isDeleteModalOpen}
+        >
           <h1 className=" text-2xl">Are you sure?</h1>
         </CommonDeleteModal>
       ) : (
@@ -508,18 +534,21 @@ const ClientList = ({ collapsed }) => {
           title={"Send Free Applicatoin"}
           width={700}
           isModalOpen={promostionModal}
-          setIsModalOpen={setPromostionModal}>
+          setIsModalOpen={setPromostionModal}
+        >
           <p className="text-lg">
             Are you sure you want to send 10 free applications?
           </p>
           <button
             onClick={() => setPromostionModal(false)}
-            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white">
+            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white"
+          >
             Cancel
           </button>
           <button
             onClick={handlePromostion}
-            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white">
+            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white"
+          >
             Send
           </button>
         </CommonModal>
@@ -532,7 +561,9 @@ const ClientList = ({ collapsed }) => {
           title={"Send Email"}
           width={700}
           isModalOpen={senEmailModel}
-          setIsModalOpen={setSenEmailModel}>
+          setIsModalOpen={setSenEmailModel}
+          setSelectedTemplate={setSelectedTemplate}
+        >
           {/* <p>Subject</p>
           <Input
             value={title}
@@ -554,15 +585,16 @@ const ClientList = ({ collapsed }) => {
               <div
                 key={template.id}
                 className={`cursor-pointer border-2 rounded-lg p-4 shadow-md ${
-                  selectedClient.emailTemplate
-                    .split(",")
-                    .includes(template.id.toString())
-                    ? "border-green-500 bg-green-50"
-                    : selectedTemplate?.id === template.id
+                  selectedTemplate?.id === template.id
                     ? "border-blue-500 bg-blue-50"
+                    : selectedClient.emailTemplate
+                        .split(",")
+                        .includes(template.id.toString())
+                    ? "border-green-500 bg-green-50"
                     : "border-gray-200"
                 }`}
-                onClick={() => setSelectedTemplate(template)}>
+                onClick={() => setSelectedTemplate(template)}
+              >
                 {JSON.stringify()}
                 <h2 className="text-lg font-semibold">{template.title}</h2>
                 <p className="text-sm text-gray-600 mt-2">{template.subject}</p>
@@ -572,13 +604,18 @@ const ClientList = ({ collapsed }) => {
           </div>
           <div className=" py-3"></div>
           <button
-            onClick={() => setSenEmailModel(false)}
-            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white">
+            onClick={() => {
+              setSenEmailModel(false);
+              setSelectedTemplate(null);
+            }}
+            className="border-red-600  text-red-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-red-600 hover:text-white"
+          >
             Cancel
           </button>
           <button
             onClick={handleSend}
-            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white">
+            className="border-green-600 text-green-600 border rounded-md  mx-4 my-4 py-1 px-4 hover:bg-green-600 hover:text-white"
+          >
             Send
           </button>
         </CommonModal>
@@ -620,7 +657,8 @@ const ClientList = ({ collapsed }) => {
             onClick={handleReload}
             className="
              border border-[#168A53] py-2 px-3
-             text-[#168A53] rounded mr-4 flex items-center justify-center">
+             text-[#168A53] rounded mr-4 flex items-center justify-center"
+          >
             <ReloadOutlined className=" boder boder-red-900" />
           </button>
 
