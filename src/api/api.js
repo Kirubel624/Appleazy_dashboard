@@ -10,13 +10,13 @@ const handleErrorResponse = (errorMessage) => {
 };
 
 const instance = axios.create({
-  baseURL: LOCAL_URL,
+  baseURL: HOSTED_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const api2 = axios.create({
-  baseURL: LOCAL_URL,
+  baseURL: HOSTED_URL,
 
   headers: {
     "Content-Type": "application/json",
