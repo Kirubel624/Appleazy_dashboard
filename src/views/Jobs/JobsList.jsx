@@ -540,7 +540,6 @@ const JobsList = ({ collapsed, setCollapsed }) => {
               }}
               allowClear
               style={{ width: "100%" }}>
-              <Option value="pending">Pending</Option>
               <Option value="ongoing">In Progress</Option>
               <Option value="reassigned">Reassigned</Option>
               <Option value="completed">Completed</Option>
