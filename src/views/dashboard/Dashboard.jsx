@@ -214,6 +214,9 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               api
             )) &&
               getItem("Assistants", "/assistants", <UsergroupAddOutlined />),
+            ,
+            (await authService.checkPermmision("Agent", "readOnly", api)) &&
+              getItem("Agent", "/agent", <UsergroupAddOutlined />),
           ]
         ),
       (await authService.checkPermmision("jobs", "readOnly", api)) &&
@@ -249,6 +252,18 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
               api
             )) &&
               getItem("Transactions", "/transactions", <TransactionOutlined />),
+
+            (await authService.checkPermmision(
+              "transactions",
+              "readOnly",
+              api
+            )) &&
+              getItem(
+                "Agent Transactions",
+                "/agent_transactions",
+                <TransactionOutlined />
+              ),
+
             (await authService.checkPermmision("coupons", "readOnly", api)) &&
               getItem(
                 "Coupons",

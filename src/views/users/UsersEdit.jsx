@@ -21,6 +21,7 @@ import CommonModal from "../../components/commons/CommonModel";
 import UsersPick from "./UsersPick";
 import dayjs from "dayjs";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
+import { useLocation } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -44,6 +45,11 @@ const UsersEdit = ({
   searchData,
 }) => {
   const api = useAPIPrivate();
+  const location = useLocation();
+
+  const pathSegments = location.pathname.split("/").filter(Boolean); // removes empty strings
+  console.log("pathSegments", pathSegments);
+  const lastSegment = pathSegments[0];
 
   const [form] = Form.useForm();
   const [switch2, setSwitch2] = useState("");
@@ -80,7 +86,7 @@ const UsersEdit = ({
     try {
       setLoading(true);
 
-      const data = await usersService.createUser(datas.user, api);
+      const data = await usersService.createUser(datas.user, api, lastSegment);
       setIsModalOpen(false);
       searchData();
 

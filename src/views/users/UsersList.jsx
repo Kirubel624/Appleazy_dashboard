@@ -7,7 +7,7 @@ import CommonModal from "../../components/commons/CommonModel";
 
 import usersService from "./UsersService";
 import UsersEdit from "./UsersEdit";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUsers, updateUsersState, usersSearchText } from "./UsersRedux";
@@ -15,7 +15,13 @@ import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const UsersList = ({ collapsed }) => {
   const api = useAPIPrivate();
+  const location = useLocation();
 
+  const pathSegments = location.pathname.split("/").filter(Boolean); // removes empty strings
+  console.log("pathSegments", pathSegments);
+  const lastSegment = pathSegments[0];
+
+  console.log(lastSegment, "lastSegment");
   const [usersData, setUsersData] = useState([]);
 
   const [total, setTotal] = useState();
@@ -25,6 +31,103 @@ const UsersList = ({ collapsed }) => {
   const [usersSelection, setUsersSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [columns, setColumns] = useState([
+    {
+      title: " ",
+      dataIndex: "action",
+      render: (_, recored) => {
+        return (
+          <Dropdown
+            menu={{
+              items,
+              onClick: (value) => onClick(value, recored),
+            }}
+            trigger={["click"]}
+            placement="bottomLeft"
+          >
+            <Button
+              type="text"
+              icon={<MoreOutlined style={{ fontSize: 20 }} />}
+              onClick={() => {
+                setModeID(recored.id);
+              }}
+            ></Button>
+          </Dropdown>
+        );
+      },
+    },
+
+    {
+      title: "Name",
+      dataIndex: "name",
+      render: (text, recored) => {
+        return <p>{text}</p>;
+      },
+      sorter: true,
+    },
+
+    {
+      title: "Username",
+      dataIndex: "username",
+      sorter: true,
+    },
+
+    {
+      title: "Email",
+      dataIndex: "email",
+      sorter: true,
+    },
+    {
+      title: "Code",
+      dataIndex: "agentCode",
+      sorter: true,
+      render: (text, record) => {
+        return <p>{text ? text : "-"}</p>;
+      },
+    },
+  ]);
+
+  useEffect(() => {
+    const x = columns.find((data) => data.title == "Action");
+    console.log(x, lastSegment == "agent" && !x);
+    if (lastSegment == "agent" && !x) {
+      setColumns([
+        ...columns,
+        lastSegment == "agent" && {
+          title: "Action",
+          fixed: collapsed ? null : "right",
+
+          render: (text, recored) => {
+            return (
+              <div>
+                <Button
+                  onClick={async () => {
+                    console.log(recored, "recored profle");
+                    try {
+                      const data = await usersService.updateAgendCode(
+                        recored.id,
+                        api
+                      );
+                      searchData();
+                    } catch (error) {
+                      console.log(error, "recored profle");
+                    }
+                  }}
+                  type="primary"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Genrate New Code
+                </Button>
+              </div>
+            );
+          },
+        },
+      ]);
+    } else if (lastSegment != "agent" && x) {
+      const f = columns.filter((data) => data.title != "Action");
+      setColumns(f);
+    }
+  }, [lastSegment]);
 
   const [modeID, setModeID] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,12 +144,14 @@ const UsersList = ({ collapsed }) => {
     dispatch(updateUsersState({ page: page, limit: limit }));
     // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
     searchData();
-  }, []);
+  }, [lastSegment]);
 
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchUsers(api));
+      const { payload } = await dispatch(
+        searchUsers({ api, name: lastSegment })
+      );
       setUsersData(payload.data);
       setTotal(payload.total);
       console.log(payload);
@@ -148,54 +253,6 @@ const UsersList = ({ collapsed }) => {
     },
   ];
 
-  const columns = [
-    {
-      title: " ",
-      dataIndex: "action",
-      render: (_, recored) => {
-        return (
-          <Dropdown
-            menu={{
-              items,
-              onClick: (value) => onClick(value, recored),
-            }}
-            trigger={["click"]}
-            placement="bottomLeft"
-          >
-            <Button
-              type="text"
-              icon={<MoreOutlined style={{ fontSize: 20 }} />}
-              onClick={() => {
-                setModeID(recored.id);
-              }}
-            ></Button>
-          </Dropdown>
-        );
-      },
-    },
-
-    {
-      title: "name",
-      dataIndex: "name",
-      render: (text, recored) => {
-        return <p>{text}</p>;
-      },
-      sorter: true,
-    },
-
-    {
-      title: "username",
-      dataIndex: "username",
-      sorter: true,
-    },
-
-    {
-      title: "email",
-      dataIndex: "email",
-      sorter: true,
-    },
-  ];
-
   return (
     <div
       className={`${
@@ -235,7 +292,9 @@ const UsersList = ({ collapsed }) => {
       )}
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">Users</h1>
+          <h1 className="text-2xl font-bold pb-4">
+            {lastSegment == "agent" ? "Agents" : "Users"}
+          </h1>
           <div className="flex">
             <Input
               onChange={searchHandler}

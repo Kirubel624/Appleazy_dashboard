@@ -13,6 +13,8 @@ import ExerciseList from "./views/exercise/ExerciseList";
 import AssistantsList from "./views/assistants/AssistantsList";
 import AssistantsDetail from "./views/assistants/AssistantsDetails";
 import TransactionsList from "./views/Transaction/TransactionList";
+import TransactionsList2 from "./views/Transaction/TransactionList2";
+
 import Blogs from "./views/Blog/Blogs";
 import BlogsDetail from "./views/Blog/BlogsDetail";
 import JobsHome from "./views/assistants/JobsHome";
@@ -164,6 +166,18 @@ function App() {
             }
             path="/transactions"
           />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <TransactionsList2
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/agent_transactions"
+          />
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -270,6 +284,15 @@ function App() {
               </Dashboard>
             }
             path="/users"
+          />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <UsersList collapsed={collapsed} setCollapsed={setCollapsed} />
+              </Dashboard>
+            }
+            path="/agent"
           />
           <Route
             element={

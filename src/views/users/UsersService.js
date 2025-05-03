@@ -1,8 +1,8 @@
 // import api from '../../api/api';
 
 class UsersService {
-  createUser(data, api) {
-    return api.post("/users", data).then((response) => {
+  createUser(data, api, name) {
+    return api.post("/users?name=" + name, data).then((response) => {
       return response.data.data;
     });
   }
@@ -13,8 +13,21 @@ class UsersService {
     });
   }
 
-  searchUser({ page, limit, searchText = null, sort = null, order, api }) {
-    let url = `/users?page=${page}&limit=${limit}`;
+  updateAgendCode(id, api) {
+    return api.patch("/users/assignAgentCode/" + id, {}).then((response) => {
+      return response.data.data;
+    });
+  }
+  searchUser({
+    page,
+    limit,
+    searchText = null,
+    sort = null,
+    order,
+    api,
+    name,
+  }) {
+    let url = `/users?page=${page}&limit=${limit}&name=${name}`;
     if (sort) {
       const sortValue =
         order == "ascend" ? sort : order == "descend" ? "-" + sort : "";
