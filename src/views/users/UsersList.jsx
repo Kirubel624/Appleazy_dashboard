@@ -239,18 +239,6 @@ const UsersList = ({ collapsed }) => {
       key: "delete",
       label: <Button type="text"> Delete</Button>,
     },
-    {
-      key: "3",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.luohanacademy.com"
-        >
-          3rd menu item
-        </a>
-      ),
-    },
   ];
 
   return (
