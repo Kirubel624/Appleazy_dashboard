@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Select } from "antd";
+import { Button, Divider, Dropdown, Input, Select } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 
@@ -25,6 +25,10 @@ const UsersList = ({ collapsed }) => {
   const [usersData, setUsersData] = useState([]);
 
   const [total, setTotal] = useState();
+  const [selectedAgent, setSelectedAgent] = useState(null);
+
+  const [value, setValue] = useState("");
+  const [codeModal, setCodeModal] = useState(false);
 
   const searchText = useSelector(usersSearchText);
   const [loading, setLoading] = useState();
@@ -82,7 +86,21 @@ const UsersList = ({ collapsed }) => {
       dataIndex: "agentCode",
       sorter: true,
       render: (text, record) => {
-        return <p>{text ? text : "-"}</p>;
+        return (
+          <div>
+            <p>{text}</p>
+            <Button
+              onClick={async (e) => {
+                setCodeModal(true);
+                setSelectedAgent(record);
+                setValue(text);
+              }}
+              value={text}
+            >
+              Custom
+            </Button>
+          </div>
+        );
       },
     },
   ]);
@@ -247,7 +265,45 @@ const UsersList = ({ collapsed }) => {
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10 mr-10`}
     >
-      {" "}
+      {codeModal && (
+        <CommonModal
+          title={"Change agent code"}
+          width={700}
+          isModalOpen={codeModal}
+          setIsModalOpen={setCodeModal}
+        >
+          <Input onChange={(e) => setValue(e.target.value)} value={value} />
+          <Divider />
+          <div className="flex gap-5">
+            <Button
+              onClick={async () => {
+                // alert("kl");
+                try {
+                  const data = await usersService.updateUser(
+                    { agentCode: value },
+                    selectedAgent.id,
+                    api
+                  );
+                  console.log(" data agent: ", data);
+                  searchData();
+                  setCodeModal(false);
+                } catch (error) {
+                  console.log("error", error);
+                }
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              onClick={() => {
+                setCodeModal(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </CommonModal>
+      )}{" "}
       {isModalOpen ? (
         <CommonModal
           width={1000}
