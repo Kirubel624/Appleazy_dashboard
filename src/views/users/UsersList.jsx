@@ -87,7 +87,7 @@ const UsersList = ({ collapsed }) => {
       sorter: true,
       render: (text, record) => {
         return (
-          <div>
+          <div className="flex items-center gap-2">
             <p>{text}</p>
             <Button
               onClick={async (e) => {
