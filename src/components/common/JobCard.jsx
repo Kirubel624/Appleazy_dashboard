@@ -6,6 +6,7 @@ import { FaComments, FaTachometerAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { GoKebabHorizontal } from "react-icons/go";
 import Icon, {
+  CheckCircleOutlined,
   DeleteOutlined,
   EditOutlined,
   ReloadOutlined,
@@ -42,11 +43,13 @@ const JobCard = ({
     } else if (key == "repost") {
       setSelectedJob(record);
       setRepostModal(true);
+    } else if (key == "delete") {
+      setSelectedJob(record);
+      setDeleteModal(true);
+    } else if (key == "mark-completed") {
+      // setSelectedJob(record);
+      // setDeleteModal(true);
     }
-    // else if (key == "delete") {
-    //   setSelectedJob(record);
-    //   setDeleteModal(true);
-    // }
   };
   const items = [
     {
@@ -64,11 +67,21 @@ const JobCard = ({
       label: "Repost",
       icon: <Icon component={() => <TfiReload />} />,
     },
+    {
+      key: "delete",
+      label: "Delete",
+      icon: (
+        <Icon style={{ color: "red" }} component={() => <DeleteOutlined />} />
+      ),
+    },
     // {
-    //   key: "delete",
-    //   label: "Delete",
+    //   key: "mark-completed",
+    //   label: "Mark as completed",
     //   icon: (
-    //     <Icon style={{ color: "red" }} component={() => <DeleteOutlined />} />
+    //     <Icon
+    //       style={{ color: "#168A53" }}
+    //       component={() => <CheckCircleOutlined />}
+    //     />
     //   ),
     // },
   ];

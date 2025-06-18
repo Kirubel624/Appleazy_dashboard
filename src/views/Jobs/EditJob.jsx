@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import dayjs from "dayjs";
 import { ClipLoader } from "react-spinners";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const EditJobs = ({
   editModal,
@@ -25,6 +26,7 @@ const EditJobs = ({
   setSelectedJob,
 }) => {
   const [form] = useForm();
+  const apiPrivate = useAPIPrivate();
 
   const statusColors = {
     ongoing: "orange",
@@ -54,7 +56,10 @@ const EditJobs = ({
     };
     console.log(data, "data");
     try {
-      const res = await api.patch(`/assignment/${selectedJob?.id}`, values);
+      const res = await apiPrivate.patch(
+        `/assignment/${selectedJob?.id}`,
+        values
+      );
       console.log(res, "resposne of update");
       if (res.status === 200) {
         message.success("Job updated successfully!");

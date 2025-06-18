@@ -60,7 +60,7 @@ const AssignJob = ({
   const fetchAssistants = async () => {
     setLoading(true);
     try {
-      const res = await api.get(
+      const res = await apiPrivate.get(
         `/assistant/getAllAssistantsWithOngoingAssignments?page=${query?.page}&limit=${query?.limit}&searchText=${searchText}`
         // ?page=${page}&limit=${limit}
       );
@@ -95,7 +95,7 @@ const AssignJob = ({
     };
     console.log(data, "passed values");
     try {
-      const res = await api.patch(`/assignment/reassign`, data);
+      const res = await apiPrivate.patch(`/assignment/reassign`, data);
       console.log(res, "resposne of update");
       if (res.status === 201) {
         message.success("Job reassigned successfully!");

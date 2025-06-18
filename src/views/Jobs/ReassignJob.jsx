@@ -18,6 +18,7 @@ import { ClipLoader, ScaleLoader } from "react-spinners";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import AssistantCard from "../../components/AssistantCard";
 import { useSearchParams } from "react-router-dom";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const ReassignJob = ({
   reassignModal,
@@ -48,6 +49,7 @@ const ReassignJob = ({
   const [searchText, setSearchText] = useState();
   const [total, setTotal] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const apiPrivate = useAPIPrivate();
 
   const [form] = useForm();
   const fetchJob = async () => {
@@ -58,7 +60,7 @@ const ReassignJob = ({
   const fetchAssistants = async () => {
     setLoading(true);
     try {
-      const res = await api.get(
+      const res = await apiPrivate.get(
         `/assistant/getAllAssistantsWithOngoingAssignments?page=${query?.page}&limit=${query?.limit}&searchText=${searchText}`
         // ?page=${page}&limit=${limit}
       );
@@ -93,7 +95,7 @@ const ReassignJob = ({
     };
     console.log(data, "passed values");
     try {
-      const res = await api.patch(`/assignment/reassign`, data);
+      const res = await apiPrivate.patch(`/assignment/reassign`, data);
       console.log(res, "resposne of update");
       if (res.status === 201) {
         message.success("Job reassigned successfully!");

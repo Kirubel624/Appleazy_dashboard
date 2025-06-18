@@ -14,6 +14,7 @@ import { TfiReload } from "react-icons/tfi";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import {
   Button,
+  Checkbox,
   Col,
   Input,
   message,
@@ -44,11 +45,10 @@ const JobsList = ({ collapsed, setCollapsed }) => {
   const [limit] = useState(10);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
-
   const [total, setTotal] = useState(0);
-
   const swiperRef = useRef();
-
+  const [deleteRelatedSubscription, setDeleteRelatedSubscription] =
+    useState(false);
   const isOnTrack = async (
     totalApplications,
     completedApplications,
@@ -227,7 +227,7 @@ const JobsList = ({ collapsed, setCollapsed }) => {
     };
     console.log(data, "passed values");
     try {
-      const res = await api.patch(`/assignment/reassign`, data);
+      const res = await apiPrivate.patch(`/assignment/reassign`, data);
       console.log(res, "resposne of update");
       if (res.status === 201) {
         message.success("Job reposted successfully!");
@@ -248,7 +248,9 @@ const JobsList = ({ collapsed, setCollapsed }) => {
   }, [page, search, status, pageSize]);
   const handleDelete = async () => {
     console.log(selectedJob, "asiodfjioejfiojseioaf");
-    const res = await apiPrivate.delete(`/assignment/${selectedJob.id}`);
+    const res = await apiPrivate.delete(`/assignment/${selectedJob.id}`, {
+      params: { deleteRelatedSubscription },
+    });
     message.success("Assignment deleted successfully");
     setDeleteModal(false);
     await fetchAssignments();
@@ -362,7 +364,19 @@ const JobsList = ({ collapsed, setCollapsed }) => {
           </Button>,
         ]}
         confirmLoading={false}>
-        <p>Are you sure you want to delete this assignment?</p>
+        <p className="mb-4 text- font-medium">
+          Are you sure you want to delete this assignment?
+        </p>
+        <Checkbox
+          onChange={(e) => setDeleteRelatedSubscription(e.target.checked)}
+          checked={deleteRelatedSubscription}>
+          Also delete related subscription (this action cannot be undone).
+        </Checkbox>
+        <p className="text-sm text-red-500 mt-2">
+          Note: Checking this box will delete the subscription associated with
+          this assignment and all other assignments that are related to the
+          subscription.
+        </p>
       </Modal>
       <h1 className="font-medium font-sans text-2xl pb-6">Jobs</h1>
       <div className="mb-4 relative sm:hidden block ">

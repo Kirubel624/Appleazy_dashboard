@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import api from "../../utils/api";
 import { useParams } from "react-router-dom";
 import { CheckCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import useAPIPrivate from "../../hooks/useAPIPrivate";
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ const JobsHome = ({ collapsed, setCollapsed }) => {
   const [loading, setLoading] = useState(false);
   const count = useRef(0);
   const { id } = useParams();
+  const apiPrivate = useAPIPrivate();
 
   useEffect(() => {
     if (count.current === 0) {
@@ -25,7 +27,9 @@ const JobsHome = ({ collapsed, setCollapsed }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/assignment/assistant?assistantId=${id}`);
+      const res = await apiPrivate.get(
+        `/assignment/assistant?assistantId=${id}`
+      );
       setDatas(res.data?.data);
       setLoading(false);
     } catch (error) {
@@ -105,8 +109,7 @@ const JobsHome = ({ collapsed, setCollapsed }) => {
     <div
       className={`${
         collapsed ? "ml-[52px] mr-0 sm:ml-[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 px-2 sm:px-4`}
-    >
+      } transition-all ease-in mt-10 px-2 sm:px-4`}>
       <Title level={2} className="mb-4">
         Jobs Dashboard
       </Title>
