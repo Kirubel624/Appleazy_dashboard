@@ -46,8 +46,16 @@ const BlogsCard = ({
           />
           <Button danger icon={<DeleteOutlined />} onClick={showConfirm} />
         </div>
-      }
-    >
+      }>
+      <div className="flex items-center justify-start gap-4 pt-3">
+        <p className="text-[#168A53] font-robotor font-[600]">
+          {blogsItem?.tag}
+        </p>
+        <div className="w-[6px] h-[6px] bg-[#168A53] rounded-full" />
+        <p className="text-[#168A53] font-robotor font-[600]">
+          {blogsItem?.readTime} min read
+        </p>
+      </div>
       {blogsItem?.image ? (
         <div className="image-container">
           <Image

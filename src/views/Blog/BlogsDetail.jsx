@@ -13,9 +13,7 @@ const BlogsDetail = () => {
     <div
       className={`${
         collapsed ? "ml-[32px] mr-0 sm:[80px]" : "ml-[200px]"
-      } transition-all ease-in mt-10 pl-10 mr-10`}
-    >
-      {" "}
+      } transition-all ease-in mt-10 pl-10 mr-10`}>
       <div class="relative overflow-hidden rounded-xl mb-8">
         <div class="relative overflow-hidden rounded-xl">
           <div className="image-container">

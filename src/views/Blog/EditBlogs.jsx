@@ -12,11 +12,14 @@ import {
   Select,
   message,
   Image,
+  Tooltip,
+  InputNumber,
 } from "antd";
 import {
   UserOutlined,
   PictureOutlined,
   UploadOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import useAPIPrivate from "../../hooks/useAPIPrivate";
@@ -43,6 +46,8 @@ const EditBlogs = ({
     const formData = new FormData();
     console.log(filesToUpload, "files to be uploaded");
     formData.append("title", values.title);
+    formData.append("tag", values.tag);
+    formData.append("readTime", values.readTime);
     if (filesToUpload.length > 0) {
       formData.append("image", filesToUpload[0]);
     }
@@ -118,6 +123,8 @@ const EditBlogs = ({
         title: selectedBlogs?.data?.title,
         description: selectedBlogs?.data?.description,
         tags: selectedBlogs?.data?.tags?.split(","),
+        tag: selectedBlogs?.data?.tag,
+        readTime: selectedBlogs?.data?.readTime,
       });
     }
   }, [selectedBlogs, form]);
@@ -173,16 +180,46 @@ const EditBlogs = ({
         <Form.Item
           name="description"
           label="Content"
-          className="mt-3 h-[240px]"
+          className="mt-3 "
           rules={[
             { required: true, message: "Please input your blogs content!" },
           ]}>
           <ReactQuill
-            className="h-[200px]"
+            className="overflow-y-auto"
             theme="snow"
             value={form.getFieldValue("description")}
             onChange={setValue}
           />
+        </Form.Item>
+        <Form.Item
+          name="tag"
+          label={
+            <div className="flex items-center gap-2">
+              <p>Tag</p>
+              <Tooltip title="Tag is different from tags, it is a single word that describes the blog.">
+                <InfoCircleOutlined className="w-5 h-5" />
+              </Tooltip>
+            </div>
+          }
+          className="mt-3"
+          rules={[{ required: true, message: "Please input your blog tag!" }]}>
+          <Input placeholder="Enter tag" />
+        </Form.Item>
+        <Form.Item
+          name="readTime"
+          label={
+            <div className="flex items-center gap-2">
+              <p>Read Time</p>
+              <Tooltip title="The estimated time to read the blog in minutes.">
+                <InfoCircleOutlined className="w-5 h-5" />
+              </Tooltip>
+            </div>
+          }
+          className="mt-3"
+          rules={[
+            { required: true, message: "Please input your blog read time!" },
+          ]}>
+          <InputNumber placeholder="Enter read time" className="w-full" />
         </Form.Item>
         <Form.Item name="tags" label="Tags" className="mt-3">
           <Select
