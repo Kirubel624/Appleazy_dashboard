@@ -896,7 +896,7 @@ const Jobs = ({ collapsed, setCollapsed }) => {
         size="large"
         closable
         destroyOnClose
-        title={<p>Your profile for this job</p>}
+        title={<p>Client profile for this job</p>}
         placement="right"
         open={openProfile}
         // loading={assistantProfileloading}

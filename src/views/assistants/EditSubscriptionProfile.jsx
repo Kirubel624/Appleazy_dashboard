@@ -15,6 +15,10 @@ import {
   InfoCircleOutlined,
   UserOutlined,
   DollarCircleOutlined,
+  LockOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  MailOutlined,
 } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { updateProfileAsync } from "../auth/authReducer";
@@ -35,6 +39,7 @@ const EditSubscriptionProfile = ({
   const [preferredIndustry, setPreferredIndustry] = useState(null);
   const [otherIndustry, setOtherIndustry] = useState("");
   const [selectedJobSettings, setSelectedJobSettings] = useState([]);
+  const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const profile = profile2;
   console.log("profile:::::", profile2);
@@ -299,8 +304,7 @@ const EditSubscriptionProfile = ({
         ease: [0.6, 0.01, -0.05, 0.95],
         type: "spring",
         stiffness: 100,
-      }}
-    >
+      }}>
       <Form
         name="user-form"
         layout="vertical"
@@ -320,8 +324,42 @@ const EditSubscriptionProfile = ({
           veteranStatus: profile?.SubscriptionProfile?.veteranStatus,
           disabilityStatus: profile?.SubscriptionProfile?.disabilityStatus,
           workAuthorization: profile?.SubscriptionProfile?.workAuthorization,
-        }}
-      >
+          sharedEmail: profile2?.User?.sharedEmail,
+          sharedPassword: profile2?.User?.sharedPassword,
+        }}>
+        <div className="flex items-center">
+          <Form.Item
+            className="md:w-1/2 w-full"
+            name="sharedEmail"
+            label="Shared Email">
+            <Input
+              disabled
+              value={profile2?.User?.sharedEmail}
+              prefix={<MailOutlined />}
+              className="w-full"
+              type="email"
+            />
+          </Form.Item>
+          <Form.Item
+            className="md:w-1/2 mx-2 w-full"
+            name="sharedPassword"
+            label="Shared Password">
+            <div className="relative w-full">
+              <Input
+                value={profile2?.User?.sharedPassword}
+                prefix={<LockOutlined />}
+                className="w-full pr-10"
+                type={visible ? "text" : "password"}
+                disabled
+              />
+              <span
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                onClick={() => setVisible(!visible)}>
+                {visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+              </span>
+            </div>
+          </Form.Item>
+        </div>
         {/* Username */}
         <div className="flex items-center w-full">
           {/* Location */}
@@ -329,8 +367,9 @@ const EditSubscriptionProfile = ({
             className="w-1/3"
             label="Preferred location(s)"
             name="location"
-            rules={[{ required: true, message: "Please input your location!" }]}
-          >
+            rules={[
+              { required: true, message: "Please input your location!" },
+            ]}>
             <Select
               disabled
               allowClear
@@ -339,8 +378,7 @@ const EditSubscriptionProfile = ({
                 width: "100%",
               }}
               placeholder="Enter location(s)"
-              prefix={<EnvironmentOutlined />}
-            >
+              prefix={<EnvironmentOutlined />}>
               {jobLocationOptions.map((location) => (
                 <Select.Option key={location} value={location}>
                   {location}
@@ -357,8 +395,7 @@ const EditSubscriptionProfile = ({
                 required: true,
                 message: "Please input your address!",
               },
-            ]}
-          >
+            ]}>
             <Input
               disabled
               placeholder="Enter address"
@@ -374,8 +411,7 @@ const EditSubscriptionProfile = ({
                 required: true,
                 message: "Please enter desired job title(s)",
               },
-            ]}
-          >
+            ]}>
             <Select
               disabled
               prefix={<UserOutlined />}
@@ -398,8 +434,7 @@ const EditSubscriptionProfile = ({
                 required: true,
                 message: "Please input your minimum desired pay!",
               },
-            ]}
-          >
+            ]}>
             <InputNumber
               disabled
               prefix={<DollarCircleOutlined />}
@@ -411,8 +446,7 @@ const EditSubscriptionProfile = ({
           <Form.Item
             className="md:w-1/3 mx-2 w-full"
             name="maxDesiredPay"
-            label="Max Desired Pay"
-          >
+            label="Max Desired Pay">
             <InputNumber
               disabled
               prefix={<DollarCircleOutlined />}
@@ -429,8 +463,7 @@ const EditSubscriptionProfile = ({
             name="ethnicity"
             rules={[
               { required: true, message: "Please select your ethnicity!" },
-            ]}
-          >
+            ]}>
             <Select disabled placeholder="Select an option">
               <Option value="american-indian-alaska-native">
                 American Indian or Alaska Native
@@ -459,15 +492,13 @@ const EditSubscriptionProfile = ({
             name="jobType"
             rules={[
               { required: true, message: "Please select your job type!" },
-            ]}
-          >
+            ]}>
             <Checkbox.Group disabled options={options} />
           </Form.Item>
           <Form.Item
             className="md:w-1/2 ml-4"
             name="jobSetting"
-            label="Job Setting"
-          >
+            label="Job Setting">
             <Checkbox.Group disabled options={optionsSetting} />
           </Form.Item>
         </div>
@@ -477,14 +508,12 @@ const EditSubscriptionProfile = ({
           <Form.Item
             name="preferredIndustry"
             className={`md:w-1/2 w-full mr-4 border- border-red-900`}
-            label="Preferred industry(ies)"
-          >
+            label="Preferred industry(ies)">
             <Select
               disabled
               allowClear
               mode="tags"
-              placeholder="Select an industry"
-            >
+              placeholder="Select an industry">
               <Option value="Finance">Finance</Option>
               <Option value="Healthcare">Healthcare</Option>
               <Option value="IT">IT</Option>
@@ -501,13 +530,11 @@ const EditSubscriptionProfile = ({
             className={`md:w-1/2 border- w-full ${
               customPronoun === "Other" ? "" : ""
             }`}
-            label="Preferred Pronouns"
-          >
+            label="Preferred Pronouns">
             <Select
               disabled
               onChange={handlePronounChange}
-              placeholder="Select your pronouns"
-            >
+              placeholder="Select your pronouns">
               <Option value="He/him">He/Him</Option>
               <Option value="She/her">She/Her</Option>
               <Option value="They/them">They/Them</Option>
@@ -526,8 +553,7 @@ const EditSubscriptionProfile = ({
           <Form.Item
             className="w-1/2 mr-4"
             name="veteranStatus"
-            label="Are you a veteran?"
-          >
+            label="Are you a veteran?">
             <Radio.Group
               disabled
               options={optionsVeteran}
@@ -537,8 +563,7 @@ const EditSubscriptionProfile = ({
           <Form.Item
             className="w-1/2"
             name="disabilityStatus"
-            label="Do you have any disability?"
-          >
+            label="Do you have any disability?">
             <Radio.Group
               disabled
               options={optionsDisability}
@@ -549,8 +574,7 @@ const EditSubscriptionProfile = ({
         <Form.Item
           disabled
           name="workAuthorization"
-          label="Are you authorized to work in the US?"
-        >
+          label="Are you authorized to work in the US?">
           <Radio.Group>
             {/* <Space direction="vertical"> */}
             <Radio value={true}>
@@ -564,18 +588,15 @@ const EditSubscriptionProfile = ({
         </Form.Item>
         <div
           className="flex justify-aro mb-4 items-center w-full
-         borde border-purple-700 mt-6"
-        >
+         borde border-purple-700 mt-6">
           <div
             className=" w-1/ border-red-900 flex flex-col mr-8
-         items-start justify-start"
-          >
+         items-start justify-start">
             <p className="text-start font-medium mb-2">Resume (Required)</p>
             <a
               href={profile?.SubscriptionProfile?.resume}
               target="_blank"
-              className="underline text-blue-500 mb-2"
-            >
+              className="underline text-blue-500 mb-2">
               Previous Resume
             </a>
 
@@ -586,8 +607,7 @@ const EditSubscriptionProfile = ({
             <a
               href={profile?.SubscriptionProfile?.cv}
               target="_blank"
-              className="underline text-blue-500 mb-2"
-            >
+              className="underline text-blue-500 mb-2">
               Previous Cover letter
             </a>
           </div>
