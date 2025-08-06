@@ -24,7 +24,7 @@ const useRefreshToken = () => {
     refreshPromise = new Promise(async (resolve, reject) => {
       try {
         const response = await api.get(
-          // "https://server.appleazy.com/api/v1/refresh",
+          // "https://server.applizy.com/api/v1/refresh",
           "http://localhost:8001/api/v1/refresh",
           {
             withCredentials: true,

@@ -18,7 +18,7 @@ const BoddyCon = () => {
       const fectUserList = async () => {
         try {
           const res = await axios.get(
-            "https://chat.appleazy.com/api/v1/group/chats/" + to + "/" + id
+            "https://chat.applizy.com/api/v1/group/chats/" + to + "/" + id
           );
           console.log("listchat__", res.data?.chats);
           dispatch(changeChats({ chats: res.data?.chats }));

@@ -3,7 +3,7 @@ import TokenService from "./token.service";
 
 import { message } from "antd";
 // import { logout } from "../redux/auth/authSlice";
-const HOSTED_URL = "https://server.appleazy.com/api/v1";
+const HOSTED_URL = "https://server.applizy.com/api/v1";
 const LOCAL_URL = "http://localhost:8001/api/v1";
 const handleErrorResponse = (errorMessage) => {
   message.error(errorMessage);

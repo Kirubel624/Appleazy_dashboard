@@ -29,17 +29,17 @@ const Settings = () => {
         let imgUrl = "";
         switch (item.type) {
           case "website":
-            customUrl = "https://www.appleazy.com";
+            customUrl = "https://www.applizy.com";
             imgUrl =
               "https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/appleazywebsite.PNG";
             break;
           case "dashboard":
-            customUrl = "https://dashboard.appleazy.com";
+            customUrl = "https://dashboard.applizy.com";
             imgUrl =
               "https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/appleazydashboard.PNG";
             break;
           case "assistantDashboard":
-            customUrl = "https://assistant.appleazy.com";
+            customUrl = "https://assistant.applizy.com";
             imgUrl =
               "https://appleazy.nyc3.cdn.digitaloceanspaces.com/web-content/appleazyassistant.PNG";
             break;
@@ -170,7 +170,8 @@ const Settings = () => {
             onClick={() => {
               setEditingMsg(record.id);
               setNewMsg(record.maintenanceMsg);
-            }}>
+            }}
+          >
             {record.maintenanceMsg}
           </span>
         ),

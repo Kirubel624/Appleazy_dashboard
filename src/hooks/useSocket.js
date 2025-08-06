@@ -6,7 +6,7 @@ import {
   updateNotificationstate,
 } from "../views/dashboard/notificationReducer";
 
-const SOCKET_URL = "https://notify.appleazy.com";
+const SOCKET_URL = "https://notify.applizy.com";
 
 export const useSocket = (userId) => {
   const dispatch = useDispatch();

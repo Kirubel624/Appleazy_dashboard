@@ -28,7 +28,7 @@ const ChatBody = () => {
   // useEffect(() => {
   //   if (!user?.id) return;
 
-  //   const newSocket = io("https://chat.appleazy.com", {
+  //   const newSocket = io("https://chat.applizy.com", {
   //     query: { userId: user?.id },
   //     transports: ["websocket"],
   //     reconnection: true,
@@ -89,7 +89,7 @@ const ChatBody = () => {
 
                 try {
                   const res = await axios.post(
-                    "https://chat.appleazy.com/api/v1/group/add-chat/",
+                    "https://chat.applizy.com/api/v1/group/add-chat/",
                     { to: id, from: to, message: input, isAdmin: true }
                   );
 
